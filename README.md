@@ -133,7 +133,9 @@ types/                全局类型声明
 
 ## 参与贡献
 
-目前暂不接受外部代码提交（Pull Request）。
+目前暂不接受外部代码提交（Pull Request），欢迎提 Issue。
+
+发现安全漏洞请不要公开提 Issue，按 [SECURITY.md](SECURITY.md) 私下报告。
 
 ## 许可证
 
