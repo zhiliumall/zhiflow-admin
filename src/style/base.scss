@@ -1,0 +1,458 @@
+/**
+ * @description 水平居中
+ */
+.lib-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// 边框
+.lib-border {
+  border: 1px solid var(--el-border-color-light);
+}
+
+// 提示文字样式
+.lib-text-tips {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-tertiary, #667085);
+}
+
+// 自定义 icon 使用 svg 时的设置
+.lib-icon-svg {
+  width: 1em;
+  height: 1em;
+  overflow: hidden;
+  vertical-align: -0.15em;
+  fill: currentcolor;
+}
+
+.sub-menu-icon:has(> .lib-icon-svg)::before {
+  display: none;
+}
+
+symbol {
+  fill: currentcolor;
+
+  path {
+    fill: currentcolor !important;
+  }
+}
+
+.lib-amount-xxs {
+  font-family: var(--dc-font-num);
+  font-size: 14px; /* Ant 无 13 档 */
+  font-variant-numeric: tabular-nums;
+  color: #ed4921;
+}
+
+.lib-amount-xs {
+  font-family: var(--dc-font-num);
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  color: #ed4921;
+}
+
+.lib-amount-sm {
+  font-family: var(--dc-font-num);
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+  color: #ed4921;
+}
+
+.lib-amount {
+  font-family: var(--dc-font-num);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  color: #ed4921;
+}
+
+.lib-amount-md {
+  font-family: var(--dc-font-num);
+  font-size: 24px;
+  font-variant-numeric: tabular-nums;
+  color: #ed4921;
+}
+
+.lib-amount-lg {
+  font-family: var(--dc-font-num);
+  font-size: 28px;
+  font-variant-numeric: tabular-nums;
+  color: #ed4921;
+}
+
+.lib-amount-xl {
+  font-family: var(--dc-font-num);
+  font-size: 32px;
+  font-variant-numeric: tabular-nums;
+  color: #ed4921;
+}
+
+.lib-amount-xxl {
+  font-family: var(--dc-font-num);
+  font-size: 36px;
+  font-variant-numeric: tabular-nums;
+  color: #ed4921;
+}
+
+.lib-amount-b {
+  font-weight: bold;
+}
+
+.lib-text-price::before {
+  margin-right: 2px;
+  font-size: 80%;
+  content: "¥";
+}
+
+/* 超过2行省略 */
+.text-line-2 {
+  display: -webkit-box; /* 作为弹性伸缩盒子模型显示 */
+  overflow: hidden; /* 超出的文本隐藏 */
+  text-overflow: ellipsis; /* 溢出用省略号显示 */
+  -webkit-line-clamp: 2; /* 显示的行 */
+  word-break: break-all; /* 允许单词内自动换行，如果一个单词很长的话 */
+  -webkit-box-orient: vertical; /* 设置伸缩盒子的子元素排列方式--从上到下垂直排列 */
+}
+
+/* 覆盖element-plus样式 */
+
+:root {
+  // --el-color-primary: #409EFF;
+  --el-border-radius-base: 0px !important;
+  --el-card-border-radius: 0px !important;
+  --el-card-padding: 14px !important;
+}
+
+.el-card {
+  border-radius: var(--el-card-border-radius);
+}
+
+.avue-form__tabs {
+  margin-bottom: 20px;
+}
+
+.el-breadcrumb__inner,
+.el-breadcrumb__inner a {
+  font-weight: 400 !important;
+}
+
+.el-upload {
+  input[type="file"] {
+    display: none !important;
+  }
+}
+
+.el-upload__input {
+  display: none;
+}
+
+.upload-container {
+  .el-upload {
+    width: 100%;
+
+    .el-upload-dragger {
+      width: 100%;
+      height: 200px;
+    }
+  }
+}
+
+.el-dropdown-menu {
+  padding: 0 !important;
+}
+
+.el-range-separator {
+  box-sizing: content-box;
+}
+
+.is-dark {
+  z-index: 9999 !important;
+}
+
+.margin-top-sl {
+  margin-top: -10px;
+}
+
+/* 重置 el-button 中 icon 的 margin */
+.reset-margin [class*="el-icon"] + span {
+  margin-left: 2px !important;
+}
+
+/* 自定义 popover 的类名 */
+.pure-popper {
+  padding: 0 !important;
+}
+
+/* 自定义 tooltip 的类名 */
+.pure-tooltip {
+  // 右侧操作面板right-panel类名的z-index为40000，tooltip需要大于它才能显示
+  z-index: 41000 !important;
+}
+
+/* nprogress 适配 element-plus 的主题色 */
+#nprogress {
+  & .bar {
+    background-color: var(--el-color-primary) !important;
+  }
+
+  & .peg {
+    box-shadow:
+      0 0 10px var(--el-color-primary),
+      0 0 5px var(--el-color-primary) !important;
+  }
+
+  & .spinner-icon {
+    border-top-color: var(--el-color-primary);
+    border-left-color: var(--el-color-primary);
+  }
+}
+
+/* 全局覆盖element-plus的el-dialog、el-drawer、el-message-box、el-notification组件右上角关闭图标的样式，表现更鲜明 */
+.el-dialog__headerbtn,
+.el-message-box__headerbtn {
+  &:hover {
+    .el-dialog__close {
+      color: var(--el-color-info) !important;
+    }
+  }
+}
+
+.el-icon {
+  &.el-dialog__close,
+  &.el-drawer__close,
+  &.el-message-box__close,
+  &.el-notification__closeBtn {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    outline: none;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+
+    &:hover {
+      color: rgb(0 0 0 / 88%) !important;
+      text-decoration: none;
+      background-color: rgb(0 0 0 / 6%);
+    }
+  }
+}
+
+/* 克隆并自定义 ElMessage 样式，不会影响 ElMessage 原本样式，在 src/utils/message.ts 中调用自定义样式 ElMessage 方法即可，暗黑模式在 src/style/dark.scss 文件进行了适配 */
+.pure-message {
+  padding: 10px 13px !important;
+  background: #fff !important;
+  border-width: 0 !important;
+  box-shadow:
+    0 3px 6px -4px #0000001f,
+    0 6px 16px #00000014,
+    0 9px 28px 8px #0000000d !important;
+
+  &.el-message.is-closable .el-message__content {
+    padding-right: 17px !important;
+  }
+
+  & .el-message__content {
+    color: #000000d9 !important;
+    pointer-events: all !important;
+    background-image: initial !important;
+  }
+
+  & .el-message__icon {
+    margin-right: 8px !important;
+  }
+
+  & .el-message__closeBtn {
+    right: 9px !important;
+    border-radius: 4px;
+    outline: none;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+
+    &:hover {
+      background-color: rgb(0 0 0 / 6%);
+    }
+  }
+}
+
+.el-scrollbar__view {
+  height: 100%;
+}
+
+.el-tabs--border-card {
+  border-right: none !important;
+  border-bottom: none !important;
+  border-left: none !important;
+}
+
+.el-tabs--border-card > .el-tabs__content {
+  padding-top: 0 !important;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+// 重置el-tabs样式
+.el-tabs__header {
+  margin-bottom: 0 !important;
+}
+
+.el-tabs--card > .el-tabs__header .el-tabs__nav {
+  border: 0 !important;
+}
+
+// 修改默认按钮样式
+.el-button {
+  height: 33px !important;
+  border-radius: var(--ds-radius-sm) !important;
+
+  // margin-bottom: 5px;
+}
+
+.el-button.is-round {
+  border-radius: var(--el-border-radius-round) !important;
+}
+
+.el-button.is-circle {
+  padding: 7px !important;
+  border-radius: 50%;
+}
+
+.el-color-picker__trigger {
+  border: none !important;
+}
+
+.el-input-group__append,
+.el-input-group__prepend {
+  padding: 0 5px !important;
+  background-color: var(--ds-surface) !important;
+}
+
+body[layout="elegant"] {
+  .horizontal-header .el-menu {
+    justify-content: center;
+  }
+
+  .avue-crud--card .el-card__body {
+    // overflow: auto;
+    height: 100%;
+    padding: 10px 0 0;
+    background-color: #fff;
+  }
+}
+
+:deep(.el-card__body) {
+  padding: 0 !important;
+}
+
+// 将*号星移动到label的后面
+.el-form-item.is-required:not(.is-no-asterisk).asterisk-left
+  > .el-form-item__label::after {
+  margin-right: 4px;
+  color: var(--el-color-danger);
+  content: "*";
+}
+
+// 移除原有左侧*号星
+.el-form-item.is-required:not(.is-no-asterisk).asterisk-left
+  > .el-form-item__label::before {
+  margin-right: -4px !important;
+  color: transparent !important;
+  content: "";
+}
+
+// .el-dropdown-link
+.el-dropdown-link {
+  color: var(--el-color-primary) !important;
+}
+
+// logo
+.horizontal-header .horizontal-header-left span {
+  margin: 0 !important;
+  font-size: 14px !important;
+  line-height: 34px !important;
+}
+
+// 右侧css
+.horizontal-header-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 340px;
+  color: var(--ds-text) !important;
+
+  /* 搜索 */
+  .search-container,
+    /* 国际化 */
+    .globalization,
+    /* 全屏 */
+    .fullscreen-icon,
+    /* 消息通知 */
+    .dropdown-badge,
+    /* 通知 */
+    .header-notice-icon,
+    /* 用户名 */
+    .el-dropdown-link,
+    /* 设置 */
+    .set-icon {
+    &:hover {
+      color: var(--ds-brand) !important;
+      background: var(--ds-brand-soft);
+    }
+  }
+
+  .dropdown-badge {
+    height: 48px;
+    color: var(--pure-theme-sub-menu-active-text) !important;
+  }
+
+  .globalization {
+    width: 40px;
+    height: 48px;
+    padding: 11px;
+    color: var(--ds-text) !important;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .el-dropdown-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 48px;
+    padding: 10px;
+    color: var(--pure-theme-sub-menu-active-text) !important;
+    cursor: pointer;
+
+    p {
+      font-size: 14px;
+    }
+
+    img {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+    }
+  }
+}
+
+.send-smscodebtn {
+  height: 400px;
+}
+
+// 视频组件的css优化:import { VideoPlayer } from "vue-video-player";
+.v-video-player {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  .vjs-big-play-button {
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+  }
+}

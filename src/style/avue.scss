@@ -1,0 +1,350 @@
+// ============================================================
+// Avue 组件库全局样式覆盖
+// ============================================================
+
+/* ==================== CRUD 表格 ==================== */
+.avue-crud {
+  width: 100%;
+  height: 100%;
+  margin-bottom: 45px;
+  font-size: var(--dc-fs-body, 14px);
+  line-height: var(--dc-lh-body, 1.5715);
+  border-collapse: collapse;
+
+  // 表头（Ant 表头 600 正文色）
+  th {
+    max-width: 250px;
+    padding: 15px;
+    font-weight: 600;
+    color: var(--text-primary, #1f2733);
+    text-align: left;
+    white-space: nowrap;
+    border-bottom: 1px solid #dcdfe6;
+
+    &.el-table__cell {
+      background: var(--th-header-bg, #eee) !important;
+    }
+  }
+
+  // 单元格
+  td {
+    max-width: 250px;
+    padding: 15px;
+    color: var(--ds-text-secondary);
+    border-bottom: 1px solid #dcdfe6;
+  }
+
+  // 单元格内容区
+  .el-table--default .cell {
+    position: relative;
+    padding: 0 5px;
+  }
+
+  // 操作菜单栏
+  .avue-crud__menu {
+    margin-bottom: 0;
+
+    .el-button.is-text,
+    .el-button.is-link {
+      height: 26px !important;
+      padding: 0;
+    }
+
+    .el-button > span {
+      margin: 0 5px;
+    }
+  }
+
+  // 提示文字
+  .avue-crud__tip {
+    color: var(--el-color-primary);
+    border-radius: 0;
+  }
+
+  // 头部区域
+  .avue-crud__header {
+    padding-bottom: 15px;
+    margin-bottom: 0;
+  }
+
+  // 搜索栏
+  .avue-crud__search {
+    flex: 0 0 auto;
+  }
+
+  // 图片预览
+  .avue-crud__img {
+    display: flex;
+    justify-content: center;
+
+    img {
+      margin-right: 0 !important;
+    }
+  }
+
+  .el-form-item--default {
+    .el-form-item__label {
+      width: var(--avue-form-label-width, auto) !important;
+    }
+  }
+}
+
+/* ==================== CRUD 卡片模式 ==================== */
+.avue-crud,
+.avue-crud .el-card:not(.avue-crud__search, .avue-crud__pagination),
+.avue-crud--card .el-card:not(.avue-crud__search, .avue-crud__pagination) {
+  overflow: auto;
+}
+
+.avue-crud--card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  // 内容卡片（不含搜索栏和分页）
+  .el-card:not(.avue-crud__search, .avue-crud__pagination) {
+    flex-grow: 1;
+    height: 100%;
+    background: #f6f8f9;
+    border-radius: 0 !important;
+  }
+
+  .el-card__body {
+    flex: 0 0 auto;
+    border-radius: 0 !important;
+  }
+
+  .el-card + .el-card {
+    margin-top: 6px !important;
+  }
+
+  // 搜索栏
+  .avue-crud__search {
+    background: var(--avue-crud-search-bg, #fff) !important;
+  }
+
+  // 表单项边框
+  .el-form-item {
+    border: var(--avue-item-border, 1px solid #dcdfe6);
+    border-radius: 8px;
+
+    &:focus-within {
+      border-color: var(
+        --avue-item-focus-border-color,
+        var(--el-color-primary)
+      );
+    }
+  }
+
+  // 移除输入框默认阴影
+  .el-input__wrapper,
+  .el-select__wrapper {
+    box-shadow: var(--avue-crud-input-box-shadow, none) !important;
+  }
+
+  // 分页
+  .avue-crud__pagination {
+    flex-grow: 1;
+    height: auto;
+    padding: 0 20px 15px;
+    overflow: hidden;
+    background: #fff;
+  }
+}
+
+/* ==================== 表单 ==================== */
+.avue-form {
+  .avue-form__menu {
+    flex: var(--avue-form-menu-flex, 1 0 auto);
+    max-width: var(--avue-form-menu-max-width, fit-content);
+    padding: 0;
+    text-align: var(--avue-form-menu-text-align, left);
+  }
+
+  /* 行距 22 / 列距 0，两个数都不能随手改：
+     · 列距必须是 0 —— avue 列默认 span:12，两个 el-col 的 50% 已经占满行宽，
+       任何列间距都会把第二列挤到下一行，表单被压成「每行一个字段 + 右半边全空」。
+       若设成 `10px 10px`，全站表单弹窗、页面表单、搜索栏都会被压成单列。
+       列与列之间靠下面那条 `.el-form-item__label` 的 padding-left:10px 分隔，不会粘连。
+     · 行距要 ≥ 校验提示的高度 —— EP 的 `.el-form-item__error` 是
+       `position:absolute; top:100%; padding-top:2px; font-size:12; line-height:1`，
+       贴在控件下沿要占 14px；`.el-form-item--default { margin-bottom: 0 }` 又把 EP
+       自带的 18px 让位空间去掉了，行距 10px 时提示文字会压到下一行控件上
+       （「…不能为空」盖住下一个输入框）。 */
+  .avue-form__group--flex {
+    gap: var(--avue-form-group-gap, 22px 0);
+
+    .el-form-item--default {
+      margin-bottom: 0;
+    }
+  }
+
+  .el-form-item--default .el-form-item__label {
+    align-items: center !important;
+    justify-content: flex-start;
+    min-width: var(--avue-form-label-width, auto) !important;
+    padding-left: 10px !important;
+  }
+
+  // Tabs
+  &__tabs {
+    margin-bottom: 20px;
+  }
+
+  /* 列偏移一律清零，不只是 offset-1：列距按上面那条必须是 0，配置里的 `offset`
+     全是「假装列间距」的历史写法。留着的话 12 + offset2 + 12 = 26 > 24，整行溢出，
+     两个字段各占一行。 */
+  [class*="el-col-offset-"] {
+    margin-left: 0;
+  }
+}
+
+/* ==================== 详情视图 ==================== */
+.avue--detail {
+  .el-form-item__label {
+    padding-left: 8px !important;
+  }
+
+  // 隐藏必填星号
+  .el-form-item.is-required:not(.is-no-asterisk).asterisk-left
+    > .el-form-item__label::after {
+    width: 0 !important;
+    content: "" !important;
+  }
+}
+
+/* ==================== 图片预览 ==================== */
+.avue-image-preview {
+  .el-image-viewer__actions__inner {
+    gap: 0;
+  }
+}
+
+/* ==================== 折叠面板 / 分组 ==================== */
+.avue-group {
+  .el-collapse {
+    border-color: var(--avue-group-border, transparent) !important;
+  }
+
+  .el-collapse-item__wrap {
+    --el-collapse-content-bg-color: transparent;
+
+    border: var(--avue-group-border, none) !important;
+  }
+
+  // 数据卡片列边框
+  &.data-card .item .el-col {
+    border: var(--avue-group-border, none) !important;
+  }
+}
+
+/* ==================== 操作列宽度控制 ====================
+ * 用法：给 avue-crud 加 class="menu-col-fixed"，通过 --menu-col-width 变量设置宽度
+ * 例：<avue-crud class="menu-col-fixed" style="--menu-col-width:100px" ...>
+ */
+.avue-crud.menu-col-fixed {
+  --menu-col-width: auto; // 默认值，由页面通过 inline-style 覆盖
+
+  .el-table__header th.el-table-fixed-column--right:last-of-type,
+  .el-table__body td.el-table-fixed-column--right:last-of-type {
+    width: var(--menu-col-width, auto);
+    min-width: var(--menu-col-width, auto);
+  }
+
+  // 覆盖 el-table 内部 colgroup 列宽（浏览器表格布局底层规则）
+  table col.el-table-fixed-column--right:last-of-type,
+  table col:last-of-type {
+    width: var(--menu-col-width, auto);
+  }
+}
+
+.el-pagination {
+  gap: 12px;
+  justify-content: var(--el-pagination-justify-content, center) !important;
+  color: var(--ds-text-secondary);
+
+  /* 前后翻页按钮 */
+  .btn-prev,
+  .btn-next {
+    --el-pagination-bg-color: transparent;
+    --el-disabled-bg-color: transparent;
+    --el-pagination-button-bg-color: transparent;
+
+    width: auto;
+    min-width: auto;
+    height: auto;
+    padding: 0;
+    line-height: normal;
+    color: var(--ds-text-secondary);
+    border: none;
+
+    &:hover {
+      color: var(--ds-brand);
+      border-color: transparent;
+    }
+  }
+
+  /* 页码数字 */
+  .el-pager {
+    li {
+      min-width: auto;
+      height: auto;
+      margin: 0 4px;
+      line-height: normal;
+      color: var(--ds-text-secondary);
+      background-color: transparent !important;
+      border: none;
+
+      &:hover:not(.is-active) {
+        color: var(--ds-brand);
+        border-color: transparent;
+      }
+
+      &.is-active {
+        font-weight: 600;
+        color: var(--ds-brand) !important;
+        background-color: var(--ds-brand-soft);
+      }
+    }
+  }
+
+  /* 每页条数选择器 */
+  .el-select {
+    width: 98px;
+  }
+
+  .el-select__wrapper {
+    box-shadow: none;
+  }
+
+  .el-select .el-input .el-input__wrapper {
+    background-color: transparent !important;
+    box-shadow: none !important;
+
+    &,
+    &:hover,
+    &:focus,
+    &.is-focus {
+      border: none !important;
+      box-shadow: none !important;
+    }
+  }
+
+  /* 跳转输入框 */
+  .el-pagination__jump {
+    margin-left: 16px;
+    font-size: 14px;
+    color: var(--ds-text-secondary);
+
+    .el-input {
+      width: 48px;
+
+      .el-input__wrapper,
+      .el-input__inner {
+        background: transparent;
+        border: none !important;
+        box-shadow: none !important;
+      }
+    }
+  }
+}

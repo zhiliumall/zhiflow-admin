@@ -1,0 +1,11 @@
+{
+  "enable": "是否启用",
+  "name": "名称",
+  "parentId": "父分类",
+  "parentTop": "顶级分类",
+  "picUrl": "分类图标",
+  "mobilePicUrl": "移动端大图",
+  "mobileAdImageUrl": "分类页广告图",
+  "sort": "排序",
+  "updateTime": "最后更新时间"
+}

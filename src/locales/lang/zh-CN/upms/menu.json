@@ -1,0 +1,19 @@
+{
+  "component": "页面",
+  "componentTip": "页面组件文件的具体位置",
+  "icon": "图标",
+  "keepAlive": "是否开启缓存",
+  "name": "菜单名称",
+  "parentId": "父菜单",
+  "path": "前端URL",
+  "permission": "权限标识",
+  "sort": "排序值",
+  "type": "菜单类型",
+  "topLevel": "顶级",
+  "updateTime": "更新时间",
+  "menu": "菜单",
+  "button": "按钮",
+  "buttonPermissionControl": "用于控制操作按钮和数据权限",
+  "cache": "缓存",
+  "noCache": "不缓存"
+}

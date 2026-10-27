@@ -1,0 +1,1182 @@
+/* ============================================================
+   商品品牌页 自绘样式
+   仅本页引用，勿全局注入；令牌统一 --dc-*
+   复用 goods-list-dc.scss 中 goodsspu-dc__（btn/icon-btn/switch/
+   pager/empty/link/toolbar 工具类），此处仅补品牌专属结构。
+   ============================================================ */
+
+/* ---- 页面容器 ---- */
+.goodsbrand-dc {
+  min-width: 1280px;
+  padding: 18px 24px 32px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+  background: var(--dc-bg-page);
+  animation: gb-up 0.3s var(--dc-ease-in) both;
+}
+
+/* ── 横幅插画（A1 基线：品牌丝带 + 认证勾 + 2 点，前缀 gbrand- 防跨页撞名） ── */
+.gbrand-dc__banner-art {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  width: 210px;
+  height: 64px;
+  pointer-events: none;
+}
+
+.gbrand-dc__art-ribbon {
+  position: absolute;
+  top: 2px;
+  left: 30px;
+  animation: gbrand-float 3.4s ease-in-out infinite;
+}
+
+.gbrand-dc__art-check {
+  position: absolute;
+  top: 16px;
+  left: 128px;
+  animation: gbrand-float-b 3s ease-in-out infinite;
+}
+
+.gbrand-dc__art-dot-a {
+  position: absolute;
+  top: 54px;
+  left: 96px;
+  width: 7px;
+  height: 7px;
+  background: #3c6ef0;
+  border-radius: 50%;
+  animation: gbrand-blink 2.2s ease infinite;
+}
+
+.gbrand-dc__art-dot-b {
+  position: absolute;
+  top: 6px;
+  left: 178px;
+  width: 6px;
+  height: 6px;
+  background: #fa8c16;
+  border-radius: 50%;
+  animation: gbrand-blink 2.4s ease 0.4s infinite;
+}
+
+@keyframes gbrand-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes gbrand-float-b {
+  0%,
+  100% {
+    transform: translateY(-4px);
+  }
+
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+@keyframes gbrand-blink {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* ---- 白卡 ---- */
+.goodsbrand-dc__card {
+  background: var(--dc-surface);
+  border-radius: var(--dc-radius-lg);
+  box-shadow: var(--dc-shadow-card);
+}
+
+/* ---- 工具栏 ---- */
+.goodsbrand-dc__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--dc-divider);
+}
+
+.goodsbrand-dc__new {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  height: 32px;
+  padding: 0 13px;
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  background: var(--dc-brand);
+  border: none;
+  border-radius: var(--dc-radius-md);
+  transition: all var(--dc-dur-micro);
+
+  &:hover {
+    background: var(--dc-brand-hover);
+  }
+
+  &:active {
+    background: var(--dc-brand-active);
+    transform: translateY(1px);
+  }
+}
+
+.goodsbrand-dc__bulk {
+  position: relative;
+  flex: none;
+}
+
+.goodsbrand-dc__bulk-btn {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+  cursor: pointer;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-md);
+  transition: all var(--dc-dur-micro);
+
+  &.is-disabled {
+    color: var(--dc-text-disabled);
+    cursor: not-allowed;
+    opacity: 0.75;
+  }
+
+  &:not(.is-disabled):hover {
+    color: var(--dc-brand);
+    border-color: var(--dc-brand);
+  }
+}
+
+.goodsbrand-dc__bulk-menu {
+  position: absolute;
+  top: 36px;
+  left: 0;
+  z-index: 30;
+  width: 120px;
+  padding: 5px;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-divider);
+  border-radius: var(--dc-radius-lg);
+  box-shadow: var(--dc-shadow-pop);
+  animation: gb-pop 0.14s;
+}
+
+.goodsbrand-dc__bulk-item {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  padding: 7px 10px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+  cursor: pointer;
+  border-radius: var(--dc-radius-sm);
+
+  &:hover {
+    color: var(--dc-brand);
+    background: var(--dc-brand-soft);
+  }
+
+  i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+}
+
+.goodsbrand-dc__spacer {
+  flex: 1;
+}
+
+/* ---- 搜索框 ---- */
+.goodsbrand-dc__search {
+  position: relative;
+  flex: none;
+
+  svg {
+    position: absolute;
+    top: 9.5px;
+    left: 10px;
+  }
+
+  input {
+    width: 196px;
+    height: 32px;
+    padding: 0 10px 0 30px;
+    font-size: var(--dc-fs-14);
+    color: var(--dc-text-2);
+    background: var(--dc-surface);
+    border: 1px solid var(--dc-border);
+    border-radius: var(--dc-radius-md);
+    outline: none;
+    transition: border-color var(--dc-dur-micro);
+
+    &::placeholder {
+      color: var(--dc-text-disabled);
+    }
+
+    &:focus {
+      border-color: var(--dc-brand);
+      box-shadow: var(--dc-focus-ring);
+    }
+  }
+}
+
+.goodsbrand-dc__select {
+  flex: none;
+  height: 32px;
+  padding: 0 8px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+  cursor: pointer;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-md);
+  outline: none;
+
+  &:focus {
+    border-color: var(--dc-brand);
+  }
+}
+
+/* ---- 视图切换 ---- */
+.goodsbrand-dc__vswitch {
+  display: flex;
+  flex: none;
+  overflow: hidden;
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-md);
+}
+
+.goodsbrand-dc__vbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 30px;
+  color: var(--dc-text-3);
+  cursor: pointer;
+  background: var(--dc-surface);
+  transition: all var(--dc-dur-micro);
+
+  &.is-active {
+    color: var(--dc-brand);
+    background: var(--dc-brand-soft);
+  }
+
+  & + & {
+    border-left: 1px solid var(--dc-divider);
+  }
+}
+
+/* ============================================================
+   表格视图 —— CSS grid 六列
+   列：复选 / 品牌 / 排序 / 启用 / 更新时间 / 操作
+   ============================================================ */
+$goodsbrand-grid: 40px minmax(0, 1fr) 84px 84px 138px 92px;
+
+.goodsbrand-dc__thead,
+.goodsbrand-dc__tr {
+  display: grid;
+  grid-template-columns: $goodsbrand-grid;
+  align-items: center;
+}
+
+.goodsbrand-dc__thead {
+  height: 40px;
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: var(--dc-text-1);
+  background: var(--dc-bg-header);
+  border-bottom: 1px solid var(--dc-divider);
+}
+
+.goodsbrand-dc__th {
+  &--ck {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  &--brand {
+    padding-left: 2px;
+  }
+
+  &--center {
+    text-align: center;
+  }
+
+  &--right {
+    padding-right: 16px;
+    text-align: right;
+  }
+
+  &--time {
+    padding-left: 6px;
+  }
+
+  i {
+    font-weight: 400;
+    color: var(--dc-text-disabled);
+  }
+}
+
+.goodsbrand-dc__table {
+  min-height: 360px;
+}
+
+.goodsbrand-dc__tr {
+  min-height: 58px;
+  border-bottom: 1px solid var(--dc-bg-page);
+  transition: background var(--dc-dur-micro);
+
+  &:hover {
+    background: var(--dc-row-hover);
+  }
+
+  &.is-flash {
+    animation: gb-row-flash 1.2s;
+  }
+}
+
+/* 复选框 */
+.goodsbrand-dc__ck {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  font-size: var(--dc-fs-12);
+  font-weight: 800;
+  color: #fff;
+  background: var(--dc-surface);
+  border: 1.5px solid var(--dc-text-disabled);
+  border-radius: var(--dc-radius-sm);
+  transition: all 0.12s;
+
+  &.is-on {
+    background: var(--dc-brand);
+    border-color: var(--dc-brand);
+  }
+}
+
+.goodsbrand-dc__ck-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* 品牌单元格 */
+.goodsbrand-dc__brand {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+  padding: 8px 10px 8px 2px;
+  cursor: pointer;
+}
+
+.goodsbrand-dc__logo {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  background-color: var(--dc-surface);
+  background-image:
+    linear-gradient(
+      45deg,
+      #f5f6f8 25%,
+      transparent 25%,
+      transparent 75%,
+      #f5f6f8 75%
+    ),
+    linear-gradient(
+      45deg,
+      #f5f6f8 25%,
+      transparent 25%,
+      transparent 75%,
+      #f5f6f8 75%
+    );
+  background-position:
+    0 0,
+    4px 4px;
+  background-size: 8px 8px;
+  border: 1px solid var(--dc-divider);
+  border-radius: var(--dc-radius-md);
+
+  img {
+    max-width: 34px;
+    max-height: 34px;
+    object-fit: contain;
+    background: var(--dc-surface);
+    border-radius: var(--dc-radius-sm);
+  }
+}
+
+.goodsbrand-dc__logo-txt {
+  font-family: Georgia, serif;
+  font-size: var(--dc-fs-16);
+  font-weight: 800;
+  color: var(--dc-text-3);
+}
+
+.goodsbrand-dc__brand-main {
+  min-width: 0;
+}
+
+.goodsbrand-dc__brand-name {
+  display: block;
+  overflow: hidden;
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: var(--dc-text-1);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &.is-off {
+    color: var(--dc-text-3);
+  }
+}
+
+.goodsbrand-dc__off-tag {
+  padding: 1px 5px;
+  margin-left: 6px;
+  font-size: var(--dc-fs-12);
+  font-weight: 600;
+  color: var(--dc-text-3);
+  vertical-align: 1px;
+  background: var(--dc-tag-bg);
+  border-radius: var(--dc-radius-sm);
+}
+
+/* 居中单元格 */
+.goodsbrand-dc__cell-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.goodsbrand-dc__muted {
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-disabled);
+}
+
+/* 排序（行内编辑） */
+.goodsbrand-dc__sort-plain {
+  padding: 2px 10px;
+  font-size: var(--dc-fs-14);
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-2);
+  cursor: pointer;
+  border: 1px dashed transparent;
+  border-radius: var(--dc-radius-sm);
+
+  &.is-empty {
+    color: var(--dc-text-disabled);
+  }
+
+  &:hover {
+    color: var(--dc-text-1);
+    border-color: var(--dc-border);
+  }
+}
+
+.goodsbrand-dc__sort-input {
+  width: 52px;
+  height: 26px;
+  padding: 0 6px;
+  font-size: var(--dc-fs-14);
+  text-align: center;
+  border: 1px solid var(--dc-brand);
+  border-radius: var(--dc-radius-sm);
+  outline: none;
+
+  &:focus {
+    box-shadow: var(--dc-focus-ring);
+  }
+}
+
+/* 品牌开关（带 loading） */
+.goodsbrand-dc__switch {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 17px;
+  cursor: pointer;
+  background: var(--dc-border);
+  border-radius: var(--dc-radius-pill);
+  transition: background 0.18s;
+
+  &.is-on {
+    background: var(--dc-brand);
+  }
+
+  &.is-loading {
+    cursor: default;
+    background: var(--dc-text-disabled);
+  }
+}
+
+.goodsbrand-dc__switch-dot {
+  position: absolute;
+  top: 1.5px;
+  left: 1.5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgb(31 39 51 / 30%);
+  transition: left 0.18s;
+
+  .goodsbrand-dc__switch.is-on & {
+    left: 16.5px;
+  }
+
+  svg {
+    animation: gb-spin 0.5s linear infinite;
+  }
+}
+
+/* 更新时间 */
+.goodsbrand-dc__time {
+  padding-left: 6px;
+  font-size: var(--dc-fs-14);
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-2);
+  cursor: default;
+}
+
+/* 操作 */
+.goodsbrand-dc__ops {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+
+.goodsbrand-dc__op {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  color: var(--dc-text-3);
+  cursor: pointer;
+  border-radius: var(--dc-radius-sm);
+  transition: all 0.12s;
+
+  &:hover {
+    color: var(--dc-brand);
+    background: var(--dc-brand-soft);
+  }
+
+  &--del:hover {
+    color: var(--dc-danger);
+    background: var(--dc-danger-soft);
+  }
+}
+
+/* ============================================================
+   卡片墙视图
+   ============================================================ */
+.goodsbrand-dc__wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  gap: 14px;
+  align-content: start;
+  min-height: 360px;
+  padding: 16px;
+}
+
+.goodsbrand-dc__bcard {
+  position: relative;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-divider);
+  border-radius: var(--dc-radius-lg);
+  transition:
+    transform 0.18s,
+    box-shadow 0.18s,
+    border-color 0.18s;
+
+  &:hover {
+    border-color: var(--dc-border);
+    box-shadow: 0 10px 24px rgb(31 39 51 / 12%);
+    transform: translateY(-2px);
+  }
+
+  &.is-flash {
+    animation: gb-flash 1.2s;
+  }
+}
+
+.goodsbrand-dc__bcard-ck {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 3;
+}
+
+.goodsbrand-dc__bcard-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  cursor: pointer;
+  background-color: var(--dc-surface);
+  background-image:
+    linear-gradient(
+      45deg,
+      #f2f3f6 25%,
+      transparent 25%,
+      transparent 75%,
+      #f2f3f6 75%
+    ),
+    linear-gradient(
+      45deg,
+      #f2f3f6 25%,
+      transparent 25%,
+      transparent 75%,
+      #f2f3f6 75%
+    );
+  background-position:
+    0 0,
+    6px 6px;
+  background-size: 12px 12px;
+  border-bottom: 1px solid var(--dc-bg-page);
+  border-radius: var(--dc-radius-lg) var(--dc-radius-lg) 0 0;
+
+  img {
+    max-width: 64%;
+    max-height: 56px;
+    object-fit: contain;
+    background: var(--dc-surface);
+    border-radius: var(--dc-radius-sm);
+    box-shadow: 0 0 0 1px #f0f2f5;
+  }
+}
+
+.goodsbrand-dc__bcard-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  font-family: Georgia, serif;
+  font-size: var(--dc-fs-24);
+  font-weight: 800;
+  color: var(--dc-text-3);
+  background: var(--dc-surface);
+  border-radius: var(--dc-radius-lg);
+  box-shadow: 0 0 0 1px #f0f2f5;
+}
+
+.goodsbrand-dc__bcard-body {
+  padding: 9px 12px 2px;
+  cursor: pointer;
+}
+
+.goodsbrand-dc__bcard-name {
+  overflow: hidden;
+  font-size: var(--dc-fs-14);
+  font-weight: 700;
+  color: var(--dc-text-1);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &.is-off {
+    color: var(--dc-text-3);
+  }
+}
+
+.goodsbrand-dc__bcard-foot {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 7px 12px 10px;
+}
+
+.goodsbrand-dc__bcard-foot .goodsbrand-dc__muted {
+  color: var(--dc-text-2-strong);
+}
+
+.goodsbrand-dc__bcard-ops {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.goodsbrand-dc__bcard-op {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: var(--dc-text-3);
+  cursor: pointer;
+  border-radius: var(--dc-radius-sm);
+  transition: all 0.12s;
+
+  &:hover {
+    color: var(--dc-brand);
+    background: var(--dc-brand-soft);
+  }
+
+  &--del:hover {
+    color: var(--dc-danger);
+    background: var(--dc-danger-soft);
+  }
+}
+
+/* ---- 底部统计 ---- */
+.goodsbrand-dc__foot {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 10px 16px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+  border-top: 1px solid var(--dc-divider);
+
+  .sep {
+    color: var(--dc-text-disabled);
+  }
+}
+
+/* ============================================================
+   新建 / 编辑 弹窗（560px，基本信息区）
+   ============================================================ */
+.goodsbrand-dc__mask {
+  position: fixed;
+  inset: 0;
+  z-index: 2200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--dc-mask);
+  animation: gb-fade 0.16s;
+}
+
+.goodsbrand-dc__modal {
+  display: flex;
+  flex-direction: column;
+  width: 560px;
+  max-height: 88vh;
+  overflow: hidden;
+  background: var(--dc-surface);
+  border-radius: var(--dc-radius-lg);
+  box-shadow: 0 20px 60px rgb(31 39 51 / 24%);
+  animation: gb-pop 0.18s;
+}
+
+.goodsbrand-dc__modal-head {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--dc-divider);
+}
+
+.goodsbrand-dc__modal-title {
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: var(--dc-text-1);
+}
+
+.goodsbrand-dc__modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  font-size: var(--dc-fs-15);
+  color: var(--dc-text-3);
+  cursor: pointer;
+  border-radius: var(--dc-radius-sm);
+
+  &:hover {
+    color: var(--dc-text-1);
+    background: var(--dc-bg-page);
+  }
+}
+
+.goodsbrand-dc__modal-body {
+  flex: 1;
+  padding: 14px 20px 4px;
+  overflow: auto;
+}
+
+.goodsbrand-dc__section {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+
+  &::after {
+    flex: 1;
+    height: 1px;
+    content: "";
+    background: var(--dc-bg-page);
+  }
+
+  i {
+    width: 3px;
+    height: 12px;
+    background: var(--dc-brand);
+    border-radius: 2px;
+  }
+
+  span {
+    font-size: var(--dc-fs-14);
+    font-weight: 700;
+    color: var(--dc-text-1);
+  }
+}
+
+.goodsbrand-dc__field-label {
+  margin-bottom: 5px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+
+  em {
+    font-style: normal;
+    color: var(--dc-danger);
+  }
+}
+
+.goodsbrand-dc__field-input {
+  width: 100%;
+  height: 34px;
+  padding: 0 48px 0 10px;
+  font-size: var(--dc-fs-14);
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-md);
+  outline: none;
+  transition: border-color var(--dc-dur-micro);
+
+  &.is-error {
+    border-color: var(--dc-danger);
+  }
+
+  &:focus {
+    border-color: var(--dc-brand);
+    box-shadow: var(--dc-focus-ring);
+  }
+}
+
+.goodsbrand-dc__field-wrap {
+  position: relative;
+}
+
+.goodsbrand-dc__field-count {
+  position: absolute;
+  top: 9px;
+  right: 10px;
+  font-size: var(--dc-fs-12);
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-disabled);
+}
+
+.goodsbrand-dc__field-err {
+  margin-top: 4px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-danger);
+}
+
+.goodsbrand-dc__field-hint {
+  margin-top: 4px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+}
+
+.goodsbrand-dc__logo-tip {
+  margin-top: 6px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+}
+
+.goodsbrand-dc__row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-top: 12px;
+}
+
+.goodsbrand-dc__sort-field {
+  flex: none;
+  width: 150px;
+}
+
+.goodsbrand-dc__stepper {
+  display: flex;
+}
+
+.goodsbrand-dc__step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 34px;
+  color: var(--dc-text-2);
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid var(--dc-border);
+
+  &:first-child {
+    border-radius: var(--dc-radius-md) 0 0 var(--dc-radius-md);
+  }
+
+  &:last-child {
+    border-radius: 0 var(--dc-radius-md) var(--dc-radius-md) 0;
+  }
+
+  &:hover {
+    color: var(--dc-brand);
+    border-color: var(--dc-brand);
+  }
+}
+
+.goodsbrand-dc__step-input {
+  flex: 1;
+  width: 0;
+  height: 34px;
+  padding: 0 4px;
+  font-size: var(--dc-fs-14);
+  text-align: center;
+  border: 1px solid var(--dc-border);
+  border-right: none;
+  border-left: none;
+  outline: none;
+
+  &:focus {
+    border-color: var(--dc-brand);
+    box-shadow: var(--dc-focus-ring);
+  }
+}
+
+.goodsbrand-dc__enable-field {
+  flex: 1;
+}
+
+.goodsbrand-dc__enable-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  height: 34px;
+}
+
+.goodsbrand-dc__enable-switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  cursor: pointer;
+  background: var(--dc-border);
+  border-radius: var(--dc-radius-pill);
+  transition: background 0.2s;
+
+  &.is-on {
+    background: var(--dc-brand);
+  }
+
+  i {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgb(31 39 51 / 25%);
+    transition: left 0.2s;
+  }
+
+  &.is-on i {
+    left: 18px;
+  }
+}
+
+.goodsbrand-dc__enable-text {
+  font-size: var(--dc-fs-14);
+  font-weight: 400;
+  color: var(--dc-text-3);
+
+  &.is-on {
+    color: var(--dc-brand-active);
+  }
+}
+
+.goodsbrand-dc__modal-foot {
+  display: flex;
+  flex: none;
+  gap: 18px;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 12px 20px 14px;
+  border-top: 1px solid var(--dc-divider);
+}
+
+.goodsbrand-dc__cancel {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 16px;
+  font-size: var(--dc-fs-14);
+  font-weight: 500;
+  color: var(--dc-text-2);
+  cursor: pointer;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border-strong);
+  border-radius: var(--dc-radius-md);
+
+  &:hover {
+    color: var(--el-color-primary);
+    background: var(--el-color-primary-light-9);
+    border-color: var(--el-color-primary);
+  }
+}
+
+.goodsbrand-dc__ok {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  height: 32px;
+  padding: 0 22px;
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  background: var(--el-color-primary);
+  border: none;
+  border-radius: var(--dc-radius-md);
+
+  &:hover {
+    background: var(--el-color-primary-dark-2);
+  }
+
+  &:active {
+    background: var(--el-color-primary-dark-2);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.7;
+  }
+}
+
+.goodsbrand-dc__spin {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgb(255 255 255 / 45%);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: gb-spin 0.6s linear infinite;
+}
+
+/* ---- 动效 ---- */
+@keyframes gb-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gb-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes gb-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes gb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes gb-flash {
+  0% {
+    box-shadow: 0 0 0 2px var(--dc-brand);
+  }
+
+  70% {
+    box-shadow: 0 0 0 2px var(--dc-brand);
+  }
+
+  100% {
+    box-shadow: 0 0 0 2px transparent;
+  }
+}
+
+@keyframes gb-row-flash {
+  0% {
+    background: var(--dc-brand-soft);
+  }
+
+  70% {
+    background: var(--dc-brand-soft);
+  }
+
+  100% {
+    background: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .goodsbrand-dc,
+  .goodsbrand-dc * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

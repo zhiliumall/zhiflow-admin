@@ -1,0 +1,27 @@
+/* Cliklog 极简白 (新增) */
+html[data-theme="cliklog"] {
+  --pure-theme-sub-menu-active-text: var(--ds-brand);
+  --pure-theme-menu-bg: var(--ds-surface);
+  --pure-theme-topbar-text: var(--ds-surface);
+  --pure-theme-topbar-bg: var(--ds-surface);
+  --pure-theme-topbar-hover: color-mix(
+    in srgb,
+    var(--ds-surface) 12%,
+    transparent
+  );
+  --pure-theme-menu-hover: var(--ds-brand-soft);
+  --pure-theme-sub-menu-bg: var(--ds-surface);
+  --pure-theme-sub-menu-active-bg: var(--ds-brand-soft);
+  --pure-theme-menu-text: var(--ds-text);
+  --pure-theme-menu-active-before: var(--ds-brand);
+  --el-color-primary: var(--ds-brand);
+  --el-color-primary-light-3: var(--ds-brand-hover);
+  --el-color-primary-light-5: var(--ds-brand-soft);
+  --el-color-primary-light-7: var(--ds-brand-soft);
+  --el-color-primary-light-8: var(--ds-brand-soft);
+  --el-color-primary-light-9: var(--ds-brand-soft);
+  --el-color-primary-dark-2: var(--ds-brand-active);
+  --el-bg-color-page: var(--ds-page-bg);
+  --el-font-size-extra-large: 30px;
+  --el-color-success: var(--ds-success);
+}

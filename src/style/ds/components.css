@@ -1,0 +1,135 @@
+.ds-page {
+  min-height: 100%;
+  background: var(--ds-page-bg);
+  color: var(--ds-text);
+}
+
+.ds-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.ds-toolbar__input {
+  width: 240px;
+}
+
+.ds-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ds-radius-sm);
+  transition: transform var(--ds-motion-base) ease, box-shadow var(--ds-motion-base) ease, background-color var(--ds-motion-base) ease, border-color var(--ds-motion-base) ease, color var(--ds-motion-base) ease;
+}
+
+.ds-btn:hover:not(.is-disabled, :disabled) {
+  transform: translateY(-1px);
+}
+
+.ds-btn:active:not(.is-disabled, :disabled) {
+  transform: scale(0.97);
+  transition-duration: var(--ds-motion-fast);
+}
+
+.ds-btn--primary,
+.el-button.ds-btn--primary {
+  border-color: var(--ds-brand);
+  background: var(--ds-brand);
+  color: #fff;
+  box-shadow: var(--ds-shadow-brand);
+}
+
+.ds-btn--primary:hover,
+.el-button.ds-btn--primary:hover {
+  border-color: var(--ds-brand-hover);
+  background: var(--ds-brand-hover);
+  color: #fff;
+}
+
+.ds-btn--secondary,
+.el-button.ds-btn--secondary {
+  border-color: var(--ds-brand-soft-border);
+  background: var(--ds-brand-soft);
+  color: var(--ds-brand);
+}
+
+.ds-btn--secondary:hover,
+.el-button.ds-btn--secondary:hover {
+  border-color: var(--ds-brand);
+  background: var(--ds-brand-soft);
+  color: var(--ds-brand-hover);
+}
+
+.ds-btn--danger,
+.el-button.ds-btn--danger {
+  border-color: var(--ds-danger);
+  background: var(--ds-danger);
+  color: #fff;
+}
+
+.ds-btn--danger-link,
+.el-button.ds-btn--danger-link {
+  border-color: transparent;
+  background: transparent;
+  color: var(--ds-danger);
+}
+
+.ds-btn--danger-link:hover,
+.el-button.ds-btn--danger-link:hover {
+  background: var(--ds-danger-soft);
+  color: var(--ds-danger-hover);
+}
+
+.ds-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 10px;
+  border: 1px solid var(--ds-border-subtle);
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-fill-soft);
+  color: var(--ds-text-secondary);
+}
+
+.ds-row {
+  border-bottom: 1px solid var(--ds-border-light);
+  transition: background-color 120ms ease;
+}
+
+.ds-row:hover {
+  background: var(--ds-table-row-hover);
+}
+
+.ds-switch {
+  transition: background-color 200ms ease, transform 200ms ease;
+}
+
+.ds-stat {
+  border: 1px solid var(--ds-border-subtle);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-surface);
+  box-shadow: var(--ds-shadow-card);
+}
+
+/* 抽屉宽度由各组件自身的 size 决定（80% / 88% 等），
+   主题层只做皮肤，不得覆盖 width，否则会压垮长表单布局。 */
+
+.ds-dialog-confirm .el-message-box__header,
+.ds-dialog-form .el-dialog__header {
+  padding: 24px 24px 8px;
+}
+
+.ds-dialog-confirm .el-message-box__content,
+.ds-dialog-form .el-dialog__body {
+  padding: 8px 24px 20px;
+}
+
+.ds-dialog-confirm .el-message-box__btns,
+.ds-dialog-form .el-dialog__footer {
+  padding: 0 24px 24px;
+}
+
+.ds-dialog-form .el-form-item.is-required .el-form-item__label::before {
+  color: var(--ds-danger);
+}

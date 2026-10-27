@@ -1,0 +1,19 @@
+{
+  "avatar": "头像",
+  "basicInfo": "基本信息",
+  "changePwd": "修改密码",
+  "confirmPwd": "确认密码",
+  "editUser": "修改用户【",
+  "email": "邮箱",
+  "emailAlreadyExists": "邮箱已经存在",
+  "enterNickname": "请输入昵称",
+  "min6Chars": "不少于6位",
+  "newPwd": "新密码",
+  "nickname": "昵称",
+  "oldPwd": "原密码",
+  "oldPwdReq": "原密码不能为空且不少于6位",
+  "phone": "手机号",
+  "pwdNotMatch": "两次输入密码不一致!",
+  "pwdSuffix": "】密码",
+  "username": "用户名"
+}

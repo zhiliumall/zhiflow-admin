@@ -1,0 +1,23 @@
+/**
+ * ZF Num —— 金额、KPI 与编号的数字字体（D-DIN 的数字子集，按 SIL OFL 1.1 保留字体名条款改名）。
+ *
+ * 仅覆盖数字及常用金额 / 分隔符字符；中文和带字母的业务编号继续走 --dc-font。
+ * 许可：见 LICENSE-ZF-NUM-OFL.txt（SIL Open Font License 1.1）。
+ */
+@font-face {
+  font-family: "ZF Num";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./zf-num-400.woff2") format("woff2");
+  unicode-range: U+0030-0039, U+002C, U+002E, U+003A, U+0025, U+00A5, U+002B, U+002D, U+002F;
+}
+
+@font-face {
+  font-family: "ZF Num";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./zf-num-700.woff2") format("woff2");
+  unicode-range: U+0030-0039, U+002C, U+002E, U+003A, U+0025, U+00A5, U+002B, U+002D, U+002F;
+}

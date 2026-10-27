@@ -1,0 +1,279 @@
+/* ============================================================
+   会员列表页样式
+   仅本页引用，勿全局注入；通用块复用 goods-list-dc.scss 的 goodsspu-dc__*
+   ============================================================ */
+
+/* 根容器：与 .goodsspu-dc 对齐间距（外壳滚动区已有蓝色渐变背景，此处保持透明） */
+.userinfo-page {
+  position: relative;
+  min-height: 100%;
+  padding: 16px 20px 40px;
+  animation: dc-fade-in 0.3s var(--dc-ease-in) both;
+}
+
+/* ============================================================
+   CSS grid 自绘表格
+   列：会员 / 手机号码 / 来源 / 状态 / 注册时间 / 操作（列宽由页面按列设置动态覆盖）
+   ============================================================ */
+.userinfo-dc__table {
+  background: var(--dc-surface);
+  border-radius: 0 0 var(--dc-radius-lg) var(--dc-radius-lg);
+}
+
+.userinfo-dc__thead,
+.userinfo-dc__tr {
+  display: grid;
+  grid-template-columns:
+    minmax(215px, 1.25fr) 150px minmax(150px, 1fr)
+    100px 128px 150px;
+  align-items: center;
+}
+
+.userinfo-dc__thead {
+  height: 44px;
+  padding: 0 16px 0 4px;
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: var(--dc-text-1);
+  background: var(--dc-bg-header);
+  border-bottom: 1px solid var(--dc-divider);
+}
+
+.userinfo-dc__th {
+  padding-left: 12px;
+}
+
+.userinfo-dc__th--right {
+  justify-self: end;
+  text-align: right;
+}
+
+.userinfo-dc__th--sort {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    color: var(--dc-brand);
+  }
+}
+
+.userinfo-dc__tr {
+  min-height: 64px;
+  padding: 8px 16px 8px 4px;
+  border-bottom: 1px solid var(--dc-divider);
+  transition: background var(--dc-dur-micro);
+
+  &:hover {
+    background: var(--dc-row-hover);
+  }
+}
+
+/* 会员 cell：头像 + 昵称 + 编码 */
+.userinfo-dc__member {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+  padding-left: 12px;
+}
+
+.userinfo-dc__avatar-wrap {
+  position: relative;
+  flex: none;
+}
+
+.userinfo-dc__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  border-radius: 50%;
+
+  .el-image {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.userinfo-dc__mark-dot {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--dc-surface);
+  border-radius: 50%;
+}
+
+.userinfo-dc__member-main {
+  min-width: 0;
+}
+
+.userinfo-dc__nick-row {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  min-width: 0;
+}
+
+.userinfo-dc__nick {
+  overflow: hidden;
+  font-size: var(--dc-fs-14);
+  font-weight: 700;
+  color: var(--dc-text-1);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &.is-empty {
+    font-family: "SF Mono", Consolas, monospace;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--dc-text-3);
+  }
+}
+
+.userinfo-dc__nick-tag {
+  flex: none;
+  padding: 0 4px;
+  font-size: var(--dc-fs-12);
+  color: var(--dc-text-disabled);
+  border: 1px solid var(--dc-divider);
+  border-radius: var(--dc-radius-sm);
+}
+
+.userinfo-dc__code {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  font-size: var(--dc-fs-14);
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-3);
+}
+
+/* 手机号码 */
+.userinfo-dc__phone {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding-left: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.userinfo-dc__phone-text {
+  font-family: "SF Mono", Consolas, monospace;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+
+  &.is-empty {
+    color: var(--dc-text-disabled);
+  }
+}
+
+/* 来源 */
+.userinfo-dc__source {
+  min-width: 0;
+  padding-right: 10px;
+  padding-left: 12px;
+}
+
+.userinfo-dc__source-main {
+  overflow: hidden;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.userinfo-dc__source-geo {
+  margin-top: 2px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+}
+
+/* 状态：正常 / 已拉黑 */
+.userinfo-dc__state-cell {
+  padding-left: 12px;
+}
+
+.userinfo-dc__state {
+  padding: 2px 9px;
+  font-size: var(--dc-fs-12);
+  border-radius: var(--dc-radius-pill);
+
+  &.is-normal {
+    color: var(--dc-success);
+    background: var(--dc-success-soft);
+  }
+
+  &.is-black {
+    color: var(--dc-danger);
+    background: var(--dc-danger-soft);
+  }
+}
+
+/* 注册时间 */
+.userinfo-dc__reg {
+  padding-left: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.userinfo-dc__reg-d {
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+}
+
+.userinfo-dc__reg-t {
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+}
+
+/* 会员列表的编码、来源地理信息和注册时间属于普通辅助文字。 */
+.userinfo-page .userinfo-dc__code,
+.userinfo-page .userinfo-dc__source-geo,
+.userinfo-page .userinfo-dc__reg-t {
+  color: var(--text-tertiary, #667085);
+}
+
+.userinfo-page .userinfo-dc__phone-text.is-empty {
+  color: var(--text-disabled, #7c8797);
+}
+
+/* 操作 */
+.userinfo-dc__action {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  justify-content: flex-end;
+  padding-left: 12px;
+}
+
+/* 操作列危险项（拉黑） */
+.userinfo-dc__menu-danger.goodsspu-dc__link,
+.userinfo-dc__menu-danger {
+  color: var(--text-danger, #d21f08);
+}
+
+/* 分页跳页输入（补 goodsspu-dc__pager 未含的跳页框） */
+.goodsspu-dc__pager-jump {
+  width: 40px;
+  height: 28px;
+  font-size: var(--dc-fs-14);
+  text-align: center;
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-sm);
+  outline: none;
+
+  &:focus {
+    border-color: var(--dc-brand);
+    box-shadow: var(--dc-focus-ring);
+  }
+}
+

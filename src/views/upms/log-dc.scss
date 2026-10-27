@@ -1,0 +1,567 @@
+/* ============================================================
+   操作日志页样式（列表 + 操作日志详情抽屉）
+   仅本页引用，勿全局注入；通用块复用 goods-list-dc.scss 的 goodsspu-dc__*
+   ============================================================ */
+
+.log-page {
+  position: relative;
+  min-height: 100%;
+  padding: 16px 20px 40px;
+  animation: dc-fade-in 0.3s var(--dc-ease-in) both;
+}
+
+/* ============================================================
+   横幅（原 tint=ink，已统一改为蓝色系 tint：linear-gradient(100deg,#E0EAFF,#EDF3FF 45%,#F8FAFF)
+   + 网格纹 + 双 glow + logf 动效插画 + 右侧指标）
+   ============================================================ */
+.log-dc__banner {
+  position: relative;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  padding: 16px 24px;
+  margin-bottom: 16px;
+  background: linear-gradient(100deg, #e0eaff 0%, #edf3ff 45%, #f8faff 100%);
+  border: 1px solid #d4e1fb;
+  border-radius: 8px;
+}
+
+.log-dc__banner-fx {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: 8px;
+}
+
+.log-dc__banner-gridfx {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgb(31 39 51 / 4%) 0 1px,
+      transparent 1px 22px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgb(31 39 51 / 4%) 0 1px,
+      transparent 1px 22px
+    );
+}
+
+.log-dc__banner-glow--1 {
+  position: absolute;
+  top: -70px;
+  right: -40px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(
+    circle,
+    rgb(60 110 240 / 12%),
+    rgb(60 110 240 / 0%) 65%
+  );
+  border-radius: 50%;
+}
+
+.log-dc__banner-glow--2 {
+  position: absolute;
+  right: 210px;
+  bottom: -90px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(
+    circle,
+    rgb(60 110 240 / 12%),
+    rgb(60 110 240 / 0%) 65%
+  );
+  border-radius: 50%;
+}
+
+.log-dc__banner-title {
+  position: relative;
+  min-width: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dc-text-1);
+}
+
+/* 动效插画容器 */
+.log-dc__banner-art {
+  position: relative;
+  flex: none;
+  width: 210px;
+  height: 64px;
+  pointer-events: none;
+}
+
+.log-dc__banner-metric {
+  position: relative;
+  flex: none;
+  text-align: right;
+}
+
+.log-dc__banner-metric-label {
+  font-size: 14px;
+  color: var(--dc-text-2-strong);
+}
+
+.log-dc__banner-metric-num {
+  margin-top: 2px;
+  font-size: 24px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-1);
+}
+
+/* logf 动画（原名 wxFloat/wxBlink，改前缀防跨页冲突） */
+@keyframes logdc-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes logdc-blink {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+}
+
+.log-dc__art-doc {
+  position: absolute;
+  top: 2px;
+  left: 34px;
+  animation: logdc-float 3.8s ease-in-out infinite;
+}
+
+.log-dc__art-cursor {
+  position: absolute;
+  top: 39px;
+  left: 56px;
+  width: 7px;
+  height: 6px;
+  background: #8c8c8c;
+  animation: logdc-blink 1s steps(2) infinite;
+}
+
+.log-dc__art-dot--1 {
+  position: absolute;
+  top: 40px;
+  left: 12px;
+  width: 5px;
+  height: 5px;
+  background: #8c8c8c;
+  border-radius: 50%;
+  animation: logdc-blink 2.4s ease infinite;
+}
+
+.log-dc__art-dot--2 {
+  position: absolute;
+  top: 10px;
+  left: 172px;
+  width: 5px;
+  height: 5px;
+  background: #3c6ef0;
+  border-radius: 50%;
+  animation: logdc-blink 2s ease 0.5s infinite;
+}
+
+/* ============================================================
+   CSS grid 九列自绘表格（
+   类型/日志标题/创建者/IP/请求URI/方式/执行耗时/创建时间/操作）
+   ============================================================ */
+.log-dc__table {
+  background: var(--dc-surface);
+  border-radius: 0 0 var(--dc-radius-lg) var(--dc-radius-lg);
+}
+
+.log-dc__thead,
+.log-dc__tr {
+  display: grid;
+  grid-template-columns: 0.65fr 1.5fr 0.7fr 1fr 1.5fr 0.7fr 0.85fr 1.1fr 0.6fr;
+  align-items: center;
+}
+
+.log-dc__thead {
+  height: 44px;
+  padding: 0 16px 0 0;
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: var(--dc-text-2-strong);
+  background: var(--dc-bg-header);
+  border-bottom: 1px solid var(--dc-divider);
+}
+
+.log-dc__tr {
+  min-height: 52px;
+  padding: 8px 16px 8px 0;
+  cursor: pointer;
+  border-bottom: 1px solid var(--dc-divider);
+  transition: background-color 0.15s var(--dc-ease-in);
+
+  &:hover {
+    background: var(--dc-row-hover);
+  }
+}
+
+.log-dc__th {
+  padding-left: 12px;
+}
+
+.log-dc__th--right {
+  justify-self: end;
+  text-align: right;
+}
+
+.log-dc__td {
+  min-width: 0;
+  padding-left: 12px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-1);
+}
+
+.log-dc__td--ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 状态章（TC 色板：g/r/o/b/c/gy） */
+.log-dc__tag {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  font-size: 12px;
+  border-radius: 4px;
+
+  &.is-g {
+    color: var(--dc-success);
+    background: #e9f7ef;
+  }
+
+  &.is-r {
+    color: var(--dc-danger);
+    background: #feecec;
+  }
+
+  &.is-o {
+    color: var(--dc-warning);
+    background: #fff4e6;
+  }
+
+  &.is-b {
+    color: var(--overlay-primary);
+    background: #e8f1ff;
+  }
+
+  &.is-c {
+    color: #13c2c2;
+    background: #e6fbfb;
+  }
+
+  &.is-gy {
+    color: var(--dc-text-3);
+    background: #f5f5f5;
+  }
+}
+
+.log-dc__tag--mono {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-weight: 600;
+}
+
+/* mono 单元格（IP / URI）hover 复制 */
+.log-dc__mono {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  min-width: 0;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 14px;
+  color: var(--dc-text-1);
+
+  .goodsspu-dc__copy {
+    flex: none;
+    color: var(--dc-text-3);
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+}
+
+.log-dc__mono-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 行容器已换成 DcTableShell 的 .dc-tbl__row，hover 显形选择器随之改写 */
+.dc-tbl__row:hover .log-dc__mono .goodsspu-dc__copy {
+  opacity: 1;
+}
+
+/* 执行耗时：右对齐 tabular，慢请求 >1s 红色加粗 */
+.log-dc__cost {
+  justify-self: end;
+  padding-right: 12px;
+  font-size: var(--dc-fs-14);
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-1);
+  text-align: right;
+
+  &.is-slow {
+    font-weight: 600;
+    color: var(--dc-danger);
+  }
+}
+
+.log-dc__time {
+  font-size: var(--dc-fs-14);
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-2);
+}
+
+.log-dc__action {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  justify-content: flex-end;
+  padding-left: 12px;
+}
+
+/* ============================================================
+   操作日志详情抽屉（宽度按代码/日志类抽屉 600px）
+   ============================================================ */
+@keyframes logdc-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes logdc-slide {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.log-dc__mask {
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  background: rgb(0 0 0 / 40%);
+  animation: logdc-fade 150ms ease;
+}
+
+.log-dc__drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  max-width: 94vw;
+  background: var(--dc-surface);
+  box-shadow: -8px 0 32px rgb(0 0 0 / 14%);
+  animation: logdc-slide 220ms ease;
+}
+
+.log-dc__drawer-head {
+  display: flex;
+  flex: none;
+  gap: 10px;
+  align-items: center;
+  height: 56px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--dc-divider);
+}
+
+.log-dc__drawer-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--dc-text-1);
+}
+
+.log-dc__drawer-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  font-size: 15px;
+  color: var(--dc-text-3);
+  cursor: pointer;
+  border-radius: 4px;
+
+  &:hover {
+    color: var(--dc-text-1);
+    background: var(--dc-bg-page);
+  }
+}
+
+.log-dc__drawer-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 20px;
+  overflow-y: auto;
+}
+
+/* 基本信息网格 */
+.log-dc__info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--dc-divider);
+  border-radius: 8px;
+}
+
+.log-dc__info-span2 {
+  grid-column: 1 / -1;
+}
+
+.log-dc__info-label {
+  font-size: 14px;
+  color: var(--dc-text-2-strong);
+}
+
+.log-dc__info-val {
+  margin-top: 3px;
+  font-size: 14px;
+  color: var(--dc-text-1);
+}
+
+.log-dc__info-val--strong {
+  font-weight: 500;
+}
+
+.log-dc__info-val--mono {
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 14px;
+  word-break: break-all;
+}
+
+.log-dc__info-val--num {
+  font-variant-numeric: tabular-nums;
+}
+
+.log-dc__info-val--cost {
+  font-weight: 600;
+
+  &.is-slow {
+    color: var(--dc-danger);
+  }
+}
+
+/* 代码块（请求参数深底 mono / 异常堆栈暗红底） */
+.log-dc__sec-title {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dc-text-1);
+}
+
+.log-dc__sec-title--err {
+  color: var(--dc-danger);
+}
+
+.log-dc__code {
+  max-height: 220px;
+  padding: 14px 16px;
+  margin: 0;
+  overflow: auto;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #d8e0ea;
+  word-break: break-all;
+  white-space: pre-wrap;
+  background: #1f2733;
+  border-radius: 8px;
+}
+
+.log-dc__code--err {
+  max-height: 180px;
+  color: #ff8a80;
+  background: #2a1215;
+  border: 1px solid #5c2b2e;
+}
+
+/* 页脚 */
+.log-dc__drawer-foot {
+  display: flex;
+  flex: none;
+  gap: 8px;
+  justify-content: flex-end;
+  padding: 14px 20px 16px;
+  background: var(--dc-bg-header);
+  border-top: 1px solid var(--dc-divider);
+}
+
+.log-dc__foot-btn {
+  height: 32px;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--dc-text-1);
+  cursor: pointer;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: 4px;
+
+  &:hover {
+    color: var(--dc-brand);
+    border-color: var(--dc-brand);
+  }
+}
+
+/* 分页跳页输入（补 goodsspu-dc__pager 未含的跳页框，样式同 user-dc 版） */
+.log-dc__pager-jump {
+  width: 40px;
+  height: 28px;
+  font-size: var(--dc-fs-14);
+  text-align: center;
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-sm);
+  outline: none;
+
+  &:focus {
+    border-color: var(--dc-brand);
+    box-shadow: var(--dc-focus-ring);
+  }
+}
+
+.log-dc__foot-btn--primary {
+  padding: 0 16px;
+  font-weight: 500;
+  color: #fff;
+  background: var(--dc-brand);
+  border: none;
+
+  &:hover {
+    color: #fff;
+    background: var(--dc-brand-hover);
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "unknown": "未知",
+  "order": {
+    "unpaid": "待付款",
+    "toShip": "待发货",
+    "toReceive": "待收货",
+    "completed": "已完成",
+    "cancelled": "已取消"
+  }
+}

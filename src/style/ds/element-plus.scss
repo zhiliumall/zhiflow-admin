@@ -1,0 +1,62 @@
+:root {
+  --el-color-primary: var(--ds-brand);
+  --el-color-primary-light-3: var(--ds-brand-hover);
+  --el-color-primary-light-5: var(--ds-brand-soft);
+  --el-color-primary-light-7: var(--ds-brand-soft);
+  --el-color-primary-light-9: var(--ds-brand-soft);
+  --el-color-primary-dark-2: var(--ds-brand-active);
+  --el-border-radius-base: var(--ds-radius-sm);
+  --el-border-radius-small: var(--ds-radius-xs);
+  --el-border-color: var(--ds-border);
+  --el-text-color-primary: var(--ds-text);
+  --el-text-color-regular: var(--ds-text-secondary);
+}
+
+.el-button {
+  border-radius: var(--ds-radius-sm);
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
+}
+
+.el-button:hover:not(.is-disabled, :disabled) {
+  transform: translateY(-1px);
+}
+
+.el-button:active:not(.is-disabled, :disabled) {
+  transition-duration: 80ms;
+  transform: scale(0.97);
+}
+
+.el-button--primary:not(.is-text, .is-link) {
+  box-shadow: var(--ds-shadow-brand);
+}
+
+.el-table th.el-table__cell,
+.el-table thead th.el-table__cell,
+.el-table__header-wrapper th {
+  height: 38px;
+  color: var(--ds-text-secondary);
+  background: var(--ds-table-header-bg) !important;
+}
+
+.el-table__body tr:hover > td.el-table__cell {
+  background: var(--ds-table-row-hover) !important;
+}
+
+.el-dialog,
+.el-message-box {
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-dialog);
+}
+
+.el-drawer {
+  border-radius: var(--ds-radius-lg) 0 0 var(--ds-radius-lg);
+}
+
+.el-pagination.is-background .el-pager li.is-active {
+  background: var(--ds-brand);
+}

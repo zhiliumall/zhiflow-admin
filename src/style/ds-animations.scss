@@ -1,0 +1,133 @@
+/* 营业中徽章圆点呼吸动画（logo.vue inline 引用，需全局 keyframes） */
+@keyframes csBreath {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.45;
+    transform: scale(0.8);
+  }
+}
+
+@keyframes ds-primary-breath {
+  0%,
+  100% {
+    box-shadow: var(--ds-shadow-sm);
+  }
+
+  50% {
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--ds-brand) 12%, transparent);
+  }
+}
+
+@keyframes ds-breath-dot {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.92);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes ds-unread-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--ds-danger) 42%, transparent);
+  }
+
+  70% {
+    box-shadow: 0 0 0 6px transparent;
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@keyframes ds-row-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ds-row-highlight {
+  0%,
+  80% {
+    background-color: var(--ds-success-soft);
+  }
+
+  100% {
+    background-color: transparent;
+  }
+}
+
+@keyframes ds-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.ds-breath-dot::after,
+.scroll-item.is-active .tag-title::after {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 6px;
+  vertical-align: 1px;
+  content: "";
+  background: var(--ds-brand);
+  border-radius: 50%;
+  animation: ds-breath-dot 1.8s ease-in-out infinite;
+}
+
+.ds-unread-pulse,
+.el-badge__content.is-fixed {
+  animation: ds-unread-pulse 2s ease-out infinite;
+}
+
+.ds-row-new,
+.el-table__row.ds-row-new > td.el-table__cell {
+  animation:
+    ds-row-enter 240ms ease,
+    ds-row-highlight 2s ease;
+}
+
+.ds-skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--ds-border-light) 25%,
+    var(--ds-brand-softer) 37%,
+    var(--ds-border-light) 63%
+  );
+  background-size: 400% 100%;
+  animation: ds-shimmer 1.4s ease infinite;
+}
+
+.el-message {
+  transition:
+    transform var(--ds-motion-normal) ease,
+    opacity var(--ds-motion-normal) ease;
+}
+
+.dialog-fade-enter-active,
+.dialog-fade-leave-active,
+.el-overlay-dialog,
+.el-drawer {
+  transition-duration: var(--ds-motion-pop);
+}

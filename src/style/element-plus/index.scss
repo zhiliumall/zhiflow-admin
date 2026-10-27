@@ -1,0 +1,5 @@
+// 使用 @use 并显式相对路径，避免 @import 在模块解析下的路径问题
+@use "./element-plus.scss" as *;
+
+// 使用 @use 加载 tabs.scss，确保被 @use 引入时能正确解析
+@use "./tabs.scss" as *;

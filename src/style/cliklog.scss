@@ -1,0 +1,101 @@
+/* Cliklog 主题专属样式 */
+html[data-theme="cliklog"] {
+  /* 全局背景色 */
+  body {
+    background-color: var(--el-bg-color-page);
+  }
+
+  /* 侧边栏样式覆盖 */
+  .sidebar-container {
+    background-color: transparent !important;
+    border-right: none !important;
+
+    // box-shadow: 2px 0 8px 0 rgb(29 35 41 / 5%);
+
+    /* 激活菜单项样式 */
+    .el-menu-item.is-active {
+      color: var(--pure-theme-sub-menu-active-text) !important;
+
+      /* 移除浅蓝背景，保持白色背景，符合“背景白色”要求 */
+      background-color: transparent !important;
+    }
+  }
+
+  /* 顶部导航菜单 (mixNav) 样式覆盖 */
+  .horizontal-header-menu {
+    /* 移除底部边框 */
+    .el-menu-item.is-active {
+      border-bottom: none !important;
+    }
+
+    /* 顶部菜单项基础样式 */
+    .el-menu-item {
+      height: 30px !important;
+      padding: 0 16px !important;
+      margin: 0 4px !important;
+      line-height: 36px !important;
+      color: #666 !important;
+      border-radius: 6px;
+      transition: all 0.3s;
+
+      /* 图标与文字间距 */
+      .sub-menu-icon {
+        margin-right: 6px;
+        font-size: 16px;
+      }
+
+      /* 悬停状态 */
+      &:hover {
+        font-weight: bold !important;
+        color: #333 !important;
+        background-color: #fff !important;
+      }
+
+      /* 激活状态 (蓝色圆角背景) */
+      &.is-active {
+        font-weight: bold;
+        color: #333 !important;
+        background-color: transparent !important;
+
+        /* 激活状态下图标颜色 */
+        .sub-menu-icon {
+          color: #fff !important;
+        }
+      }
+    }
+  }
+
+  /* 通用卡片样式 - 覆盖 Element Plus Card */
+  .el-card {
+    border: var(--el-card-border, none) !important;
+  }
+
+  /* 按钮圆角 */
+  .el-button {
+    border-radius: var(--el-button-border-radius, 6px) !important;
+  }
+
+  /* 输入框圆角 */
+  .el-input__wrapper {
+    border-radius: 6px;
+  }
+
+  .el-select__wrapper {
+    border-radius: 6px;
+  }
+
+  .el-textarea__inner {
+    border-radius: 6px;
+  }
+
+  /* 调整主内容区背景 */
+  .app-main {
+    background-color: var(--el-bg-color-page);
+  }
+
+  /* 顶部 Tab 栏样式微调 (如果有) */
+  .tags-view-container {
+    border-bottom: none;
+    box-shadow: 0 1px 2px rgb(0 21 41 / 4%);
+  }
+}

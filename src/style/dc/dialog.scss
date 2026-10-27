@@ -1,0 +1,152 @@
+/* ============================================================
+   弹窗体系 v2 皮肤 —— 仅作用于 .dc-form-dialog
+   接入方式：avue tableOption 设 dialogCustomClass:'dc-form-dialog'
+   规格：表单弹窗 520/720（头部无图标、标题16/600、
+   两列、只读近纯文本、脚 取消/保存）。作用域限定，不影响其它 avue 弹窗。
+   ============================================================ */
+
+.el-dialog.dc-form-dialog {
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--dc-radius-xl); /* 12 */
+  box-shadow: 0 12px 40px rgb(0 0 0 / 18%);
+
+  /* ---- 头部：标题 16/600 + 下 divider，去 avue 灰重线 ---- */
+  .el-dialog__header {
+    padding: 18px 24px 14px;
+    margin: 0;
+    border-bottom: 1px solid var(--dc-divider);
+  }
+
+  .el-dialog__title {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--dc-text-1);
+  }
+
+  /* avue 全屏切换图标 v2 无 —— 整块隐藏（其内图标复用了 el-dialog__close 类，
+     真正的关闭 X 是独立的 .el-dialog__headerbtn，不受影响） */
+  .avue-crud__dialog__header .avue-crud__dialog__menu {
+    display: none;
+  }
+
+  .el-dialog__headerbtn {
+    top: 14px;
+    right: 18px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .el-dialog__headerbtn .el-dialog__close {
+    font-size: 16px;
+    color: var(--dc-text-3);
+  }
+
+  .el-dialog__headerbtn:hover .el-dialog__close {
+    color: var(--dc-text-1);
+  }
+
+  /* ---- 体：去 avue overflow:scroll / 60px 底；两列由列 span 决定 ---- */
+  .el-dialog__body {
+    padding: 18px 24px !important;
+    overflow: hidden auto !important;
+  }
+
+  /* 两列间距（列内左右 padding，配合 avue el-row 满宽） */
+  .avue-form .el-col {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .avue-form .el-row {
+    margin-right: -10px;
+    margin-left: -10px;
+  }
+
+  /* ---- 字段：标签在上 12.5 / --text-2，行距 15 ---- */
+  .avue-form .el-form-item {
+    margin-bottom: 15px;
+  }
+
+  .el-form-item__label {
+    height: auto;
+    padding: 0 0 6px;
+    font-size: 12.5px;
+    line-height: 1.4;
+    color: var(--dc-text-2);
+  }
+
+  /* ---- 输入 / 选择 / 文本域：36 / 6 / 13 ---- */
+  .el-input__wrapper,
+  .el-textarea__inner,
+  .el-select__wrapper {
+    font-size: 13px;
+    border-radius: var(--dc-radius-md); /* 6 */
+  }
+
+  .el-input .el-input__wrapper,
+  .el-select__wrapper {
+    min-height: 36px;
+  }
+
+  /* ---- 只读/禁用字段 → 近纯文本（v2：无框无锁，正文色） ---- */
+  .el-input.is-disabled .el-input__wrapper {
+    padding-left: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .el-input.is-disabled .el-input__inner {
+    color: var(--dc-text-1);
+    cursor: default;
+    -webkit-text-fill-color: var(--dc-text-1);
+  }
+
+  /* 禁用下拉同样近纯文本（is-disabled 在 wrapper 上） */
+  .el-select__wrapper.is-disabled {
+    padding-left: 0;
+    cursor: default;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .el-select__wrapper.is-disabled .el-select__placeholder,
+  .el-select__wrapper.is-disabled .el-select__selected-item {
+    color: var(--dc-text-1);
+    -webkit-text-fill-color: var(--dc-text-1);
+  }
+
+  /* 禁用下拉隐藏箭头（无框纯文本态） */
+  .el-select__wrapper.is-disabled .el-select__caret {
+    display: none;
+  }
+
+  /* ---- 脚：取消(次描边 左) + 保存(主 右, min88/34)。
+     avue DOM 顺序为 [保存, 取消]，用 row-reverse 翻成 [取消, 保存] 并靠右 ---- */
+  .avue-dialog__footer {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 8px;
+    justify-content: flex-start;
+    padding: 13px 24px;
+    border-top: 1px solid var(--dc-divider);
+  }
+
+  .avue-dialog__footer .el-button {
+    height: 34px;
+    margin: 0;
+    font-size: 13px;
+    border-radius: var(--dc-radius-md);
+  }
+
+  .avue-dialog__footer .el-button--primary {
+    min-width: 88px;
+    font-weight: 500;
+  }
+
+  /* v2 按钮无图标 */
+  .avue-dialog__footer .el-button .el-icon {
+    display: none;
+  }
+}

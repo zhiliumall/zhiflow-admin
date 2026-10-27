@@ -1,0 +1,172 @@
+.goods-dc-page {
+  min-height: 100%;
+  color: var(--dc-text-2);
+  background: var(--dc-bg-page);
+}
+
+.goods-dc-card {
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-divider);
+  border-radius: var(--dc-radius-lg);
+  box-shadow: var(--dc-shadow-card);
+}
+
+.goods-dc-section-title {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dc-text-1);
+}
+
+.goods-dc-section-title::before {
+  display: block;
+  width: 4px;
+  height: 15px;
+  content: "";
+  background: var(--dc-brand);
+  border-radius: var(--dc-radius-tag);
+}
+
+.goods-dc-muted {
+  font-size: 14px;
+  color: var(--dc-text-3);
+}
+
+.goods-dc-num {
+  font-variant-numeric: tabular-nums;
+}
+
+.goods-dc-product-cell {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+}
+
+.goods-dc-product-thumb {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  background: var(--dc-bg-block);
+  border: 1px solid var(--dc-divider);
+  border-radius: var(--dc-radius-md);
+}
+
+.goods-dc-product-main {
+  min-width: 0;
+}
+
+.goods-dc-product-name {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dc-text-1);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.goods-dc-product-sub {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--dc-text-3);
+}
+
+.goods-dc-status {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  font-size: 14px;
+  line-height: 22px;
+  border-radius: var(--dc-radius-tag);
+}
+
+.goods-dc-status--brand {
+  color: var(--dc-brand);
+  background: var(--dc-brand-soft);
+}
+
+.goods-dc-status--success {
+  color: var(--dc-success);
+  background: var(--dc-success-soft);
+}
+
+.goods-dc-status--warning {
+  color: var(--dc-warning);
+  background: var(--dc-warning-soft);
+  border: 1px solid var(--dc-warning-border);
+}
+
+.goods-dc-status--danger {
+  color: var(--dc-danger);
+  background: var(--dc-danger-soft);
+}
+
+/* 青色：订单「待收货（在途）」用，需要和「待发货」的蓝区分开 */
+.goods-dc-status--cyan {
+  color: var(--dc-cyan);
+  background: var(--dc-cyan-bg);
+}
+
+.goods-dc-status--muted {
+  color: var(--dc-text-3);
+  background: var(--dc-bg-block);
+}
+
+.goods-dc-table-wrap {
+  position: relative;
+  overflow: hidden;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-divider);
+  border-radius: var(--dc-radius-lg);
+}
+
+.goods-dc-table-wrap :deep(.el-table th.el-table__cell) {
+  background: var(--dc-bg-header);
+}
+
+.goods-dc-table-wrap :deep(.el-table__row:hover > td.el-table__cell) {
+  background: var(--dc-row-hover);
+}
+
+.goods-dc-drawer :deep(.el-drawer__header),
+.goods-dc-dialog :deep(.el-dialog__header) {
+  padding: 16px 20px;
+  margin: 0;
+  border-bottom: 1px solid var(--dc-divider);
+}
+
+.goods-dc-drawer :deep(.el-drawer__body),
+.goods-dc-dialog :deep(.el-dialog__body) {
+  padding: 0;
+  background: var(--dc-bg-page);
+}
+
+.goods-dc-footer {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 12px 20px;
+  background: var(--dc-surface);
+  border-top: 1px solid var(--dc-divider);
+}
+
+.goodscategory-page .el-tree-node__content {
+  height: 36px;
+  border-radius: var(--dc-radius-sm);
+  transition: background-color var(--dc-dur-micro) var(--dc-ease);
+}
+
+.goodscategory-page .el-tree-node__content:hover {
+  background: var(--dc-row-hover);
+}
+
+.goodscategory-page .el-tree-node.is-current > .el-tree-node__content {
+  color: var(--dc-brand);
+  background: var(--dc-brand-soft);
+}
+

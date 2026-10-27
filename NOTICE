@@ -1,0 +1,36 @@
+智流商城管理后台（ZhiFlow Admin）
+Copyright (C) 2024-2026 gaipharma.com
+本项目以 AGPL-3.0-only 发布，全文见 LICENSE。
+
+本项目包含或改编自以下第三方作品，各自保留原许可：
+
+1. vue-pure-admin（后台框架：布局、路由、标签页、图标组件等）
+   https://github.com/pure-admin/vue-pure-admin
+   MIT License, Copyright (c) 2020-present, pure-admin
+
+   Permission is hereby granted, free of charge, to any person obtaining a copy
+   of this software and associated documentation files (the "Software"), to deal
+   in the Software without restriction, including without limitation the rights
+   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   copies of the Software, and to permit persons to whom the Software is
+   furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in all
+   copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+
+2. ZF Num 数字字体（src/assets/fonts/zf-num-*.woff2）
+   D-DIN（Datto, Inc.）的数字子集，按 SIL Open Font License 1.1 保留字体名条款改名。
+   许可全文见 src/assets/fonts/LICENSE-ZF-NUM-OFL.txt。
+
+3. 线性图标路径（src/layout/components/sidebar/menu-icons.ts）
+   取自 Lucide（https://lucide.dev），ISC License, Copyright (c) Lucide Contributors。
+
+npm 依赖的许可随各包分发（见 node_modules 下各包的 LICENSE）。

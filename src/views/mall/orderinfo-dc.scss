@@ -1,0 +1,978 @@
+/*
+ * Copyright (C) 2025 gaipharma.com
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+/* ============================================================
+   商城订单 / 待发货订单 的订单卡列表
+   复用 goods-list-dc.scss 的 goodsspu-dc__* 通用块（banner/tabs/filter/toolbar/pager）
+   本文件只补订单卡专属结构，全部使用 --dc-* token
+   ============================================================ */
+
+/* 统一列网格：
+   商品信息(弹性) | 单价·数量 130 | 实付金额 140 | 买家信息 250 | 支付方式 130 | 状态 96 | 操作 178 */
+$orderinfo-grid: minmax(280px, 1fr) 130px 140px 250px 130px 96px 178px;
+
+/* 商品列表的整页 min-width 会让页签/筛选一起横滚到侧栏下。
+   订单页只给表头与订单卡的共同容器保留宽网格，其余区域按可用宽度布局。 */
+.orderinfo-page.goodsspu-dc {
+  min-width: 0;
+
+  .goodsspu-dc__tabs {
+    overflow-x: auto;
+  }
+
+  .goodsspu-dc__pager {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 56px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+
+.orderinfo-dc__table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.orderinfo-dc__table {
+  /* 1204px 列宽 + 72px 列间距 + 62px 左右内边距 + 2px 边框。 */
+  min-width: 1340px;
+}
+
+/* banner 统计数字着色补充（goods-list-dc 只给了 --brand） */
+.orderinfo-dc__stat-num--warning {
+  color: var(--dc-warning);
+}
+
+/* 左内边距 46px = 16(卡片内边距) + 14(复选框) + 6(复选框右间距) + 10(gap)，
+   让商品图/列头与卡片头的订单号左对齐。
+   表头与卡片行必须用同一个左内边距，否则两者的 grid 起点不同、列头会跟列内容错开。
+   表头的全选框是绝对定位在 left:16px 的留白处，不占 grid 列。 */
+.orderinfo-dc__thead,
+.orderinfo-dc__row {
+  display: grid;
+  grid-template-columns: var(--orderinfo-grid, #{$orderinfo-grid});
+  gap: 12px;
+  align-items: center;
+  padding: 0 16px 0 46px;
+}
+
+/* ============ 统一表头 ============ */
+.orderinfo-dc__thead {
+  position: relative;
+  height: 40px;
+  margin-top: 12px;
+  font-size: var(--dc-fs-14);
+  font-weight: 500;
+  color: var(--dc-text-3);
+  background: var(--dc-bg-header);
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-sm) var(--dc-radius-sm) 0 0;
+}
+
+.orderinfo-dc__th--right {
+  text-align: right;
+}
+
+.orderinfo-dc__th--center {
+  text-align: center;
+}
+
+/* ============ 订单卡列表 ============ */
+.orderinfo-dc__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+  transition: opacity var(--dc-dur-micro);
+
+  &.is-loading {
+    pointer-events: none;
+    opacity: 0.55;
+  }
+}
+
+.orderinfo-dc__card {
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-lg);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 4%);
+  transition:
+    border-color var(--dc-dur-micro),
+    box-shadow var(--dc-dur-micro);
+
+  &:hover {
+    border-color: var(--dc-brand-border);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 8%);
+  }
+}
+
+/* 卡片头 40px：订单号 + 复制 + 时间 + 来源 + 类型章 + 右侧倒计时（状态章不在卡头，只在「状态」列） */
+.orderinfo-dc__card-head {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-height: 40px;
+  padding: 4px 16px;
+  background: var(--dc-bg-header);
+  border-bottom: 1px solid var(--dc-divider);
+  border-radius: var(--dc-radius-lg) var(--dc-radius-lg) 0 0;
+}
+
+.orderinfo-dc__card-no {
+  font-size: var(--dc-fs-14);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-1);
+  white-space: nowrap;
+}
+
+.orderinfo-dc__card-copy {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  color: var(--dc-text-3);
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity var(--dc-dur-micro),
+    color var(--dc-dur-micro);
+
+  .orderinfo-dc__card:hover & {
+    opacity: 1;
+  }
+
+  &:hover {
+    color: var(--dc-brand);
+  }
+}
+
+.orderinfo-dc__card-time {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  font-size: var(--dc-fs-14);
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-3);
+  white-space: nowrap;
+}
+
+.orderinfo-dc__card-src {
+  display: inline-flex;
+  flex: none;
+  gap: 4px;
+  align-items: center;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+  white-space: nowrap;
+}
+
+.orderinfo-dc__card-head-gap {
+  flex: 1;
+}
+
+/* 卡片头右侧倒计时：待付款=红（自动关闭倒计时），待发货=橙（承诺发货时限） */
+.orderinfo-dc__card-countdown {
+  flex: none;
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+
+  &.is-danger {
+    color: var(--text-danger, #d21f08);
+  }
+
+  &.is-warning {
+    color: var(--dc-warning-text);
+  }
+}
+
+/* ============ 商品网格行 ============ */
+.orderinfo-dc__row {
+  min-height: 76px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.orderinfo-dc__cell {
+  min-width: 0;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+}
+
+.orderinfo-dc__cell--right {
+  text-align: right;
+}
+
+.orderinfo-dc__cell--center {
+  text-align: center;
+}
+
+/* 商品信息（多商品纵向堆叠） */
+.orderinfo-dc__goods {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.orderinfo-dc__goods-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+  min-height: 60px;
+}
+
+.orderinfo-dc__goods-thumb {
+  flex: none;
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-sm);
+
+  .el-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.orderinfo-dc__goods-main {
+  min-width: 0;
+}
+
+.orderinfo-dc__goods-name {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  line-height: 22px;
+  color: var(--dc-text-1);
+}
+
+.orderinfo-dc__goods-spec {
+  margin-top: 2px;
+  overflow: hidden;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 单价·数量 / 优惠（与商品行逐条对齐） */
+.orderinfo-dc__stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.orderinfo-dc__stack-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 60px;
+  font-size: var(--dc-fs-14);
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-2);
+}
+
+.orderinfo-dc__stack--right .orderinfo-dc__stack-item {
+  align-items: flex-end;
+}
+
+.orderinfo-dc__qty {
+  font-weight: 500;
+  color: var(--dc-text-1);
+}
+
+/* 实付金额（第二行灰字：含运费） */
+.orderinfo-dc__paid-num {
+  font-size: var(--dc-fs-15);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-danger);
+}
+
+.orderinfo-dc__paid-note {
+  margin-top: 2px;
+  font-size: var(--dc-fs-14);
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-3);
+}
+
+/* 买家信息 */
+.orderinfo-dc__buyer-line {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  font-size: var(--dc-fs-14);
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-1);
+  white-space: nowrap;
+}
+
+.orderinfo-dc__buyer-addr {
+  margin-top: 2px;
+  overflow: hidden;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 支付·物流 */
+.orderinfo-dc__pay-line {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  font-size: var(--dc-fs-14);
+  color: #389e0d;
+}
+
+.orderinfo-dc__pay-dot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  background: #389e0d;
+  border-radius: 50%;
+
+  &.is-paid {
+    background: var(--dc-success);
+  }
+}
+
+.orderinfo-dc__pay-express {
+  margin-top: 2px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+  white-space: nowrap;
+}
+
+/* 状态列 */
+.orderinfo-dc__status-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}
+
+/* 操作列：主按钮 + 详情 + 更多▾，一行右对齐；放不下时允许换行，而不是撑破列宽 */
+.orderinfo-dc__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* 主操作按钮：默认描边，卡片悬停（或提交中）升实心 + 品牌投影 */
+.orderinfo-dc__main-btn {
+  display: inline-flex;
+  flex: none;
+  gap: 6px;
+  align-items: center;
+  padding: 2px 12px;
+  font-size: var(--dc-fs-14);
+  line-height: 22px;
+  white-space: nowrap;
+  cursor: pointer;
+  border-radius: var(--dc-radius-md);
+  transition: all var(--dc-dur-micro);
+
+  &.is-brand {
+    color: var(--dc-brand);
+    background: var(--dc-surface);
+    border: 1px solid var(--dc-brand-border);
+  }
+
+  /* 卡片悬停 / 提交中 → 实心 + 投影 */
+  .orderinfo-dc__card:hover &.is-brand,
+  &.is-brand.is-loading {
+    color: #fff;
+    background: var(--dc-brand);
+    border-color: var(--dc-brand);
+    box-shadow: var(--dc-shadow-brand-btn);
+  }
+}
+
+/* 发货中的白色 spinner（dc-spin 是 style/dc/components.scss 的全局 keyframes） */
+.orderinfo-dc__main-spin {
+  flex: none;
+  width: 11px;
+  height: 11px;
+  border: 2px solid rgb(255 255 255 / 45%);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: dc-spin 0.8s linear infinite;
+}
+
+/* 更多▾ 下拉（每张卡各自一份，锚在自己的触发点上） */
+.orderinfo-dc__more {
+  position: relative;
+  flex: none;
+}
+
+.orderinfo-dc__more-panel,
+.orderinfo-dc__confirm-pop {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  z-index: 30;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-lg);
+  box-shadow: var(--dc-shadow-dropdown);
+}
+
+/* 传送到 body 的浮层复用原菜单/确认样式，避免被列表滚动容器裁切。 */
+.orderinfo-dc__more-popover.el-popper {
+  min-width: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+
+  .orderinfo-dc__more-panel,
+  .orderinfo-dc__confirm-pop {
+    position: static;
+    top: auto;
+    right: auto;
+  }
+}
+
+.orderinfo-dc__more-panel {
+  width: 118px;
+  padding: 5px 0;
+  text-align: left;
+}
+
+.orderinfo-dc__more-item {
+  padding: 6px 12px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--dc-control-hover);
+  }
+
+  &.is-danger {
+    color: var(--dc-danger);
+
+    &:hover {
+      background: var(--dc-danger-soft);
+    }
+  }
+}
+
+/* 危险项分组：分隔线 + 置底 */
+.orderinfo-dc__more-danger {
+  padding-top: 4px;
+  margin-top: 4px;
+  border-top: 1px solid var(--dc-divider);
+}
+
+/* 锚定二次确认小卡（只接原本一句话确认的危险项，见组件内注释） */
+.orderinfo-dc__confirm-pop {
+  width: 212px;
+  padding: 12px 14px;
+  text-align: left;
+}
+
+.orderinfo-dc__confirm-body {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.orderinfo-dc__confirm-dot {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  margin-top: 1px;
+  font-size: var(--dc-fs-12);
+  font-weight: 700;
+  color: #fff;
+  background: var(--dc-warning);
+  border-radius: 50%;
+}
+
+.orderinfo-dc__confirm-title {
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: var(--dc-text-1);
+}
+
+.orderinfo-dc__confirm-text {
+  margin-top: 4px;
+  font-size: var(--dc-fs-14);
+  line-height: 1.6;
+  color: var(--dc-text-3);
+}
+
+.orderinfo-dc__confirm-foot {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 10px;
+  font-size: var(--dc-fs-14);
+}
+
+.orderinfo-dc__confirm-cancel {
+  padding: 2px 10px;
+  color: var(--dc-text-2);
+  cursor: pointer;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border-strong);
+  border-radius: var(--dc-radius-md);
+
+  &:hover {
+    color: var(--dc-brand);
+    border-color: var(--dc-brand);
+  }
+}
+
+.orderinfo-dc__confirm-ok {
+  padding: 3px 11px;
+  color: #fff;
+  cursor: pointer;
+  background: var(--dc-danger);
+  border-radius: var(--dc-radius-md);
+
+  &:hover {
+    background: var(--dc-danger-hover);
+  }
+}
+
+/* 常显文字链（详情 / 更多▾）：品牌色链接，已取消行由 .is-cancelled 降噪成灰字 */
+.orderinfo-dc__action-link {
+  flex: none;
+  font-size: var(--dc-fs-14);
+  color: var(--text-link, #155eef);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    color: var(--dc-brand-light);
+  }
+}
+
+/* ============ 附加行（卖家备注） ============ */
+.orderinfo-dc__extra {
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+}
+
+/* 附加行 chip 条：
+   左内边距 46px = 卡片头 padding-left 16 + 复选框 14 + 复选框右间距 6 + flex gap 10，
+   让 chip 左边缘与卡片头的订单号文字对齐（改这里要同步改 .orderinfo-dc__checkbox 的右间距） */
+.orderinfo-dc__chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 16px 10px 46px;
+  border-top: 1px solid var(--dc-divider);
+}
+
+/* 备注 chip：灰底描边，整条无 pointer —— 只有末尾「修改」是点击热区 */
+.orderinfo-dc__remark-line {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 3px 10px;
+  font-size: var(--dc-fs-12);
+  color: var(--dc-text-2-strong);
+  background: var(--dc-bg-block);
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-md);
+}
+
+/* 插旗图标：旗杆灰、旗面品牌蓝（对齐 assets/icons/icon-flag.svg 的 #98A1AB / #1677FF） */
+.orderinfo-dc__remark-flag {
+  flex: none;
+}
+
+.orderinfo-dc__remark-flag-pole {
+  stroke: var(--dc-text-3);
+}
+
+.orderinfo-dc__remark-flag-body {
+  fill: var(--dc-brand);
+}
+
+.orderinfo-dc__remark-edit {
+  color: var(--dc-brand);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--dc-brand-hover);
+  }
+}
+
+/* ============ 筛选区（组合 element 控件的 dc 容器） ============
+   版式是「一个主行装完所有主要控件 + 可展开的更多筛选行 + 已选条件回显行」，
+   卡片自己吃 padding，行不再各自 padding，否则展开行的分隔线会被行内边距顶偏。
+   --el-*-radius 在容器上覆一次，让内部 el-input / el-select / el-date-picker
+   统一走 6px 圆角（逐个 :deep 改内部 wrapper 更碎且易漏） */
+.orderinfo-dc__filter-card {
+  --el-input-border-radius: var(--dc-radius-md);
+  --el-border-radius-base: var(--dc-radius-md);
+
+  padding: 14px 16px;
+  margin-top: 12px;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-lg);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 4%);
+}
+
+.orderinfo-dc__filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+}
+
+/* 「更多筛选」展开行：与主行之间一条分隔线 */
+.orderinfo-dc__filter-row--more {
+  padding-top: 12px;
+  margin-top: 12px;
+  border-top: 1px solid var(--dc-divider);
+}
+
+/* 快捷时间 chip 组（今天 / 近7天 / 近30天） */
+.orderinfo-dc__quicks {
+  display: flex;
+  gap: 6px;
+}
+
+/* datetimerange 自带宽度且会被筛选行的 flex 拉伸（光靠内联 width 压不住，会被拉回去），
+   靠 .el-date-editor 提权 + flex:none 收窄 */
+.orderinfo-dc__range.el-date-editor {
+  flex: none;
+  width: 260px;
+}
+
+.orderinfo-dc__quick {
+  padding: 5px 10px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2-strong);
+  cursor: pointer;
+  user-select: none;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border-strong);
+  border-radius: var(--dc-radius-md);
+  transition: all var(--dc-dur-micro);
+
+  &:hover {
+    color: var(--dc-brand);
+    border-color: var(--dc-brand-border);
+  }
+
+  &.is-active {
+    color: var(--dc-brand);
+    background: var(--dc-brand-soft);
+    border-color: var(--dc-brand-border);
+  }
+}
+
+/* 筛选卡文字按钮（搜索 = 实心 / 重置·导出·打印·刷新 = 描边，同一套盒模型）
+   刻意不复用 goodsspu-dc__tbtn：那是跨页共享类（30px / 圆角 4），
+   本处要 6px 圆角 + 5px 14px 内边距，改共享类会波及其他页 */
+.orderinfo-dc__fbtn {
+  padding: 5px 14px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+  white-space: nowrap;
+  cursor: pointer;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border-strong);
+  border-radius: var(--dc-radius-md);
+  transition: all var(--dc-dur-micro);
+
+  &:hover {
+    color: var(--dc-brand);
+    border-color: var(--dc-brand);
+  }
+}
+
+.orderinfo-dc__fbtn--primary {
+  padding: 6px 16px;
+  color: #fff;
+  background: var(--dc-brand);
+  border-color: var(--dc-brand);
+
+  &:hover {
+    color: #fff;
+    background: var(--dc-brand-light);
+    border-color: var(--dc-brand-light);
+  }
+
+  &:active {
+    background: var(--dc-brand-active);
+    border-color: var(--dc-brand-active);
+  }
+}
+
+/* 「更多筛选 ▾ / 收起筛选 ▴」文字链：共享类 goodsspu-dc__filter-more 是 12px，
+   筛选卡里要 13px —— 只在本卡内抬一档，不动共享类 */
+.orderinfo-dc__filter-row .goodsspu-dc__filter-more {
+  font-size: var(--dc-fs-14);
+}
+
+/* 右侧工具组（导出订单 / 打印 / 刷新） */
+.orderinfo-dc__filter-tools {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* 已选条件回显行 */
+.orderinfo-dc__filter-recap {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.orderinfo-dc__filter-recap-label {
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+}
+
+.orderinfo-dc__filter-recap-chip {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 3px 10px;
+  font-size: var(--dc-fs-12);
+  color: var(--dc-brand);
+  cursor: pointer;
+  background: var(--dc-brand-soft);
+  border: 1px solid var(--dc-brand-border);
+  border-radius: var(--dc-radius-md);
+
+  i {
+    font-style: normal;
+    opacity: 0.6;
+  }
+
+  &:hover i {
+    opacity: 1;
+  }
+}
+
+/* 分页跳转输入 */
+.orderinfo-dc__pager-jump {
+  width: 44px;
+  height: 28px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-1);
+  text-align: center;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-sm);
+  outline: none;
+
+  &:focus {
+    border-color: var(--dc-brand);
+  }
+}
+
+/* ============ 批量选择：复选框 + 底部浮条 ============ */
+
+/* 右间距 6px 的几何：16(卡片头 padding) + 14(框宽) + 6 + 10(flex gap) = 46，
+   与 .orderinfo-dc__chip-row / 展开面板的 46px 左内边距共同保证订单号与下方 chip 左对齐。
+   thead 全选框叠加 .orderinfo-dc__thead-check 绝对定位（left:16px），不受这个 margin 影响 */
+.orderinfo-dc__checkbox {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin: 0 6px 0 0;
+  accent-color: var(--dc-brand);
+  cursor: pointer;
+}
+
+/* thead 全选框：绝对定位在左侧留白处（.orderinfo-dc__thead 补 position: relative），不占用列网格，避免打乱列头与列内容的对齐 */
+.orderinfo-dc__thead-check {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+}
+
+.orderinfo-dc__batch-bar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  z-index: 50;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 18px;
+  white-space: nowrap;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-lg);
+  box-shadow: var(--dc-shadow-pop);
+  transform: translateX(-50%);
+}
+
+.orderinfo-dc__batch-count {
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+
+  b {
+    color: var(--dc-brand);
+  }
+}
+
+.orderinfo-dc__batch-btn {
+  height: 30px;
+  padding: 0 16px;
+  font-size: var(--dc-fs-14);
+  color: #fff;
+  white-space: nowrap;
+  cursor: pointer;
+  background: var(--dc-brand);
+  border: none;
+  border-radius: var(--dc-radius-md);
+  transition: background var(--dc-dur-micro);
+
+  &:hover {
+    background: var(--dc-brand-hover);
+  }
+
+  &:active {
+    background: var(--dc-brand-active);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background: var(--dc-brand-disabled);
+  }
+}
+
+.orderinfo-dc__batch-btn--outline {
+  color: var(--dc-text-2);
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border-strong);
+
+  &:hover {
+    color: var(--dc-brand);
+    background: var(--dc-surface);
+    border-color: var(--dc-brand);
+  }
+}
+
+.orderinfo-dc__batch-clear {
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--dc-brand);
+  }
+}
+
+/* 订单高频辅助信息：订单号、时间、物流说明保持层级但提升可读性。 */
+.orderinfo-page .orderinfo-dc__thead,
+.orderinfo-page .orderinfo-dc__card-time,
+.orderinfo-page .orderinfo-dc__goods-spec,
+.orderinfo-page .orderinfo-dc__paid-note,
+.orderinfo-page .orderinfo-dc__buyer-addr,
+.orderinfo-page .orderinfo-dc__pay-express,
+.orderinfo-page .orderinfo-dc__confirm-text,
+.orderinfo-page .orderinfo-dc__extra,
+.orderinfo-page .orderinfo-dc__filter-recap-label,
+.orderinfo-page .orderinfo-dc__batch-clear {
+  color: var(--text-tertiary, #667085);
+}
+
+.orderinfo-page .orderinfo-dc__card.is-cancelled .orderinfo-dc__goods-spec,
+.orderinfo-page .orderinfo-dc__card.is-cancelled .orderinfo-dc__buyer-addr,
+.orderinfo-page .orderinfo-dc__card.is-cancelled .orderinfo-dc__pay-express,
+.orderinfo-page .orderinfo-dc__card.is-cancelled .orderinfo-dc__paid-note,
+.orderinfo-page .orderinfo-dc__card.is-cancelled .orderinfo-dc__action-link {
+  color: var(--text-disabled, #7c8797);
+}
+
+.orderinfo-dc__batch-enter-active {
+  transition: all var(--dc-dur-micro) var(--dc-ease-in);
+}
+
+.orderinfo-dc__batch-leave-active {
+  transition: all 120ms var(--dc-ease);
+}
+
+.orderinfo-dc__batch-enter-from,
+.orderinfo-dc__batch-leave-to {
+  opacity: 0;
+  transform: translate(-50%, 8px);
+}
+
+/* ============ 已取消订单终态降噪（row.status==='5'）============
+   金额/操作/次要信息统一降级为灰阶，避免运营误以为终态订单仍需处理 */
+.orderinfo-dc__card.is-cancelled {
+  .orderinfo-dc__card-no,
+  .orderinfo-dc__goods-name,
+  .orderinfo-dc__buyer-line {
+    color: var(--dc-text-3);
+  }
+
+  .orderinfo-dc__goods-spec,
+  .orderinfo-dc__buyer-addr,
+  .orderinfo-dc__pay-express,
+  .orderinfo-dc__pay-line,
+  .orderinfo-dc__stack-item,
+  .orderinfo-dc__qty,
+  .orderinfo-dc__paid-note {
+    color: var(--dc-text-4);
+  }
+
+  .orderinfo-dc__paid-num {
+    color: var(--dc-text-2-strong);
+  }
+
+  .orderinfo-dc__action-link {
+    color: var(--dc-text-3);
+
+    &:hover {
+      color: var(--dc-text-2);
+    }
+  }
+
+  /* 主按钮同样降噪；写出修饰类是为了在特异性上压过 .orderinfo-dc__card:hover 的升实心规则 */
+  .orderinfo-dc__main-btn.is-brand {
+    color: var(--dc-text-2);
+    background: var(--dc-surface);
+    border-color: var(--dc-border-strong);
+    box-shadow: none;
+  }
+}
+
+/* 有效订单的关键辅助信息再提一档，便于快速核对发货内容；已取消订单不受影响。 */
+.orderinfo-page .orderinfo-dc__card:not(.is-cancelled) {
+  .orderinfo-dc__card-time,
+  .orderinfo-dc__goods-spec,
+  .orderinfo-dc__paid-note,
+  .orderinfo-dc__buyer-addr,
+  .orderinfo-dc__pay-express {
+    color: var(--dc-text-2-strong);
+  }
+}

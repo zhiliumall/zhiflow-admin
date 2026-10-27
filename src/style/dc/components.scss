@@ -1,0 +1,449 @@
+/* ============================================================
+   品牌蓝通用组件样式：页面状态四态 / 批量操作条 / 通用工具类
+   ============================================================ */
+
+/* DC 列表表头文字契约：覆盖未引入 goods-list-dc.scss 的独立列表页；
+   仅命中明确的 *-dc__thead / *-dc__th 类，不影响普通表格或业务表单。 */
+body [class$="-dc__thead"],
+body [class*="-dc__thead "],
+body [class*="-dc__thead--"],
+body [class$="-dc__th"],
+body [class*="-dc__th "],
+body [class*="-dc__th--"] {
+  font-weight: 500;
+  color: var(--dc-text-2);
+}
+
+body [class$="-dc__filter-label"] {
+  font-weight: 500;
+  color: var(--dc-text-2);
+}
+
+body [class$="-dc__total"] {
+  font-weight: 400;
+  color: var(--text-tertiary, #667085);
+}
+
+@keyframes dc-shim {
+  from {
+    background-position: -360px 0;
+  }
+
+  to {
+    background-position: 360px 0;
+  }
+}
+
+@keyframes dc-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---- 通用动效增补 ----
+   驼峰命名的 keyframes 一律映射为 kebab：dsPop→dc-pop · dsToast→dc-toast ·
+   dsFloat→dc-float · dsPulse→dc-pulse · dsDraw→dc-draw
+   （dsFade/dsPage→dc-fade-in · dsSpin→dc-spin · dsShimmer→dc-shim 复用上方既有名） */
+
+@keyframes dc-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes dc-toast {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* 纯透明度呼吸（dsFade 无位移；dc-fade-in 带 8px 上移不适用于常驻小圆点） */
+@keyframes dc-breath {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dc-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes dc-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+@keyframes dc-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---- 骨架屏 ---- */
+.dc-skeleton {
+  padding: 20px;
+  animation: dc-fade-in 200ms var(--dc-ease-in);
+}
+
+.dc-skeleton__toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.dc-skeleton__block,
+.dc-skeleton__line,
+.dc-skeleton__thumb,
+.dc-skeleton__pill {
+  display: block;
+  background: linear-gradient(
+    90deg,
+    var(--dc-skeleton) 0%,
+    var(--dc-skeleton-highlight) 40%,
+    var(--dc-skeleton) 80%
+  );
+  background-size: 360px 100%;
+  animation: dc-shim 1.8s linear infinite;
+}
+
+.dc-skeleton__block {
+  width: 100px;
+  height: 28px;
+  border-radius: 4px;
+}
+
+.dc-skeleton__row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--dc-divider);
+}
+
+.dc-skeleton__thumb {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+}
+
+.dc-skeleton__lines {
+  display: flex;
+  flex: 2;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dc-skeleton__line {
+  height: 13px;
+  border-radius: 2px;
+}
+
+.dc-skeleton__pill {
+  flex: none;
+  width: 72px;
+  height: 24px;
+  border-radius: 12px;
+}
+
+/* ---- 空 / 错误 / 无权限公共骨架 ---- */
+.dc-state {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  animation: dc-fade-in 200ms var(--dc-ease-in);
+}
+
+/* 非绝对定位容器场景（如直接内嵌在流式布局中） */
+.dc-state--static {
+  position: static;
+  min-height: 320px;
+}
+
+.dc-state__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dc-text-2);
+}
+
+.dc-state__desc {
+  font-size: 12px;
+  color: var(--text-tertiary, #667085);
+}
+
+.dc-state__action {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.dc-state__link {
+  font-size: 12px;
+  color: var(--text-link, #155eef);
+  cursor: pointer;
+  transition: color var(--dc-dur-micro) var(--dc-ease);
+
+  &:hover {
+    color: var(--dc-brand-hover);
+  }
+
+  &:active {
+    color: var(--dc-brand-active);
+  }
+}
+
+/* ---- 空态插画 96×80：灰阶几何 + 一处主色点缀 ---- */
+.dc-empty-art {
+  position: relative;
+  width: 96px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+.dc-empty-art__back {
+  position: absolute;
+  top: 22px;
+  left: 8px;
+  width: 80px;
+  height: 50px;
+  background: var(--dc-divider);
+  border-radius: 8px;
+}
+
+.dc-empty-art__front {
+  position: absolute;
+  top: 10px;
+  left: 18px;
+  width: 60px;
+  height: 40px;
+  background: var(--dc-border);
+  border-radius: 6px;
+}
+
+.dc-empty-art__bar {
+  position: absolute;
+  top: 34px;
+  left: 30px;
+  width: 36px;
+  height: 6px;
+  background: var(--dc-text-disabled);
+  border-radius: 3px;
+}
+
+.dc-empty-art__dot {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  width: 14px;
+  height: 14px;
+  background: var(--dc-brand);
+  border-radius: 50%;
+}
+
+/* ---- 错误态图标容器 64px ---- */
+.dc-error-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 10px;
+  background: var(--dc-danger-soft);
+  border-radius: 50%;
+}
+
+/* ---- 无权限插画 72×78（锁）---- */
+.dc-denied-art {
+  position: relative;
+  width: 72px;
+  height: 78px;
+  margin-bottom: 10px;
+}
+
+.dc-denied-art__body {
+  position: absolute;
+  top: 24px;
+  left: 10px;
+  width: 52px;
+  height: 44px;
+  background: var(--dc-divider);
+  border-radius: 8px;
+}
+
+.dc-denied-art__shackle {
+  position: absolute;
+  top: 6px;
+  left: 20px;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: 6px solid var(--dc-border);
+  border-radius: 16px;
+}
+
+.dc-denied-art__hole {
+  position: absolute;
+  top: 38px;
+  left: 32px;
+  width: 8px;
+  height: 8px;
+  background: var(--dc-brand);
+  border-radius: 50%;
+}
+
+.dc-denied-art__stem {
+  position: absolute;
+  top: 44px;
+  left: 34.5px;
+  width: 3px;
+  height: 10px;
+  background: var(--dc-brand);
+  border-radius: 2px;
+}
+
+/* ---- 错误态描边按钮 ---- */
+.dc-outline-btn {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  height: 32px;
+  padding: 0 16px;
+  font-size: 12px;
+  color: var(--dc-text-2);
+  cursor: pointer;
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-sm);
+  transition: all var(--dc-dur-micro) var(--dc-ease);
+
+  &:hover {
+    color: var(--dc-brand-hover);
+    border-color: var(--dc-brand-hover);
+  }
+
+  &:active {
+    color: var(--dc-brand-active);
+    border-color: var(--dc-brand-active);
+    transform: scale(0.98);
+  }
+}
+
+/* ---- 转圈：12px / 2px 描边 / 0.7s 每转 ---- */
+.dc-spinner {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--dc-text-disabled);
+  border-top-color: var(--dc-brand);
+  border-radius: 50%;
+  animation: dc-spin 0.7s linear infinite;
+}
+
+/* ---- 批量操作条：勾选后才出现，含已选计数 ---- */
+.dc-batch-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 16px;
+  background: var(--dc-brand-soft);
+  border: 1px solid var(--dc-brand-border);
+  border-radius: var(--dc-radius-md);
+}
+
+.dc-batch-bar__count {
+  font-size: 12px;
+  color: var(--dc-text-2);
+
+  b {
+    font-weight: 600;
+    color: var(--dc-brand);
+  }
+}
+
+.dc-batch-enter-active {
+  transition: all var(--dc-dur-micro) var(--dc-ease-in);
+}
+
+.dc-batch-leave-active {
+  transition: all 120ms var(--dc-ease);
+}
+
+.dc-batch-enter-from,
+.dc-batch-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+/* ---- 工具类 ---- */
+.dc-num {
+  /* 金额 / KPI / 编号统一使用客户导出的 ZF Num；字母与中文由 unicode-range 回退正文栈。 */
+  font-family: var(--dc-font-num);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- 富文本渲染：被拦截的第三方嵌入内容占位 ---- */
+
+/* 由 utils/sanitizeHtml.ts 的渲染出口注入（非白名单 host 的 iframe）。
+   刻意做成可见占位而非静默空白 —— 空白会让运营以为视频丢了去重传，反而制造真损坏。 */
+.zf-embed-blocked {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 88px;
+  padding: 12px 16px;
+  font-size: 12.5px;
+  color: var(--text-tertiary, #667085);
+  text-align: center;
+  background: var(--dc-bg-block);
+  border: 1px dashed var(--dc-border);
+  border-radius: 8px;
+}

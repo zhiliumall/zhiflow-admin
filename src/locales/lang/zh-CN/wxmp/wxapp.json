@@ -1,0 +1,6 @@
+{
+  "title": "微信网页授权配置",
+  "appId": "AppID",
+  "secret": "AppSecret",
+  "name": "公众号名称"
+}

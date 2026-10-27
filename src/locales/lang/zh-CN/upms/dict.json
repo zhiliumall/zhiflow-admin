@@ -1,0 +1,9 @@
+{
+  "type": "类型",
+  "dataValue": "数据值",
+  "enterDataValue": "请输入数据值",
+  "tagName": "标签名",
+  "enterTagName": "请输入标签名",
+  "enterSorting": "请输入排序",
+  "description": "描述"
+}

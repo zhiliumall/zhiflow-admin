@@ -1,0 +1,289 @@
+/* ============================================================
+   品牌蓝 Element Plus 覆盖层
+   全站规则：聚焦=主色描边+2px 15%光环；按压=加深一级+scale(.98)；
+   行悬停 #F7F9FE；表头 #FAFBFC；弹窗圆角 8；遮罩 rgba(31,39,51,.45)
+   注：--el-color-primary 系列同时被 useDataThemeChange.ts 内联注入，
+   此处样式表级映射用于内联注入前的首帧与非 cliklog 场景兜底
+   ============================================================ */
+:root,
+html[data-theme="cliklog"] {
+  --el-color-primary: var(--dc-brand);
+
+  /* light-3 是 EP 内部“提亮”梯度（tag/switch/日期格等用），保持浅色；
+     不绑 --dc-brand-hover（hover 是加深 #2b54c7，见 tokens.css） */
+  --el-color-primary-light-3: #5a86f5;
+  --el-color-primary-light-5: var(--dc-brand-disabled);
+  --el-color-primary-light-7: var(--dc-brand-border);
+  --el-color-primary-light-8: var(--dc-brand-soft);
+  --el-color-primary-light-9: var(--dc-brand-soft);
+  --el-color-primary-dark-2: var(--dc-brand-active);
+  --el-color-success: var(--dc-success);
+  --el-color-warning: var(--dc-warning);
+  --el-color-danger: var(--dc-danger);
+  --el-color-error: var(--dc-danger);
+  --el-text-color-primary: var(--text-primary);
+  --el-text-color-regular: var(--text-secondary);
+  --el-text-color-secondary: var(--text-tertiary);
+  --el-text-color-placeholder: var(--text-placeholder);
+  --el-text-color-disabled: var(--text-disabled);
+  --el-border-color: var(--dc-border);
+  --el-border-color-light: var(--dc-divider);
+  --el-border-color-lighter: var(--dc-divider);
+  --el-fill-color-light: var(--dc-bg-block);
+  --el-fill-color-lighter: var(--dc-bg-header);
+  --el-bg-color-page: var(--dc-bg-page);
+  --el-bg-color: var(--dc-surface);
+  --el-border-radius-base: var(
+    --dc-radius-sm
+  ) !important; /* 反覆盖 base.scss 中拍死为 0 的老规则 */
+
+  --el-border-radius-small: var(--dc-radius-tag) !important;
+  --el-card-border-radius: var(--dc-radius-lg) !important;
+  --el-font-family: var(--dc-font);
+  /* 对齐 Ant Design 5：正文 14 / 行高 22 / 按钮与标签 400（EP 默认 500） */
+  --el-font-size-base: var(--dc-fs-body);
+  --el-font-size-small: 13px;
+  --el-font-size-extra-small: var(--dc-fs-sm);
+  --el-font-line-height-primary: 22px;
+  --el-font-weight-primary: 400;
+  --el-overlay-color-lighter: var(--dc-mask);
+}
+/* ---- Ant Design 5 排版：表头 .88/600、表单标签 .88/400、按钮 400 ----
+   EP 默认表头是 --el-text-color-secondary（浅灰）不加粗，Ant 是正文色 600；
+   表单标签对齐 Ant 的 400。 */
+.el-table th.el-table__cell {
+  font-weight: 600;
+  color: var(--dc-text-1);
+}
+.el-form-item__label {
+  font-weight: 400;
+  color: var(--dc-text-1);
+}
+.el-button {
+  font-weight: 400;
+}
+
+/* ---- 按钮：微反馈 120–150ms，按压 scale(.98) ---- */
+.el-button {
+  transition:
+    background-color var(--dc-dur-micro) var(--dc-ease),
+    border-color var(--dc-dur-micro) var(--dc-ease),
+    color var(--dc-dur-micro) var(--dc-ease),
+    transform 120ms var(--dc-ease);
+}
+
+.el-button:not(.is-disabled):active {
+  transform: scale(0.98);
+}
+
+.el-button--primary:not(.is-disabled):hover {
+  background: var(--dc-brand-hover);
+  border-color: var(--dc-brand-hover);
+}
+
+.el-button--primary:not(.is-disabled):active {
+  background: var(--dc-brand-active);
+  border-color: var(--dc-brand-active);
+}
+
+/* ---- 聚焦态：主色描边 + 光环 ---- */
+.el-input .el-input__wrapper.is-focus,
+.el-select__wrapper.is-focused {
+  box-shadow:
+    0 0 0 1px var(--dc-brand) inset,
+    var(--dc-focus-ring) !important;
+}
+
+.el-textarea .el-textarea__inner:focus {
+  box-shadow:
+    0 0 0 1px var(--dc-brand) inset,
+    var(--dc-focus-ring) !important;
+}
+
+/* ---- 键盘焦点环（:focus-visible）----
+   放在这里是为了让**所有**聚焦样式共处一文件 ——
+   聚焦态已有两套机制（上面的 box-shadow 光环 / 各控件自绘 border-color），
+   再在别处加第三套就会制造「谁压过谁」的冲突。
+
+   用 outline 而非 box-shadow/border-color 是刻意的：
+   outline 不参与盒模型、不与 border-color 争用同一属性，因此不会盖掉
+   color-picker-select 的非法红框，也不会挤动任何布局。
+   :focus-visible 只对键盘/辅助技术生效，鼠标点击不出环 —— 鼠标用户视觉零变化。 */
+:focus-visible {
+  outline: 2px solid var(--dc-brand);
+  outline-offset: 2px;
+}
+
+/* 已有自带聚焦光环的原生输入：再叠一层 outline 会出现内外双环。
+   这里只关 outline，上面的 box-shadow 光环仍在，键盘可见性不受损。 */
+.el-input__inner:focus-visible,
+.el-textarea__inner:focus-visible,
+.el-select__wrapper:focus-visible {
+  outline: none;
+}
+
+/* 非法态优先：值不合法时焦点环也走危险色，避免「红框 + 蓝环」自相矛盾的信号。
+   （对照 78cb92ab：非法红框必须在聚焦态依然成立。） */
+.is-invalid:focus-visible,
+.is-error:focus-visible {
+  outline-color: var(--dc-danger);
+}
+
+/* ---- 弹窗 / 抽屉 / 遮罩 ---- */
+.el-dialog,
+.el-message-box {
+  border-radius: var(--dc-radius-lg);
+  box-shadow: var(--dc-shadow-pop);
+}
+
+.el-drawer {
+  box-shadow: var(--dc-shadow-pop);
+}
+
+.el-overlay {
+  background-color: var(--dc-mask);
+}
+
+/* ---- Toast：顶部居中白卡（README 通则）---- */
+.el-message {
+  color: var(--dc-text-1);
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-divider);
+  border-radius: var(--dc-radius-lg);
+  box-shadow: var(--dc-shadow-pop);
+}
+
+/* ---- 分页当前页 ---- */
+.el-pagination.is-background .el-pager li.is-active {
+  background: var(--dc-brand);
+}
+
+/* ============================================================
+   el-select 的 dc 适配（下拉规格的唯一定义处）
+   原生 <select> 已统一换成 el-select，每处都带上了
+   `dc-nsel` 标记类。规格集中在这里，不再散落在各页 scoped 样式里，因为：
+
+     ⚠ el-select 的边框是 `box-shadow: inset` 而不是 border，
+       照抄原生的 `border: 1px solid` 只会得到「双层框」或「无框」。
+     ⚠ 真正承载高度/内边距/字号的是内部 .el-select__wrapper，
+       给根节点设 height / font-size 都不生效（根节点只是定位壳）。
+     ⚠ 原生 <select> 宽度按内容自适应，el-select 不会 —— 不给宽度会塌成 44px，
+       所以 dc-nsel 兜一个 min-width。
+   ============================================================ */
+
+/* 所有由原生 <select> 转换来的下拉：dc 基线规格（32px / 12px / radius 4） */
+.el-select.dc-nsel {
+  min-width: 108px;
+
+  .el-select__wrapper {
+    min-height: 32px;
+    padding: 0 8px;
+    font-size: var(--dc-fs-body); /* Ant 正文 14 */
+    color: var(--dc-text-2);
+    background: var(--dc-surface);
+    border-radius: 4px;
+    box-shadow: 0 0 0 1px var(--dc-border) inset;
+  }
+
+  /* 「全部X」这类占位项：原生 <select> 里它是**正常显示的选中项**，而 el-select
+     把空串判定为无值 → 渲染成 placeholder 并加 .is-transparent 置灰。
+     codemod 已把文案补进 placeholder，这里再把颜色还原成正文色，
+     否则筛选行看着像一排「没填的空框」。 */
+  .el-select__placeholder.is-transparent {
+    color: var(--dc-text-2);
+  }
+
+  /* 禁用态：照 DcTableShell 里原生 :disabled 那段（「已渲染但后端未接入」的筛选） */
+  .el-select__wrapper.is-disabled {
+    color: var(--dc-text-4);
+    cursor: not-allowed;
+    background: var(--dc-bg-page);
+    box-shadow: 0 0 0 1px var(--dc-border) inset;
+    opacity: 0.7;
+  }
+}
+
+/* 分页条「每页 N 条」。规格与 DcPager 一致 */
+.el-select.dc-pager__size {
+  flex: none;
+  width: auto;
+  min-width: 96px;
+  margin-right: 10px;
+
+  .el-select__wrapper {
+    min-height: 28px;
+    padding: 0 8px;
+    font-size: var(--dc-fs-body); /* Ant 分页 14 */
+    line-height: 28px;
+    border-radius: 5px;
+  }
+}
+
+/**
+ * 分页条上的口径说明：「共 N 条 · 本页命中 M 条」里后半截。
+ *
+ * 用在"页面渲染的行是当前页的子集 / 聚合"的分页条上（前端筛选、按 key 聚合成组等，
+ * 后端给不了对应的筛选或聚合入参）。这类地方分页器数的是**服务端的行**、表里列的是
+ * **筛完 / 聚合完的行**，两个口径不写出来就会被读成"分页器坏了"。
+ * 全仓统一一份，别每个页面各写一个 xx-dc__pager-hit。
+ */
+.dc-pager__hit {
+  margin-left: -6px;
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-3);
+  cursor: help;
+}
+
+/* 表格筛选卡里的下拉。规格与 DcTableShell 的 .dc-tbl__select 一致（max-width 180） */
+.el-select.dc-tbl__select {
+  flex: none;
+  width: 150px;
+  max-width: 180px;
+}
+
+/* 表单弹窗字段：36px（与 DcFormDialog 里 `.dcfd-field .el-select__wrapper` 同值）。
+   放在 dc-nsel 之后，靠源顺序压过上面的 32px 基线。
+   刻意重复一份而不只依赖容器适配：dcfd-input 的 select 并非全在 .dcfd-field 内。 */
+.el-select.dcfd-input {
+  .el-select__wrapper {
+    min-height: 36px;
+    font-size: var(--dc-fs-body);
+    border-radius: var(--dc-radius-md);
+  }
+}
+
+/* ---- 原生 <select> 退役的边界补丁 ----
+   25 个页面私有类（goodsspu-dc__select 一个就 69 处、mw-filter__select、
+   shopstore-dc__select、userdc__filter-select …）当年是照着原生 <select> 写的，
+   规格直接落在元素本身：height / padding / border / background / appearance。
+   这些属性对 el-select 的**根节点**一律无意义 —— 边框和背景都在内部 wrapper 上 ——
+   留着的唯一效果就是在真正的下拉框外面再画一层框。
+
+   与其去 20 多个文件里逐个改 scoped 样式（分散、且每处都要重判 :deep 层级），
+   在这里一次性声明「根节点不吃盒模型」。用 !important 是因为要压过各页 scoped
+   的 `.cls[data-v-x]`（同为 0,2,0 特异性，仅靠本文件最后加载并不总是够 ——
+   有些页面写的是 `.parent .cls`，特异性更高）。
+
+   ⚠ 只关盒模型。width / margin / flex 是布局意图，仍然有效，不要加进来
+     （很多私有类正是靠 width 控制筛选行的列宽）。 */
+.el-select {
+  height: auto !important;
+  padding: 0 !important;
+  appearance: auto !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+/* 下拉面板：选项和收起态字号要一致（均为 14） */
+.el-select__popper .el-select-dropdown__item {
+  font-size: var(--dc-fs-body);
+}
+
+/* Element Plus 的暗色文字覆盖放在本文件末尾，确保晚于 :root/cliklog 变量块生效。 */
+html.dark {
+  --el-text-color-primary: var(--text-primary, #e6eaf2);
+  --el-text-color-regular: var(--text-secondary, #b9c0ce);
+  --el-text-color-secondary: var(--text-tertiary, #8e97a8);
+  --el-text-color-placeholder: var(--text-placeholder, #8e97a8);
+  --el-text-color-disabled: var(--text-disabled, #6e7789);
+}

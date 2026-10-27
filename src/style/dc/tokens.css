@@ -1,0 +1,225 @@
+/* ============================================================
+   品牌蓝 Design Tokens —— 全站视觉令牌的唯一定义处
+   规则：页面/组件一律引用 --dc-*；--zf-* 与 --ds-* 旧变量由 bridge.css 别名接管
+   ============================================================ */
+:root {
+  /* ---- 主色 ---- */
+  --dc-brand: #3c6ef0;          /* 主操作 / 选中 */
+  --dc-brand-hover: #2b54c7;    /* 悬停加深（提亮色 #5a86f5 见 -light，作 EP light-3 兜底） */
+  --dc-brand-active: #2b54c7;   /* 按压加深一级 */
+  --dc-brand-soft: #ebf0ff;     /* 浅底 / 选中容器 */
+  --dc-brand-light: #5a86f5;    /* 按钮 hover **提亮**（≠ -hover 的加深） */
+  --dc-brand-border: #c7d6fb;   /* 派生：品牌浅描边 */
+  --dc-brand-disabled: #9db6f8; /* 派生：禁用态主色 */
+  --dc-focus-ring: 0 0 0 2px rgb(60 110 240 / 15%); /* 聚焦光环 */
+
+  /* ---- 功能色 ---- */
+  --dc-success: #26bf66;
+  --dc-success-soft: #e6f7f0;   /* StatusTag success 底 */
+  --dc-warning: #ff8800;
+  --dc-warning-soft: #fff7e8;   /* StatusTag warning 底 */
+  --dc-warning-soft-hover: #ffefd0; /* 派生：warning-soft 交互底加深一档（橙 chip hover） */
+  --dc-warning-tint: #fffcf7;   /* 派生：比 -soft 更淡的暖色区块底（展开式提示面板） */
+  --dc-warning-border: #ffe1b8;
+  --dc-danger: #f2270c;
+  --dc-danger-soft: #feefec;    /* StatusTag danger 底 */
+  --dc-danger-border: #f5b7ac;  /* 派生：与 #f2270c 同色系 */
+  --dc-danger-hover: #d21f08;   /* 派生：与 #f2270c 同色系 */
+  --dc-danger-link: #f2270c;    /* 派生：危险链接色 */
+
+  /* 紫：special 徽章（purple 本体 = viz-5 的语义名） */
+  --dc-purple: #7262fd;
+  --dc-purple-soft: #f0edff;
+
+  /* ---- 中性色（偏冷蓝灰系）---- */
+  /* 文字语义层：文字前景与背景/描边 token 分离，避免加深文字时误伤填充。
+     对齐 Ant Design 5 的黑透明度阶 colorText .88 / colorTextSecondary .65 /
+     colorTextDescription .45 / colorTextQuaternary .25；正文与标题同色（.88），层级靠字重与字号。
+     次要文字取 .65 而不是 Ant 的 .45：保证次要文字对比度过 WCAG AA（.65 = 5.9:1，.45 = 3.9:1）。
+     暗色分支见 dark.scss。 */
+  --text-primary: rgb(0 0 0 / 88%);
+  --text-secondary: rgb(0 0 0 / 88%);   /* EP regular（正文/单元格/表单值）：Ant 正文 = 标题色 */
+  --text-tertiary: rgb(0 0 0 / 65%);
+  --text-description: rgb(0 0 0 / 45%); /* Ant colorTextDescription：时间戳 / 帮助文案 / KPI 标签 */
+  --text-placeholder: rgb(0 0 0 / 25%);
+  --text-disabled: rgb(0 0 0 / 25%);
+  --text-link: #155eef;
+  --text-success: #017a38;
+  --text-warning: #b36200;
+  --text-danger: #d21f08;
+
+  --dc-text-1: var(--text-primary);     /* 一级文字 = Ant colorText .88 */
+  --dc-text-2: var(--text-secondary);   /* 正文 = 与一级同色（Ant 做法） */
+  --dc-text-3: var(--text-tertiary);    /* 次要 = Ant colorTextSecondary .65 */
+  --dc-text-description: var(--text-description); /* 描述 = Ant colorTextDescription .45，只给真描述（时间戳/帮助/KPI 标签） */
+  --dc-text-4: var(--text-disabled);    /* 四级 / 占位 / 禁用 = Ant colorTextQuaternary .25 */
+  --dc-text-disabled: var(--dc-text-4); /* 占位 / 禁用。保留 token 名以免波及既有引用 */
+  --dc-text-2-strong: var(--text-primary); /* 并入正文色（Ant 无此档），保留 token 名以免波及既有引用 */
+  --dc-border: #ebeef2;         /* 控件边框（浅） */
+  --dc-border-strong: #dce1e8;  /* 控件描边（深，输入框/按钮边），最常用的边框色 */
+  --dc-divider: #f2f4f7;        /* 分割线。与 --dc-tag-bg 同值但语义独立，勿合并 */
+  --dc-row-hover: #f7f9fe;      /* 行悬停 */
+  --dc-control-hover: #edf1f7;  /* 控件悬停底（工具栏按钮等） */
+  --dc-bg-header: #fafbfc;      /* 表头 / 浅块 */
+  --dc-bg-block: #f7f8fa;       /* 浅块 2 */
+  --dc-bg-page: #f5f6fa;        /* 页面底 */
+  --dc-skeleton: #eef1f5;       /* 骨架底 */
+  --dc-skeleton-highlight: rgb(255 255 255 / 65%); /* 骨架高光 */
+  --dc-surface: #fff;
+
+  /* ---- 语义色（微信绿仅微信语义 / 紫色为强调色 / info 为链接与提示条）---- */
+  --dc-wx: #07c160;
+  --dc-wx-dark: #06a552;
+  --dc-wx-bg: #e6f9ee;
+  --dc-price: #e1251b;          /* 价格红 */
+  --dc-info: #1677ff;           /* 链接色 / info 条 */
+  --dc-info-bg: #e8f1ff;
+  --dc-purple: #722ed1;         /* 强调色，慎用 */
+  --dc-purple-bg: #f4edfc;
+  --dc-purple-card-bg: #fbf8fe;     /* 派生：强调卡片底（比 -bg 更浅） */
+  --dc-purple-card-border: #e4d5f6; /* 派生：强调卡片 / 气泡菜单描边 */
+  --dc-cyan: #13c2c2;
+  --dc-cyan-bg: #e6fbfb;
+  --dc-magenta: #eb2f96;
+  --dc-magenta-bg: #fff0f6;
+
+  /* ---- 数据可视化 8 色 ---- */
+  --dc-viz-1: #3c6ef0;
+  --dc-viz-2: #26bf66;
+  --dc-viz-3: #ff8800;
+  --dc-viz-4: #0e9cb8;
+  --dc-viz-5: #7262fd;
+  --dc-viz-6: #b542d8;
+  --dc-viz-7: #e8684a;
+  --dc-viz-8: #17c3b2;
+
+  /* ---- 字号阶梯 ----
+     对齐 Ant Design 5：
+       · 正文基准 14px（Ant fontSize）：单元格 / 表单值 / 表单标签 / 按钮 / 表头 / 下拉项 / 分页 一律 14
+       · 12px（Ant fontSizeSM）只给 chip / 角标 / 标签 / 计数徽标这类带底色或定高的小块
+       · 10 / 11 / 13 三档在正文里不再出现；fs-10 / fs-11 / fs-13 仅为兼容保留，新代码禁用
+       · 行高：14px → 1.5715（22px）；12px → 1.6667（20px）
+       · 实体名（商品名 / 活动名 / 券名 / 昵称）= 14px / 600 / text-1；表头 = 14px / 600 / text-1；表单标签 / 按钮 = 14px / 400
+       · text-4 只给禁用 / 占位 / 死链，不给任何要读的内容 */
+  --dc-fs-body: 14px;           /* 角色字号：正文（Ant fontSize） */
+  --dc-fs-sm: 12px;             /* 角色字号：chip / 角标（Ant fontSizeSM） */
+  --dc-fs-lg: 16px;             /* 角色字号：小标题（Ant fontSizeLG） */
+  --dc-lh-body: 1.5715;         /* 14px → 22px（Ant lineHeight） */
+  --dc-lh-sm: 1.6667;           /* 12px → 20px（Ant lineHeightSM） */
+  --dc-fs-10: 10px;             /* 废弃，新代码禁用 */
+  --dc-fs-11: 11px;             /* 废弃，新代码禁用 */
+  --dc-fs-12: 12px;
+  --dc-fs-13: 13px;             /* 废弃，新代码禁用 */
+  --dc-fs-14: 14px;
+  --dc-fs-15: 15px;
+  --dc-fs-16: 16px;
+  --dc-fs-18: 18px;
+  --dc-fs-20: 20px;
+  --dc-fs-24: 24px;
+
+  /* ---- 圆角：2 小标签 / 4 输入按钮 / 6 中卡 / 8 卡片弹窗 / 12 大卡 / 999 胶囊 ---- */
+  --dc-radius-tag: 2px;
+  --dc-radius-sm: 4px;
+  --dc-radius-md: 6px;
+  --dc-radius-lg: 8px;
+  --dc-radius-xl: 12px;
+  --dc-radius-pill: 999px;
+
+  /* ---- 阴影 ---- */
+  --dc-shadow-card: 0 1px 4px rgb(31 39 51 / 6%);
+  --dc-shadow-pop: 0 8px 28px rgb(31 39 51 / 15%);
+  --dc-shadow-dropdown: 0 6px 16px rgb(31 39 51 / 10%); /* 派生：行内操作下拉 / 锚定确认小卡（比 -pop 更贴更轻） */
+  --dc-shadow-brand-btn: 0 2px 6px rgb(60 110 240 / 25%); /* 派生：主操作按钮悬停升实心时的品牌投影 */
+
+  /* ---- 动效：微反馈 120–150ms · 下拉气泡 150–200ms · 弹窗抽屉 240–300ms，禁超 400ms ---- */
+  --dc-dur-micro: 150ms;
+  --dc-dur-pop: 200ms;
+  --dc-dur-modal: 240ms;
+  --dc-ease: cubic-bezier(0.4, 0, 0.2, 1);      /* 标准曲线 */
+  --dc-ease-in: cubic-bezier(0, 0, 0.2, 1);     /* 进入曲线 */
+
+  /* ---- 遮罩 ---- */
+  --dc-mask: rgb(31 39 51 / 45%);          /* 弹窗遮罩 */
+  --dc-mask-viewer: rgb(31 39 51 / 76%);   /* 图片查看器 */
+
+  /* ---- 字体 ---- */
+  /* 正文沿用 Ant Design 5 系统栈；中文不套数字字体，避免字形回退到西文字体。 */
+  --dc-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* 数字字体 ZF Num，只给金额 / KPI / 编号中的数字和金额符号。 */
+  --dc-font-num: "ZF Num", "DIN Alternate", "Helvetica Neue", Arial, sans-serif;
+
+  /* ---- 外壳尺寸 ----
+     ⚠️ 顶栏高度务必只在此处定义，其他文件一律引用本变量；
+     各处另写字面量时极易漏改其中之一导致内容区错位。 */
+  --dc-header-h: 56px;          /* 顶栏高度 */
+
+  /* ---- 商品管理派生 ---- */
+  --dc-tag-bg: #f2f4f7;          /* 平台灰 pill / 未选 tab badge 底 */
+  --dc-brand-soft-alt: #ebf1fe;  /* 审核中 pill 浅底（≠ brand-soft） */
+  --dc-text-3-alt: var(--dc-text-3); /* Banner 统计 label。并入 text-3（原独立灰对比度不足），不再单独维护一档 */
+  --dc-warning-text: #b36200;    /* 警示条文字 */
+  --dc-border-dashed: #c9d0da;   /* 上传虚线框 */
+  --dc-banner-border: #dce7fb;   /* Banner 边框 */
+
+  /* ============================================================
+     --sc-* 兼容别名层
+     品牌族一律接 --dc-*，不引入第二个主色。
+     中性色是独立的一套灰阶（写死值，不接 --dc-*）：若接 --dc-*，--sc-muted 与
+     --sc-ink4 会落到同一个色，「状态字 / 未选中分段字 / 提示字」三级灰被压成一级。
+     新控件直接用 --dc-*，不要再新增 --sc-* 引用。
+     ============================================================ */
+  --sc-brand: var(--dc-brand);
+  --sc-brand-strong: var(--dc-brand-active);
+  --sc-brand-weak: var(--dc-brand-soft);
+  --sc-brand-weak2: color-mix(in srgb, var(--dc-brand) 15%, #fff);
+  --sc-brand-soft: var(--dc-brand-disabled);
+
+  --sc-danger: var(--dc-danger);
+  --sc-danger-strong: var(--dc-danger-hover);
+  --sc-danger-weak: var(--dc-danger-soft);
+  --sc-danger-weak2: var(--dc-danger-border);
+
+  --sc-success: var(--dc-success);
+  --sc-success-strong: color-mix(in srgb, var(--dc-success) 82%, #000);
+  --sc-warn: var(--dc-warning);
+  --sc-warn-strong: var(--dc-warning-text);
+  --sc-warn-weak: var(--dc-warning-soft);
+
+  /* 中性色：独立灰阶（勿改回 --dc-*，理由见上方说明） */
+  --sc-ink: #1d2939;
+  --sc-ink2: #344054;
+  --sc-ink3: #475467;
+  --sc-ink4: #667085;
+  --sc-muted: #98a2b3;
+  --sc-faint: #c0c6d0;
+
+  --sc-line: #e4e8ef;
+  --sc-line2: #e5e9f2;
+  --sc-line3: #eef0f3;
+  --sc-line-strong: #c6cfdc;
+
+  --sc-card: #f6f7f9;
+  --sc-bg: #eef1f5;
+
+  /* 刻度 4/8/12 → dc 圆角阶 sm/lg/xl（dc 的 md 是 6px，此处不对应） */
+  --sc-r-sm: var(--dc-radius-sm);
+  --sc-r-md: var(--dc-radius-lg);
+  --sc-r-lg: var(--dc-radius-xl);
+}
+
+/* ============================================================
+   降低动效偏好 —— 全局生效
+   全局单点规则：页面/组件**不得**重复声明本 media query
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

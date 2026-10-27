@@ -1,0 +1,993 @@
+/* ============================================================
+   弹窗与反馈体系 v2 · 全站基座（令牌 + 换皮）
+
+   加载顺序：必须排在 style/dc/element-plus.scss 之后（main.ts 末尾），
+   否则 dc 的 `.el-dialog { border-radius: 8 }`、`.el-input__wrapper.is-focus{…!important}`
+   会盖掉这里的值。
+
+   ⚠️ 本文件是**不改 DOM 的换皮**：全站 el-dialog / el-drawer /
+   ElMessageBox 的结构一个都不动，只重排它们的壳、分隔线、按钮与间距。
+   需要「按 intent 换形换色 + 三级摩擦」的语义能力，走 @/components/overlay 的
+   appConfirm / AppDialog（调用方显式声明 intent，组件不做关键词猜测）。
+
+   弹窗主色与 --dc-brand 系列同值，全站按钮蓝统一。
+   ============================================================ */
+
+/* ============================================================
+   L0 · 令牌（全站唯一定义处）
+   ============================================================ */
+:root {
+  /* ---- 色板：与 --dc-brand 系列同值（弹窗/页面按钮蓝统一） ---- */
+  --overlay-primary: #3c6ef0;
+  --overlay-primary-hover: #2b54c7;
+  --overlay-primary-soft: #ebf0ff;
+  --overlay-primary-border: #c7d6fb;
+  --overlay-primary-busy: #9db6f8; /* 主按钮 loading 浅化 */
+  --overlay-danger: #c23a34;
+  --overlay-danger-hover: #a83029;
+  --overlay-danger-soft: #faedec;
+  --overlay-danger-border: #f0d2cf;
+  --overlay-warn: #b98a2e;
+  --overlay-warn-hover: #a2761f;
+  --overlay-warn-soft: #fbf4e4;
+  --overlay-warn-border: #efdfb8;
+  --overlay-discard: #475569;
+  --overlay-discard-soft: #f1f5f9;
+  --overlay-switch-busy: #9ba9e4;
+
+  /* ---- 中性色 ---- */
+  --overlay-ink: #0f172a;
+  --overlay-ink-2: #64748b;
+  --overlay-ink-3: var(--text-tertiary, #667085);
+  --overlay-ink-btn: #475569;
+  --overlay-ink-strong: #334155;
+  --overlay-border: #e2e8f0;
+  --overlay-border-2: #cbd5e1;
+  --overlay-divider: #f1f5f9;
+  --overlay-input-border: #dde3ec;
+  --overlay-head-bg: #f8fafc;
+  --overlay-surface: #fff;
+
+  /* ---- 尺寸枚举：类型层禁自定义 width ---- */
+  --overlay-w-confirm: 416px;
+  --overlay-w-gate: 460px;
+  --overlay-w-s: 420px;
+  --overlay-w-m: 560px;
+  --overlay-w-l: 800px;
+  --overlay-w-xl: 1040px;
+  --overlay-w-drawer: 480px;
+  --overlay-w-drawer-lg: 800px;
+
+  /* ---- 几何 ---- */
+  --overlay-radius: 12px;
+  --overlay-pad: 24px;
+  --btn-radius: 6px;
+  --btn-h: 32px;
+  --overlay-input-h: 36px;
+  --overlay-input-radius: 8px;
+
+  /* ---- 遮罩与阴影 ---- */
+  --overlay-mask: rgb(15 23 42 / 45%);
+  --shadow-pop: 0 6px 18px rgb(15 23 42 / 10%);
+  --shadow-lg: 0 24px 60px rgb(15 23 42 / 22%);
+  --shadow-side: -16px 0 48px rgb(15 23 42 / 14%);
+  --shadow-toast: 0 8px 24px rgb(15 23 42 / 10%);
+
+  /* ---- 动效（全部 ease-out）---- */
+  --motion-confirm: 150ms;
+  --motion-dialog: 200ms;
+  --motion-drawer: 220ms;
+  --motion-toast: 180ms;
+  --overlay-ease: cubic-bezier(0, 0, 0.2, 1);
+
+  /* ---- 层级 ---- */
+  --z-dialog: 2000;
+  --z-confirm: 2100;
+  --z-toast: 2200;
+}
+
+@keyframes overlay-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes overlay-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================
+   L1 · 遮罩（EP 的所有弹层共用 .el-overlay）
+   ============================================================ */
+.el-overlay {
+  background-color: var(--overlay-mask);
+}
+
+/* ============================================================
+   L1 · el-dialog 换皮（不改结构）
+   EP 默认：壳 padding 16 · header padding-bottom 16 · footer padding-top 16 · 无分隔线。
+   改为：壳 padding 归零，三段各自内衬 + 上下分隔线
+     header 15/20 · 标题 15·600 · 32×32 关闭热区
+     body   20
+     footer 13/20 · 右对齐 · 按钮 h32 圆角 6
+
+   ⚠️ 为什么用 `.el-overlay-dialog .el-dialog` + !important：
+   全仓有 6 处样式源在抢 .el-dialog —— reset.scss 的
+   `.el-overlay-dialog .el-dialog{border-radius:14px}`（特异性 0,2,0）、
+   ds-element-plus.scss、dc/element-plus.scss、element-plus 自身，
+   dev 下 EP 的样式表还排在本文件之后。单类选择器 `.el-dialog` 抢不过
+   （圆角会落在 14、壳 padding 落在 16、标题落在 18px），故这里同时提特异性并对必须赢的几何加 !important。
+   ============================================================ */
+.el-overlay-dialog .el-dialog,
+.el-dialog.el-dialog {
+  padding: 0 !important;
+  border-radius: var(--overlay-radius) !important;
+  box-shadow: var(--shadow-lg) !important;
+  animation: overlay-pop-in var(--motion-dialog) var(--overlay-ease) both;
+}
+
+/* 垂直居中：EP 默认 `margin: var(--el-dialog-margin-top, 15vh) auto 50px`，弹窗
+   永远吊在离顶 15vh 的位置，内容矮的时候视觉上明显偏上。
+   这里把三边 margin 都交给 auto，配合 `.el-overlay-dialog{display:flex}` 做水平+
+   垂直居中，效果等价于 EP 自己的 `align-center`，但不用逐个改调用点。
+
+   为什么改 --el-dialog-margin-top 而不是直接写 `margin: auto`：
+   EP 只在业务显式传了 `top` 时才把它写成**内联**的 --el-dialog-margin-top
+   （dialog-content 的 `if (props.top)`），内联声明压得过这里的类选择器，所以刻意
+   贴顶的高个子弹窗（如素材库 5px、商品选择 20px）保持原样，
+   只有吃默认值的那批变居中。
+   ⚠️ 别写成 `var(--el-dialog-margin-top, auto)` 靠兜底值区分两者：EP 在 `.el-dialog`
+   规则里**无条件**声明了 `--el-dialog-margin-top: 15vh`，变量始终有值、兜底永不生效。
+   要覆盖只能改变量本身。
+   margin-bottom 从 EP 的 50px 也一并改成 auto，两个作用：flex 交叉轴上带 auto 外边距
+   就不会被 align-items:stretch 抻满整屏；内容超过视口时两侧 auto 归 0、退回贴顶滚动，
+   不会像 align-items:center 那样把头部截到视口外点不到。 */
+.el-overlay-dialog {
+  display: flex;
+}
+
+.el-overlay-dialog .el-dialog:not(.is-fullscreen) {
+  --el-dialog-margin-top: auto;
+
+  margin: var(--el-dialog-margin-top) auto auto !important;
+}
+
+.el-dialog__header {
+  padding: 15px 20px !important;
+  margin: 0 !important;
+  border-bottom: 1px solid var(--overlay-divider);
+}
+
+.el-dialog__title {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  line-height: 1.4;
+  color: var(--overlay-ink);
+}
+
+/* 关闭钮：EP 默认 48×48 贴在右上角，改成 32×32 圆角热区，内缩 10 */
+.el-dialog__headerbtn {
+  top: 10px !important;
+  right: 10px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: var(--overlay-input-radius);
+  transition: background 0.12s var(--overlay-ease);
+
+  &:hover {
+    background: var(--overlay-head-bg);
+  }
+
+  .el-dialog__close {
+    font-size: 15px;
+    color: var(--overlay-ink-3);
+  }
+
+  &:hover .el-dialog__close,
+  &:focus .el-dialog__close {
+    color: var(--overlay-ink);
+  }
+}
+
+.el-dialog__body {
+  /* 长内容：header/footer 固定，body 独立滚动 ≤80vh */
+  max-height: 80vh;
+  padding: 20px !important;
+  overflow: auto;
+  font-size: 13px;
+  color: var(--overlay-ink);
+}
+
+.el-dialog__footer {
+  padding: 13px 20px !important;
+  text-align: right;
+  border-top: 1px solid var(--overlay-divider);
+}
+
+/* 无 header / 无 footer 的弹窗（:show-close=false 且自绘版式）不该出现空分隔线 */
+.el-dialog__header:empty,
+.el-dialog__footer:empty {
+  display: none;
+}
+
+/* ============================================================
+   L1 · avue-crud 表单弹窗（各 CRUD 配置页共用）
+   avue 的 DOM 与手写弹窗不同，按钮在 `.avue-dialog__footer`，不是 `.el-dialog__footer`
+   —— 只改 el-dialog__footer 对 avue 完全无效。
+   结构（footer 长在 body **里面**，是 .avue-form 的兄弟，不是 body 的兄弟）：
+     .el-dialog.avue-dialog.avue-crud__dialog
+     ├─ .el-dialog__header > .avue-crud__dialog__header > (.el-dialog__title + .avue-crud__dialog__menu 全屏钮)
+     └─ .el-dialog__body
+        ├─ .avue-form
+        └─ .avue-dialog__footer.avue-dialog__footer--right > el-button ×N   ← absolute; bottom:0
+   ============================================================ */
+.el-dialog.avue-dialog {
+  min-height: 0;
+  border-radius: var(--overlay-radius) !important;
+
+  /* 底部留位不能收成 20 —— footer 是 `position:absolute; bottom:0` 浮在 body 上的，
+     avue 原值 `20px 20px 60px` 就是给它腾的位置。收成 20px 会让最后一行表单被 footer
+     盖住（表单最后一个字段会整条看不见）。
+     81 = footer 自身 59（13 上 + 32 按钮 + 13 下 + 1 上边框）+ 22 间隙，
+     和 `--avue-form-group-gap` 的行距对齐，最后一行与分隔线的留白等于行与行之间的留白。 */
+  .el-dialog__body {
+    padding: 20px 20px 81px !important;
+  }
+
+  /* 全屏钮：与 ✕ 同一套 32×32 灰热区，避免两个图标一大一小 */
+  .avue-crud__dialog__menu {
+    right: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--overlay-input-radius);
+
+    &:hover {
+      background: var(--overlay-head-bg);
+    }
+
+    i {
+      font-size: 14px;
+      color: var(--overlay-ink-3);
+    }
+  }
+}
+
+.el-dialog .avue-dialog__footer,
+.avue-dialog__footer {
+  /* row-reverse：avue 的 DOM 顺序是「主按钮 + 取消」，规范要求「取消 + 动词主按钮」，
+     翻转视觉顺序而不动 DOM（改 DOM 要碰 avue 源码） */
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 10px;
+  justify-content: flex-start;
+
+  /* !important：avue 自带 `.avue-dialog__footer{padding:10px 16px}` 同特异性且加载更晚 */
+  padding: 13px 20px !important;
+  border-top: 1px solid var(--overlay-divider);
+
+  .el-button {
+    height: var(--btn-h) !important;
+    padding: 0 16px;
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: var(--btn-radius) !important;
+  }
+
+  /* footer 规范是「取消 + 动词主按钮」纯文字，avue 默认给按钮塞了图标 */
+  .el-button > i,
+  .el-button .el-icon {
+    display: none;
+  }
+
+  .el-button--primary {
+    background: var(--overlay-primary);
+    border-color: var(--overlay-primary);
+
+    &:hover {
+      background: var(--overlay-primary-hover);
+      border-color: var(--overlay-primary-hover);
+    }
+  }
+
+  .el-button:not(.el-button--primary, .el-button--danger) {
+    color: var(--overlay-ink-btn);
+    background: var(--overlay-surface);
+    border-color: var(--overlay-border);
+
+    &:hover {
+      color: var(--overlay-primary);
+      background: var(--overlay-primary-soft);
+      border-color: var(--overlay-primary-border);
+    }
+  }
+}
+
+/* ============================================================
+   L1 · 弹窗内表单控件
+   必填星号 #c23a34 · 输入 36 高 / 圆角 8 / 描边 #DDE3EC ·
+   聚焦 1.5px var(--overlay-primary) + 0 0 0 3px var(--overlay-primary-soft) 光圈
+   ⚠️ 标签换行不许重叠：avue.scss 给 `.el-form-item__label` 写了
+   `align-items: center !important`，配合项级 labelWidth 不足（如 100px 放 8 字标签）
+   会把第二行压到上一行上。
+   这里统一改成顶部对齐 + 正常行高，标签换行只会往下走。
+   ============================================================ */
+.el-dialog .el-form-item__label,
+.el-drawer .el-form-item__label,
+.el-dialog .avue-form .el-form-item--default .el-form-item__label,
+.el-drawer .avue-form .el-form-item--default .el-form-item__label {
+  align-items: flex-start !important;
+  height: auto !important;
+  min-height: var(--overlay-input-h);
+  padding-top: 8px;
+  line-height: 1.4;
+  word-break: break-word;
+  white-space: normal;
+}
+
+.el-dialog .el-form-item.is-required > .el-form-item__label::before,
+.el-drawer .el-form-item.is-required > .el-form-item__label::before {
+  color: var(--overlay-danger);
+}
+
+.el-dialog .el-input__wrapper,
+.el-drawer .el-input__wrapper {
+  min-height: var(--overlay-input-h);
+  border-radius: var(--overlay-input-radius);
+}
+
+.el-dialog .el-input__wrapper.is-focus,
+.el-dialog .el-select__wrapper.is-focused,
+.el-drawer .el-input__wrapper.is-focus,
+.el-drawer .el-select__wrapper.is-focused {
+  box-shadow:
+    0 0 0 1px var(--overlay-primary) inset,
+    0 0 0 3px var(--overlay-primary-soft) !important;
+}
+
+/* ============================================================
+   L1 · el-message-box 换皮（未改用 appConfirm 的确认，仍走 EP 结构）
+   只换几何与配色，**不插意图图标、不改文案** —— 语义能力必须由调用方
+   显式声明 intent 才提供（降级原则：宁可样式旧，不可语义错）。
+   ============================================================ */
+.el-message-box {
+  --el-messagebox-width: var(--overlay-w-confirm);
+
+  padding: var(--overlay-pad);
+  border: none;
+  border-radius: var(--overlay-radius);
+  box-shadow: var(--shadow-lg);
+  animation: overlay-pop-in var(--motion-confirm) var(--overlay-ease) both;
+}
+
+.el-message-box__header {
+  padding: 0 0 8px;
+}
+
+.el-message-box__title {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--overlay-ink);
+}
+
+/* 关闭钮几何对齐 .el-dialog__headerbtn（32×32，内缩10），确认弹窗与普通弹窗的
+   关闭按钮手感统一。 */
+.el-message-box__headerbtn {
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--overlay-input-radius);
+  transition: background 0.12s var(--overlay-ease);
+
+  &:hover {
+    background: var(--overlay-head-bg);
+  }
+
+  .el-message-box__close {
+    font-size: 15px;
+    color: var(--overlay-ink-3);
+  }
+
+  &:hover .el-message-box__close,
+  &:focus .el-message-box__close {
+    color: var(--overlay-ink);
+  }
+}
+
+.el-message-box__content {
+  padding: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--overlay-ink-2);
+}
+
+.el-message-box__input {
+  padding-top: 14px;
+
+  /* 边框只能画在 wrapper 上：EP 是 wrapper > input，wrapper 自带 inset 阴影当边框，
+     里外都画会套出双框 */
+  .el-input__wrapper {
+    height: var(--overlay-input-h);
+    padding: 0 10px;
+    background: var(--overlay-surface);
+    border: 1px solid var(--overlay-input-border);
+    border-radius: var(--overlay-input-radius);
+    box-shadow: none;
+
+    /* !important 压 dc/element-plus.scss 的全局品牌蓝聚焦环 */
+    &.is-focus,
+    &:focus-within {
+      border: 1.5px solid var(--overlay-primary) !important;
+      box-shadow: 0 0 0 3px var(--overlay-primary-soft) !important;
+    }
+  }
+
+  input {
+    height: 100%;
+    font-size: 13px;
+    border: none;
+    box-shadow: none;
+  }
+
+  .el-message-box__errormsg {
+    margin-top: 4px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--overlay-danger);
+  }
+}
+
+.el-message-box__btns {
+  gap: 8px;
+  justify-content: flex-end;
+  padding: 20px 0 0;
+
+  /* EP 用 margin-left 拉开按钮，这里统一改 gap */
+  .el-button + .el-button {
+    margin-left: 0;
+  }
+
+  /* 32 / 6 必须 !important：src/style/base.scss 有全局
+     `.el-button { height: 33px !important; border-radius: var(--ds-radius-sm) !important }` */
+  .el-button {
+    height: var(--btn-h) !important;
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: var(--btn-radius) !important;
+  }
+
+  .el-button--primary {
+    background: var(--overlay-primary);
+    border-color: var(--overlay-primary);
+
+    &:hover {
+      background: var(--overlay-primary-hover);
+      border-color: var(--overlay-primary-hover);
+    }
+  }
+
+  .el-button--danger {
+    background: var(--overlay-danger);
+    border-color: var(--overlay-danger);
+
+    &:hover {
+      background: var(--overlay-danger-hover);
+      border-color: var(--overlay-danger-hover);
+    }
+  }
+}
+
+/* ============================================================
+   L1 · el-drawer 换皮
+   ============================================================ */
+
+/* !important：ds-element-plus.scss / dc/element-plus.scss 都给 .el-drawer 写过阴影，
+   同特异性靠加载顺序，dev 下抢不稳（会落回 rgba(0,0,0,.08)） */
+.el-drawer,
+.el-drawer.el-drawer {
+  box-shadow: var(--shadow-side) !important;
+}
+
+.el-drawer__header {
+  padding-bottom: 16px;
+  margin-bottom: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--overlay-ink);
+  border-bottom: 1px solid var(--overlay-divider);
+}
+
+.el-drawer__body {
+  padding-top: 16px;
+}
+
+.el-drawer__footer {
+  /* !important：EP 默认 `padding: 10px 20px 20px`，同特异性抢不稳 */
+  padding: 13px 20px !important;
+  border-top: 1px solid var(--overlay-divider);
+}
+
+/* ============================================================
+   L1 · toast 换皮（全站调用共用）
+   时长与去重由 @/components/overlay 的 message() 保证，这里只管外观。
+   ============================================================ */
+.el-message {
+  min-width: 0;
+  padding: 11px 16px;
+  font-size: 13px;
+  border-radius: var(--overlay-input-radius);
+  box-shadow: var(--shadow-toast);
+
+  .el-message__content {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .el-message__badge {
+    font-size: 10px;
+  }
+}
+
+/* ============================================================
+   L1 · 确认件正文（appConfirm 的 VNode 自绘部分，全站共用）
+   骨架：416 / 圆角 12 / 图标与深色标题横排 / 正文 13·1.6
+        / 按钮组 mt 20 · gap 8 · h32 · 圆角 6
+   ============================================================ */
+.app-confirm.el-message-box {
+  width: var(--overlay-w-confirm);
+  max-width: calc(100vw - 32px);
+
+  /* 内容整体由 VNode 自绘，EP 自带标题隐藏 */
+  .el-message-box__title {
+    display: none;
+  }
+
+  .el-message-box__header {
+    padding: 0;
+  }
+}
+
+.app-confirm-mask {
+  /* 兜底值；实际层级由 EP nextZIndex() 内联 style 覆盖，见 DcFormDialog.vue 同类注释——
+     写死 !important 会盖住持有更高 z-index 的宿主弹窗。 */
+  z-index: var(--z-confirm);
+  background: var(--overlay-mask);
+}
+
+.app-confirm__icon {
+  display: flex;
+  flex: 0 0 40px;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.app-confirm__headline {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  min-height: 40px;
+}
+
+.app-confirm__title {
+  min-width: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--overlay-ink);
+}
+
+.app-confirm__body {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--overlay-ink-2);
+}
+
+.app-confirm__body--clamp {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.app-confirm__more {
+  margin-top: 4px;
+  font-size: 12.5px;
+  color: var(--overlay-primary);
+  cursor: pointer;
+}
+
+.app-confirm__impact {
+  padding: 8px 10px;
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--overlay-danger);
+  background: var(--overlay-danger-soft);
+  border: 1px solid var(--overlay-danger-border);
+  border-radius: var(--btn-radius);
+}
+
+.app-confirm__count b {
+  font-weight: 700;
+  color: var(--overlay-ink);
+}
+
+.app-confirm__irreversible {
+  font-weight: 600;
+  color: var(--overlay-ink-strong);
+}
+
+/* ---- 四意图配色 ---- */
+.app-confirm--delete .app-confirm__icon {
+  color: var(--overlay-danger);
+  background: var(--overlay-danger-soft);
+}
+
+.app-confirm--danger .app-confirm__icon {
+  color: var(--overlay-warn);
+  background: var(--overlay-warn-soft);
+}
+
+.app-confirm--confirm .app-confirm__icon {
+  color: var(--overlay-primary);
+  background: var(--overlay-primary-soft);
+}
+
+.app-confirm--discard .app-confirm__icon {
+  color: var(--overlay-discard);
+  background: var(--overlay-discard-soft);
+}
+
+/* ---- 意图主按钮 ---- */
+.app-confirm .el-message-box__btns {
+  .app-confirm__cancel {
+    color: var(--overlay-ink-btn);
+    background: var(--overlay-surface);
+    border-color: var(--overlay-border);
+
+    &:hover {
+      color: var(--overlay-primary);
+      background: var(--overlay-primary-soft);
+      border-color: var(--overlay-primary-border);
+    }
+  }
+
+  .app-confirm__ok {
+    color: #fff;
+    border: none;
+  }
+
+  /* 红 / 黄意图主按钮不许带蓝投影：`ds/element-plus.scss` 给所有
+     `.el-button--primary` 挂了品牌蓝 `--ds-shadow-brand`(0 8px 18px rgb(60 110 240/18%))，
+     而这两个钮虽然改成了红 / 黄底，EP 仍给它加着 `el-button--primary` 类 ——
+     结果红钮下面拖一团蓝影。
+     选择器 3 个类，压得住那条单类规则，不用 !important。
+     蓝底的 confirm / discard 意图保留品牌投影，颜色本来就自洽。 */
+  .app-confirm__ok--delete,
+  .app-confirm__ok--danger {
+    box-shadow: none;
+  }
+
+  .app-confirm__ok--delete {
+    background: var(--overlay-danger);
+
+    &:hover {
+      background: var(--overlay-danger-hover);
+    }
+  }
+
+  .app-confirm__ok--danger {
+    background: var(--overlay-warn);
+
+    &:hover {
+      background: var(--overlay-warn-hover);
+    }
+  }
+
+  .app-confirm__ok--confirm,
+  .app-confirm__ok--discard {
+    background: var(--overlay-primary);
+
+    &:hover {
+      background: var(--overlay-primary-hover);
+    }
+  }
+}
+
+/* 窄屏：宽度让位，按钮纵排全宽 */
+@media (width <= 480px) {
+  .el-message-box {
+    width: calc(100vw - 32px);
+  }
+
+  .el-message-box__btns {
+    flex-direction: column-reverse;
+
+    .el-button {
+      width: 100%;
+      margin: 0;
+    }
+  }
+}
+
+/* ============================================================
+   L1 · 自绘弹窗的主色重映射
+
+   上面所有按钮换皮都挂在 EP 壳上（.el-dialog / .el-drawer / .el-message-box /
+   .avue-dialog__footer 内的 .el-button）。但本仓还有一批 `<Teleport>` + 自绘遮罩的弹窗，
+   按钮是手写 `<button class="goodsspu-dc__btn--primary">` —— 既不在 EP 壳里也不是
+   el-button，两个条件都不满足，一条规则都命不中，于是继续吃页面品牌蓝 --dc-brand #3c6ef0。
+
+   解法是**作用域重映射**而不是改 dc 令牌：--dc-brand 在页面上是对的，
+   只在弹窗壳内把 dc/ds 主按钮改取 --overlay-primary，弹窗色板可独立调整。
+
+   钩子类 `overlay-scope` 必须手工加到自绘弹窗的**壳根**上。不要图省事写
+   `[class*="__mask"]` —— 图片预览等组件也有 mask，会误伤。
+   ============================================================ */
+.overlay-scope {
+  .goodsspu-dc__btn--primary,
+  .ds-btn--primary {
+    background: var(--overlay-primary);
+    border-color: var(--overlay-primary);
+
+    &:hover {
+      background: var(--overlay-primary-hover);
+      border-color: var(--overlay-primary-hover);
+    }
+
+    &:active {
+      background: var(--overlay-primary-hover);
+      border-color: var(--overlay-primary-hover);
+    }
+
+    &:disabled {
+      background: var(--overlay-primary-busy);
+      border-color: var(--overlay-primary-busy);
+    }
+  }
+}
+
+/* ============================================================
+   L1 · 手写 el-dialog 的 footer 按钮 + 弹窗内 EP 主色重映射
+
+   前面的按钮换皮只覆盖两处：`.avue-dialog__footer`（avue 表单弹窗）与
+   `.el-message-box__btns`（确认件）。**手写 `<el-dialog>` + `<template #footer>`
+   这条最常见的路径一直是裸的** —— 按钮直接吃
+   `--el-color-primary`，而 `src/style/dc/element-plus.scss` 把它定义成了
+   `var(--dc-brand)` #3c6ef0，于是弹窗里冒出页面品牌蓝。
+
+   根治办法是在弹窗壳内重映射 EP 的主色变量：一条规则同时管住按钮、单选、多选、
+   开关、链接、聚焦环，而不是逐个组件补选择器。
+   ============================================================ */
+.el-dialog,
+.el-drawer,
+.el-message-box,
+.overlay-scope {
+  --el-color-primary: var(--overlay-primary);
+  --el-color-primary-dark-2: var(--overlay-primary-hover);
+  --el-color-primary-light-3: var(--overlay-primary-busy);
+  --el-color-primary-light-5: color-mix(
+    in srgb,
+    var(--overlay-primary) 50%,
+    #fff
+  );
+  --el-color-primary-light-7: color-mix(
+    in srgb,
+    var(--overlay-primary) 30%,
+    #fff
+  );
+  --el-color-primary-light-8: color-mix(
+    in srgb,
+    var(--overlay-primary) 20%,
+    #fff
+  );
+  --el-color-primary-light-9: var(--overlay-primary-soft);
+
+  /* 语义色也要落回弹窗色板：弹层内出现 EP 默认的绿/红/黄就等于跑出色板。
+     弹窗色板**没有绿**，`type="success"` 归到主色。 */
+  --el-color-success: var(--overlay-primary);
+  --el-color-success-light-3: var(--overlay-primary-busy);
+  --el-color-success-light-9: var(--overlay-primary-soft);
+  --el-color-danger: var(--overlay-danger);
+  --el-color-danger-light-3: var(--overlay-danger-hover);
+  --el-color-danger-light-9: var(--overlay-danger-soft);
+  --el-color-warning: var(--overlay-warn);
+  --el-color-warning-light-3: var(--overlay-warn-hover);
+  --el-color-warning-light-9: var(--overlay-warn-soft);
+
+  /* EP 的约定是「hover 变浅、active 变深」：`.el-button--primary` 自己把
+     `--el-button-hover-bg-color: var(--el-color-primary-light-3)` 写在按钮元素上。
+     弹窗规范反过来 —— hover var(--overlay-primary-hover) 比常态 var(--overlay-primary) **更深**。
+     变量写在弹窗壳上没用（就近声明胜出），必须挂到按钮元素本身；
+     否则弹窗正文里的主按钮 hover 会变浅成 light-3，
+     只有 footer / message-box 因为另有显式 :hover 规则才碰巧是对的。 */
+  .el-button--primary {
+    --el-button-hover-bg-color: var(--overlay-primary-hover);
+    --el-button-hover-border-color: var(--overlay-primary-hover);
+    --el-button-active-bg-color: var(--overlay-primary-hover);
+    --el-button-active-border-color: var(--overlay-primary-hover);
+  }
+
+  /* 共享幽灵钮 .pc-btn-ghost 页面上也在用，hover 取的是页面品牌蓝
+     --dc-brand。放进弹层就跑出色板 —— 与 goodsspu-dc__btn--primary 同一类问题，
+     同样只在弹层作用域内重映射，页面用法不动。 */
+  .pc-btn-ghost:hover {
+    color: var(--overlay-primary);
+    border-color: var(--overlay-primary-border);
+  }
+}
+
+/* 几何与 avue footer 对齐（32 高 / 圆角 6）。
+   !important 是必需的：src/style/base.scss 有全局
+   `.el-button { height: 33px !important; border-radius: var(--ds-radius-sm) !important }`。 */
+.el-dialog__footer > .el-button,
+.el-drawer__footer > .el-button {
+  height: var(--btn-h) !important;
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--btn-radius) !important;
+}
+
+.el-dialog__footer > .el-button--primary,
+.el-drawer__footer > .el-button--primary {
+  background: var(--overlay-primary);
+  border-color: var(--overlay-primary);
+
+  &:hover {
+    background: var(--overlay-primary-hover);
+    border-color: var(--overlay-primary-hover);
+  }
+}
+
+.el-dialog__footer > .el-button:not(.el-button--primary, .el-button--danger),
+.el-drawer__footer > .el-button:not(.el-button--primary, .el-button--danger) {
+  color: var(--overlay-ink-btn);
+  background: var(--overlay-surface);
+  border-color: var(--overlay-border);
+
+  &:hover {
+    color: var(--overlay-primary);
+    background: var(--overlay-primary-soft);
+    border-color: var(--overlay-primary-border);
+  }
+}
+
+/* ============================================================
+   L1 · 取消钮的 hover 底色跟随 intent
+
+   默认 hover 是主色浅底 var(--overlay-primary-soft)。放在**删除**确认里就变成
+   「红主按钮 + 蓝取消钮」，一张卡里两个色系打架。
+   规则是整张卡同色系，所以按 intent 分档覆盖。
+   ============================================================ */
+
+/* 选择器要写满 `.el-message-box__btns` 这一层：默认规则挂在
+   `.app-confirm .el-message-box__btns .app-confirm__cancel:hover`（0,4,0），
+   少写一层就是 0,3,0，压不过（取色仍是蓝底）。 */
+.app-confirm--delete .el-message-box__btns .app-confirm__cancel:hover {
+  color: var(--overlay-danger);
+  background: var(--overlay-danger-soft);
+  border-color: var(--overlay-danger-border);
+}
+
+.app-confirm--danger .el-message-box__btns .app-confirm__cancel:hover {
+  color: var(--overlay-warn);
+  background: var(--overlay-warn-soft);
+  border-color: var(--overlay-warn-border);
+}
+
+/* ============================================================
+   L1 · 危险弹窗里「取消」钮的 hover 也走 danger 浅底
+
+   上面那条只覆盖 `.app-confirm--delete/--danger`（appConfirm 卡）。
+   主按钮是危险色的**普通弹窗**（EP footer 里放 `el-button type="danger"`）
+   同样不该配蓝色 hover。用 :has() 按「footer 里有没有 danger 主钮」判定，
+   调用方不用加任何标记类。
+   ============================================================ */
+.el-dialog__footer:has(> .el-button--danger)
+  > .el-button:not(.el-button--danger):hover,
+.el-drawer__footer:has(> .el-button--danger)
+  > .el-button:not(.el-button--danger):hover {
+  color: var(--overlay-danger);
+  background: var(--overlay-danger-soft);
+  border-color: var(--overlay-danger-border);
+}
+
+/* ============================================================
+   ds-btn 皮肤在弹窗里的归位
+
+   本仓这批弹窗的 footer 按钮包在 `<div class="drawer-footer">` 里，
+   而上面那些规则用的是**直接子选择器** `.el-dialog__footer > .el-button`，
+   一条都命不中。所以这里必须用后代选择器。
+
+   特异性要压过 `.el-button.ds-btn--primary:not(...):hover`（0,4,0），
+   故前缀 `.el-dialog` / `.el-drawer` 凑到 (0,5,0)，不用 !important。
+   作用域只在弹窗/抽屉内，页面上的 ds-btn 不受影响。
+   ============================================================ */
+/* ⚠️ 必须排除 .is-link / .is-text：这两种是「无底纯文字」按钮，EP 只用
+   `--el-button-text-color` 给文字上色、底一律透明。本规则不加排除时会给它们刷上
+   `--overlay-primary` 实底，而文字色又被 EP 的 is-link 规则改回品牌蓝 —— 蓝底蓝字，
+   标签整个看不见（`type="primary" link` 的按钮会变成一个没有文字的蓝色方块）。 */
+.el-dialog .el-button.el-button--primary:not(.is-disabled, :disabled, .is-link, .is-text),
+.el-dialog .el-button.ds-btn--primary:not(.is-disabled, :disabled, .is-link, .is-text),
+.el-drawer .el-button.el-button--primary:not(.is-disabled, :disabled, .is-link, .is-text),
+.el-drawer .el-button.ds-btn--primary:not(.is-disabled, :disabled, .is-link, .is-text) {
+  color: #fff;
+  background: var(--overlay-primary);
+  border-color: var(--overlay-primary);
+
+  &:hover,
+  &:focus {
+    background: var(--overlay-primary-hover);
+    border-color: var(--overlay-primary-hover);
+  }
+
+  &:active {
+    background: var(--overlay-primary-hover);
+    border-color: var(--overlay-primary-hover);
+  }
+}
+
+/* 次按钮（取消）：**常态是素的**，只有 hover 才染主色浅底。
+   ds-components.scss 把浅底写进了常态，导致「取消」在静止时
+   就长得像 hover 态，与主按钮抢视觉权重。 */
+.el-dialog .el-button.ds-btn--secondary:not(.is-disabled, :disabled),
+.el-drawer .el-button.ds-btn--secondary:not(.is-disabled, :disabled) {
+  color: var(--overlay-ink-btn);
+  background: var(--overlay-surface);
+  border-color: var(--overlay-border);
+
+  &:hover,
+  &:focus {
+    color: var(--overlay-primary);
+    background: var(--overlay-primary-soft);
+    border-color: var(--overlay-primary-border);
+  }
+}
+
+/* ============================================================
+   icon-v2 着色
+
+   icon-v2 图标 SVG 都是 `fill="currentColor"`。经 `<img src>` 或
+   CSS `background: url()` 引入时，SVG 在独立文档上下文里解析，
+   currentColor 拿不到宿主的 color，一律回落成**黑色**。
+   （例如 ✓ 徽章会渲染成黑底白勾。）
+
+   唯一能让外链 SVG 跟随宿主颜色的办法是 mask + background：
+   把 SVG 当蒙版，用 currentColor 填色。
+   用法：<i class="om-icon" :style="{ '--icon': `url(${SVG})` }" />
+   颜色由父级 color 决定，尺寸由使用方给 width/height。
+   ============================================================ */
+.om-icon {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  background: currentcolor;
+  mask: var(--icon) no-repeat center / contain;
+}

@@ -1,0 +1,231 @@
+/*
+ * Copyright (C) 2025 gaipharma.com
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+/* ============================================================
+   协议管理（sys-agree）专属样式（含横幅动图）
+   仅本页 import；通用块（banner / filter / toolbar / empty / pager /
+   link / btn / stat）复用 goods-list-dc.scss，严禁改共享 scss
+   ============================================================ */
+
+/* 后端有 updateTime（「更新时间」为可排序列），没有 version 字段。
+   列的定义与 grid 由 DcTableShell 的 :cols / grid 承载（见 index.vue），本文件不定义栅格。 */
+
+.agreecfg-dc__table {
+  min-height: 260px;
+}
+
+.agreecfg-dc__thead,
+.agreecfg-dc__tr {
+  display: grid;
+  align-items: center;
+}
+
+.agreecfg-dc__thead {
+  height: 44px;
+  padding: 0 16px;
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: var(--dc-text-1);
+  background: var(--dc-bg-page);
+  border-bottom: 1px solid var(--dc-divider);
+}
+
+.agreecfg-dc__tr {
+  min-height: 56px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--dc-divider);
+  transition: background 0.15s;
+
+  &:hover {
+    background: var(--dc-row-hover);
+  }
+}
+
+.agreecfg-dc__td {
+  min-width: 0;
+  padding-left: 12px;
+}
+
+/* 协议类型章（设计 TAG 色族：b/p/c/r/o/g/m，按字典项顺序稳定取色） */
+.agreecfg-dc__type-cell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.agreecfg-dc__tag {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 10px;
+  font-size: var(--dc-fs-12);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  border-radius: 11px;
+
+  &.is-t0 {
+    color: #1677ff;
+    background: #e8f1ff;
+  }
+
+  &.is-t1 {
+    color: #722ed1;
+    background: #f4edfc;
+  }
+
+  &.is-t2 {
+    color: #13c2c2;
+    background: #e6fbfb;
+  }
+
+  &.is-t3 {
+    color: #f5222d;
+    background: #feecec;
+  }
+
+  &.is-t4 {
+    color: #fa8c16;
+    background: #fff4e6;
+  }
+
+  &.is-t5 {
+    color: #26a65b;
+    background: #e9f7ef;
+  }
+
+  &.is-t6 {
+    color: #eb2f96;
+    background: #fff0f6;
+  }
+
+  &.is-t7 {
+    color: #3c6ef0;
+    background: #ebf0ff;
+  }
+}
+
+.agreecfg-dc__type-note {
+  overflow: hidden;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.agreecfg-dc__name {
+  overflow: hidden;
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: var(--dc-text-1);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.agreecfg-dc__link--danger {
+  color: var(--dc-danger);
+
+  &:hover {
+    color: var(--dc-danger);
+    background: var(--dc-danger-soft);
+  }
+}
+
+.agreecfg-dc__pager-jump {
+  width: 44px;
+  height: 28px;
+  text-align: center;
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-sm);
+  outline: none;
+
+  &:focus {
+    border-color: var(--dc-brand);
+  }
+}
+
+/* ── 横幅动图（keyframes 加 agreecfg- 前缀防撞名） ── */
+.agreecfg-dc__banner-art {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  width: 210px;
+  height: 64px;
+}
+
+.agreecfg-dc__art-doc {
+  position: absolute;
+  top: 0;
+  left: 48px;
+  animation: agreecfg-wxFloat 3.4s ease-in-out infinite;
+}
+
+.agreecfg-dc__art-pen {
+  position: absolute;
+  top: 22px;
+  left: 110px;
+  animation: agreecfg-wxFloatB 3s ease-in-out infinite;
+}
+
+.agreecfg-dc__art-line {
+  position: absolute;
+  top: 50px;
+  left: 150px;
+  width: 26px;
+  height: 2.5px;
+  background: #fa8c16;
+  border-radius: 2px;
+  animation: agreecfg-wxBlink 1.6s ease infinite;
+}
+
+.agreecfg-dc__art-dot {
+  position: absolute;
+  top: 46px;
+  left: 24px;
+  width: 5px;
+  height: 5px;
+  background: #3c6ef0;
+  border-radius: 50%;
+  animation: agreecfg-wxBlink 2.4s ease 0.4s infinite;
+}
+
+@keyframes agreecfg-wxFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes agreecfg-wxFloatB {
+  0%,
+  100% {
+    transform: translateY(-4px);
+  }
+
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+@keyframes agreecfg-wxBlink {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* ── 隐藏 avue-crud host：仅承载内置增改/查看弹窗（appendToBody 挂 body 不受影响） ── */
+.agreecfg-dc__crud-host {
+  display: none;
+}

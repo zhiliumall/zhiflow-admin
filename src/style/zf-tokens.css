@@ -1,0 +1,125 @@
+/* ============================================================
+   管理后台 Design Tokens（全局）
+   品牌绿归一 #019444（= --el-color-primary）
+   用法：main.ts 全局引入
+   ============================================================ */
+:root {
+  /* ---- 品牌绿（与 src/style/theme.scss 的 EP 主题同源）---- */
+  --zf-green:        #019444;  /* 主操作 / 选中 / 完成 / 开关开（= --el-color-primary） */
+  --zf-green-hover:  #007636;  /* 主按钮 hover（= --el-color-primary-dark-2） */
+  --zf-green-deep:   #133D24;  /* 深绿标题 / 徽章 / tooltip 底 */
+  --zf-green-text:   #017A38;  /* 绿色文字链 / 次按钮文字 */
+  --zf-green-bg:     #E5F4EC;  /* 浅绿底：状态章 / 选中容器（= --el-color-primary-light-9） */
+  --zf-green-bg-2:   #F5FBF7;  /* 更浅：hover 底 / 选中行 #FBFEFC */
+  --zf-green-row:    #FBFEFC;  /* 表格选中行底 */
+  --zf-green-border: #B2DEC6;  /* = --el-color-primary-light-7 */
+
+  /* ---- 橙 ---- */
+  --zf-amount:       #E8752A;  /* 金额 / 未保存点 / 动效标记 */
+  --zf-doing:        #C97716;  /* 进行中状态字 */
+  --zf-doing-bg:     #FDF1E5;
+
+  /* ---- 红（只用于失败/删除）---- */
+  --zf-red:          #C2402A;
+  --zf-red-bg:       #FCEBE8;
+  --zf-red-bg-2:     #FEF6F5;
+  --zf-red-border:   #EFC7BE;
+  --zf-red-dashed:   #E4B4AA;
+
+  /* ---- 中性 ---- */
+  --zf-text-1:       #1B2B21;  /* 主文字 */
+  --zf-text-2:       #3C4A41;  /* 次级/普通按钮文字 */
+  --zf-text-3:       #5B6B60;  /* 表单标签 */
+  --zf-text-4:       #98A79D;  /* 辅助/占位 */
+  --zf-text-5:       #A9B5AD;  /* 弱提示 */
+  --zf-icon:         #4A5A50;  /* 组件库图标描边 */
+  --zf-icon-off:     #9AA8A0;  /* 未选中导航图标 */
+
+  --zf-border:       #D5DDD7;  /* 控件描边 */
+  --zf-border-light: #E4EAE6;  /* 卡片描边 */
+  --zf-divider:      #F0F3F1;  /* 分割线 */
+  --zf-divider-2:    #F5F7F6;  /* 表格行分割 */
+
+  --zf-bg-page:      #F5F6F7;
+  --zf-bg-gray:      #FAFBFA;  /* 分组底 / 步进器加减底 */
+  --zf-bg-control:   #F2F4F3;  /* 分段选择器轨道 / 搜索框 */
+  --zf-bg-icon:      #F7F9F8;  /* 图标 44px 容器 */
+  --zf-switch-off:   #C9D2CC;  /* 开关关（严禁用红）*/
+
+  /* ---- 圆角 ---- */
+  --zf-radius-btn:    6px;
+  --zf-radius-card:  10px;
+  --zf-radius-dialog:12px;
+  --zf-radius-tag:    4px;
+  --zf-radius-icon:  10px;    /* 图标容器 */
+  --zf-radius-pill: 999px;    /* 开关 / 进度条 */
+
+  /* ---- 尺寸 ---- */
+  --zf-h-btn-lg: 36px;  /* 弹窗底栏主按钮上限 */
+  --zf-h-btn:    32px;  /* 工具栏标准 */
+  --zf-h-btn-sm: 28px;  /* 顶栏密集区 */
+  --zf-h-btn-xs: 24px;  /* 行内/卡片内 */
+  --zf-h-input:  30px;
+  --zf-h-row:    38px;  /* 表单行高 */
+  --zf-h-table-header: 34px;
+  --zf-h-table-row:    52px; /* 选择商品行高 */
+  --zf-label-w:  72px;  /* 表单标签列宽 */
+  --zf-gap:       8px;  /* 同组按钮间距 */
+  --zf-stepper-btn: 22px; /* 步进器点击区（最小）*/
+
+  /* ---- 字体 ---- */
+  --zf-font: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --zf-fs-title: 14.5px;  /* 弹窗标题 */
+  --zf-fs-body:  12.5px;
+  --zf-fs-label: 11.5px;
+  --zf-fs-aux:   10.5px;
+
+  /* ---- 阴影 ---- */
+  --zf-shadow-card:   0 6px 18px rgba(20, 60, 40, .06);
+  --zf-shadow-dialog: 0 16px 40px rgba(20, 60, 40, .14);
+  --zf-shadow-pop:    0 6px 16px rgba(20, 60, 40, .08);
+  --zf-shadow-seg:    0 1px 3px rgba(0, 0, 0, .06);
+
+  /* ---- 动效时长 ---- */
+  --zf-dur-fast: .25s;   /* 开关/页签指示条 */
+  --zf-dur-pop:  .3s;    /* 勾选/图标弹跳 */
+  --zf-dur-progress: 2.4s;
+
+  /* ---- 促销（秒杀 / 砍价）---- */
+  --zf-promo:          #E8752A;
+  --zf-promo-light:    #F08A3C;
+  --zf-promo-grad:     linear-gradient(135deg, #F08A3C, #E8752A);
+  --zf-promo-bar-grad: linear-gradient(90deg, #F08A3C, #E8752A);
+  --zf-promo-track:    #FDECDD;  /* 促销进度条底 */
+  --zf-promo-pill-bg:  #FDF1E5;  /* 价签胶囊底 */
+  --zf-gold-1: #FFE9A8;          /* 金币高光 */
+  --zf-gold-2: #F5B93C;          /* 金币主色 */
+  --zf-gold-3: #D98F1F;          /* 金币暗部 */
+  --zf-gold-text: #8A5A0C;
+  --zf-countdown-bg: #133D24;    /* 秒杀倒计时块 */
+  --zf-toast-bg: rgba(16, 38, 26, .85);
+
+  /* ============================================================
+     admin 语义层 —— 全后台业务页共用
+     ============================================================ */
+
+  /* ---- 状态语义色：只经 src/const/statusDict.ts 消费，禁止页面自建状态色表 ---- */
+  --zf-status-success:    var(--zf-green);
+  --zf-status-warning:    var(--zf-doing);
+  --zf-status-danger:     var(--zf-red);
+  --zf-status-info:       var(--zf-text-4);
+  --zf-status-processing: var(--zf-doing); /* zf 语言无蓝，进行中与 warning 同源 */
+
+  /* ---- 圆角档（全后台收敛到 4/6/8/12）---- */
+  --zf-radius-sm: 4px;
+  --zf-radius-md: 6px;
+  --zf-radius-lg: 8px;
+  --zf-radius-xl: 12px;
+
+  /* ---- 间距档（4 基数）---- */
+  --zf-space-xs: 4px;
+  --zf-space-sm: 8px;
+  --zf-space-md: 12px;
+  --zf-space-lg: 16px;
+  --zf-space-xl: 24px;
+}

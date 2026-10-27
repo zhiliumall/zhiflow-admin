@@ -1,0 +1,175 @@
+.base-color {
+  color: #716bff;
+}
+
+.basegColor {
+  color: #186e30;
+}
+
+.red-color {
+  color: #cd2424;
+}
+
+.gray-color000 {
+  color: #000;
+}
+
+.gray-color6 {
+  color: rgb(0 0 0 / 60%);
+}
+
+.gray-color {
+  color: var(--text-tertiary, #667085);
+}
+
+.gray-color2 {
+  color: #222;
+}
+
+.color-wirte {
+  color: #fff;
+}
+
+.color-blur {
+  color: rgb(22 100 255);
+}
+
+.color-org {
+  color: #ffc857;
+}
+
+.color-green {
+  color: #00b4b3;
+}
+
+.f-12 {
+  font-size: 12px;
+}
+
+.f-13 {
+  font-size: 13px;
+}
+
+.f-14 {
+  font-size: 14px;
+}
+
+.f-15 {
+  font-size: 15px;
+}
+
+.f-16 {
+  font-size: 16px;
+}
+
+.f-18 {
+  font-size: 18px;
+}
+
+.f-20 {
+  font-size: 20px;
+}
+
+.f-24 {
+  font-size: 24px;
+}
+
+.f-28 {
+  font-size: 28px;
+}
+
+.f-40 {
+  font-size: 40px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.align-items-end {
+  align-items: flex-end;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.relative {
+  position: relative;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.h-16 {
+  height: 16px;
+}
+
+.lh-4 {
+  line-height: 14px;
+}
+
+.w-80 {
+  width: 80px;
+}
+
+.w-100 {
+  width: 100px;
+}
+
+.clamp-1 {
+  display: -webkit-box;
+  overflow: hidden;
+
+  /* 设置省略号在容器第四行文本后 */
+  -webkit-line-clamp: 1;
+  word-break: break-all;
+  -webkit-box-orient: vertical;
+}
+
+.clamp-2 {
+  display: -webkit-box;
+  overflow: hidden;
+
+  /* 设置省略号在容器第四行文本后 */
+  -webkit-line-clamp: 2;
+  word-break: break-all;
+  -webkit-box-orient: vertical;
+}
+
+.fb-wrap {
+  padding: 24px;
+
+  &-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &-title {
+    font-size: 14px;
+  }
+
+  &-body {
+    flex: 1;
+    padding: 16px 0;
+  }
+}
+
+.visibility-hidden {
+  visibility: hidden;
+}
+
+.app-main > .el-scrollbar {
+  padding: 24px;
+  background: var(--custom-scrollbar-bg-color, #eff0f4);
+}

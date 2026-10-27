@@ -1,0 +1,367 @@
+/* 主壳几何（顶栏 / 侧栏）与菜单配色。
+ * Keep these tokens local to the shell; business pages retain their own theme. */
+:root {
+  --zf-header-h: 60px;
+  --zf-menu-brand: #0064fa;
+  --zf-menu-active: #0062d6;
+  --zf-menu-tint: #e6effd;
+  --zf-menu-ink: #1c1f23;
+  --zf-menu-secondary: #4b5058;
+  --zf-menu-placeholder: #8a8f99;
+}
+
+body[layout="mix"] {
+  .horizontal-header {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    height: var(--zf-header-h);
+    padding: 0 20px;
+    background: #fff !important;
+    border-bottom: 0;
+    box-shadow: 0 1px 0 rgb(28 31 35 / 8%);
+  }
+
+  .horizontal-header .horizontal-header-left {
+    flex: none;
+    min-width: 0;
+    height: var(--zf-header-h);
+    padding-left: 0;
+    margin-right: 8px;
+  }
+
+  .horizontal-header .dc-logo {
+    padding-left: 0;
+  }
+
+  .horizontal-header .horizontal-header-left .dc-logo__name {
+    height: auto !important;
+    margin: 0 !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    line-height: 24px !important;
+    color: var(--zf-menu-ink) !important;
+  }
+
+  .horizontal-header .dc-logo__img,
+  .horizontal-header .dc-logo__tile {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+  }
+
+  .horizontal-header .header-primary-nav {
+    display: flex;
+    flex: 1;
+    gap: 4px;
+    align-items: center;
+    min-width: 0;
+    height: 100%;
+  }
+
+  .header-nav-item {
+    display: inline-flex;
+    flex: none;
+    gap: 6px;
+    align-items: center;
+    height: 36px;
+    padding: 0 12px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--zf-menu-ink);
+    white-space: nowrap;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
+
+    &:hover {
+      background: rgb(46 50 56 / 6%);
+    }
+
+    &:active {
+      background: rgb(46 50 56 / 10%);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--zf-menu-brand);
+      outline-offset: 2px;
+    }
+
+    &.is-active {
+      font-weight: 600;
+      color: var(--zf-menu-active) !important;
+      background: var(--zf-menu-tint);
+    }
+  }
+
+  .header-nav-more {
+    padding-left: 14px;
+  }
+
+  .horizontal-header .horizontal-header-right {
+    display: flex;
+    flex: none;
+    gap: 8px;
+    align-items: center;
+    min-width: 0;
+    margin-left: auto;
+    color: #4b5058 !important;
+
+    > * {
+      display: flex;
+      flex: none;
+      align-items: center;
+    }
+
+    .search-container,
+    .fullscreen-icon,
+    .dropdown-badge,
+    .dc-lang-trigger,
+    .header-tool-button,
+    .header-workbench,
+    .el-dropdown-link {
+      height: 36px !important;
+      color: #4b5058 !important;
+      border-radius: 8px;
+    }
+
+    .mc-bell__trigger {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+    }
+
+    .mc-bell__badge {
+      top: 3px;
+      right: 2px;
+      padding: 0 4px;
+      font-size: 10px;
+      line-height: 14px;
+      background: #f93920;
+    }
+
+    .search-container,
+    .fullscreen-icon,
+    .dc-lang-trigger,
+    .header-tool-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      padding: 0;
+    }
+
+    .header-tool-button {
+      cursor: pointer;
+      background: transparent;
+      border: 0;
+    }
+
+    .header-tool-button:focus-visible,
+    .header-workbench:focus-visible {
+      outline: 2px solid var(--zf-menu-brand);
+      outline-offset: 2px;
+    }
+
+    .header-tool-button:hover,
+    .header-workbench:hover,
+    .search-container:hover {
+      background: rgb(46 50 56 / 6%);
+    }
+
+    .header-workbench__label {
+      color: var(--zf-menu-ink);
+    }
+
+    .header-workbench {
+      flex: none;
+      gap: 8px;
+      padding: 0 12px 0 10px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 400;
+      cursor: pointer;
+      background: transparent;
+      border: 0;
+    }
+
+    svg,
+    .iconify,
+    .el-icon {
+      color: #4b5058 !important;
+    }
+
+    .dc-user {
+      gap: 8px;
+      padding: 0 12px 0 4px;
+      background: rgb(46 50 56 / 5%);
+      border-radius: 999px;
+    }
+
+    .dc-user__avatar {
+      width: 28px;
+      height: 28px;
+    }
+
+    .dc-user__chevron {
+      display: none;
+    }
+
+    .dc-user__avatar--initial {
+      font-weight: 400;
+      background: var(--zf-menu-brand);
+    }
+
+    .dc-user__name {
+      font-weight: 400;
+      color: var(--zf-menu-ink);
+    }
+  }
+
+  .sidebar-container {
+    background: #fff !important;
+    border-right: 0 !important;
+  }
+}
+
+/* An active overflow label is longer than “更多”; preserve all five destinations. */
+@media screen and (width <= 1280px) {
+  body[layout="mix"] .horizontal-header.has-overflow-active {
+    gap: 8px;
+  }
+}
+
+@media screen and (width <= 1190px) {
+  body[layout="mix"] .horizontal-header {
+    gap: 12px;
+
+    .horizontal-header-right .header-workbench__label {
+      display: none;
+    }
+  }
+}
+
+@media screen and (width <= 860px) {
+  body[layout="mix"] .horizontal-header {
+    gap: 8px;
+    padding: 0 12px;
+
+    .horizontal-header-left {
+      margin-right: 0;
+    }
+
+    .horizontal-header-right {
+      gap: 4px;
+
+      #full-screen,
+      #header-translation {
+        display: none;
+      }
+    }
+
+    .dc-logo__status,
+    .dc-user__chevron {
+      display: none !important;
+    }
+  }
+}
+
+html[data-theme="cliklog"] body[layout="mix"] .sidebar-container {
+  background: #fff !important;
+}
+
+/* Teleported popups need global rules. The third class also beats lazily loaded
+ * Element Plus .el-popper.is-pure padding and dropdown shadows. */
+.header-menu-popper.el-popper.el-dropdown__popper {
+  min-width: 152px;
+  padding: 6px;
+  color: var(--zf-menu-ink);
+  background: #fff;
+  border: 0;
+  border-radius: 12px;
+  box-shadow:
+    0 8px 24px rgb(28 31 35 / 12%),
+    0 0 0 1px rgb(28 31 35 / 6%);
+
+  .el-dropdown-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    background: transparent;
+  }
+
+  .el-dropdown-menu__item {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-height: 36px;
+    padding: 0 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: var(--zf-menu-ink);
+    border-radius: 8px;
+
+    &:not(.is-disabled):hover,
+    &:not(.is-disabled):focus {
+      color: var(--zf-menu-ink);
+      background: rgb(46 50 56 / 6%);
+    }
+
+    &.is-selected,
+    &.is-active {
+      font-weight: 600;
+      color: var(--zf-menu-active);
+      background: var(--zf-menu-tint);
+
+      &:not(.is-disabled):hover,
+      &:not(.is-disabled):focus {
+        color: var(--zf-menu-active);
+        background: var(--zf-menu-tint);
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--zf-menu-brand);
+      outline-offset: -2px;
+    }
+  }
+}
+
+.header-more-popper.header-menu-popper.el-popper,
+.header-user-popper.header-menu-popper.el-popper {
+  min-width: 172px;
+}
+
+.header-language-popper.el-popper {
+  .el-dropdown-menu__item {
+    justify-content: space-between;
+  }
+
+  .header-language-check {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--zf-menu-brand);
+  }
+}
+
+.header-user-popper.header-menu-popper.el-popper {
+  .el-dropdown-menu {
+    width: auto;
+  }
+
+  .el-dropdown-menu__item > a {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+}

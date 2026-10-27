@@ -1,0 +1,109 @@
+/* ============================================================
+   品牌蓝桥接层：旧 --zf-* / --ds-* 变量 → --dc-* 别名
+   目的：既有引用零改动切换到品牌蓝；移除 = 从 main.ts 去掉本文件引入
+   必须晚于 index.scss(含 ds-tokens.scss)、zf-tokens.css、ds/tokens.css 加载
+   ============================================================ */
+:root,
+html[data-theme] {
+  /* ---- zf 品牌族（绿 → 蓝）---- */
+  --zf-green: var(--dc-brand);
+  --zf-green-hover: var(--dc-brand-hover);
+  --zf-green-deep: var(--dc-brand-active);
+  --zf-green-text: var(--dc-brand);
+  --zf-green-bg: var(--dc-brand-soft);
+  --zf-green-bg-2: var(--dc-row-hover);
+  --zf-green-row: var(--dc-row-hover);
+  --zf-green-border: var(--dc-brand-border);
+  /* 数字字体契约别名：旧 zf 页面可复用管理后台 ZF Num 令牌。 */
+  --zf-font-num: var(--dc-font-num);
+
+  /* ---- zf 功能色对齐 ---- */
+  --zf-doing: var(--dc-warning);
+  --zf-doing-bg: var(--dc-warning-soft);
+  --zf-red: var(--dc-danger);
+  --zf-red-bg: var(--dc-danger-soft);
+  --zf-red-bg-2: var(--dc-danger-soft);
+  --zf-red-border: var(--dc-danger-border);
+  --zf-red-dashed: var(--dc-danger-border);
+
+  /* ---- zf 中性 ---- */
+  --zf-text-1: var(--dc-text-1);
+  --zf-text-2: var(--dc-text-2);
+  --zf-text-3: var(--dc-text-2);
+  --zf-text-4: var(--dc-text-3);
+  --zf-text-5: var(--dc-text-3);
+  --zf-icon: var(--dc-text-2);
+  --zf-icon-off: var(--dc-text-3);
+  --zf-border: var(--dc-border);
+  --zf-border-light: var(--dc-divider);
+  --zf-divider: var(--dc-divider);
+  --zf-divider-2: var(--dc-divider);
+  --zf-bg-page: var(--dc-bg-page);
+  --zf-bg-gray: var(--dc-bg-header);
+  --zf-bg-control: var(--dc-bg-block);
+  --zf-bg-icon: var(--dc-bg-header);
+  --zf-switch-off: var(--dc-text-disabled);
+
+  /* ---- zf 圆角对齐设计阶梯（按钮 6→4 / 卡 10→8 / 弹窗 12→8 / 标签 4→2）---- */
+  --zf-radius-btn: var(--dc-radius-sm);
+  --zf-radius-card: var(--dc-radius-lg);
+  --zf-radius-dialog: var(--dc-radius-lg);
+  --zf-radius-tag: var(--dc-radius-tag);
+  --zf-radius-icon: var(--dc-radius-lg);
+  --zf-radius-sm: var(--dc-radius-sm);
+  --zf-radius-md: var(--dc-radius-md);
+  --zf-radius-lg: var(--dc-radius-lg);
+  --zf-radius-xl: var(--dc-radius-xl);
+
+  /* ---- zf 状态语义（进行中在蓝语言下回归品牌蓝）---- */
+  --zf-status-success: var(--dc-success);
+  --zf-status-warning: var(--dc-warning);
+  --zf-status-danger: var(--dc-danger);
+  --zf-status-info: var(--dc-text-3);
+  --zf-status-processing: var(--dc-brand);
+
+  /* ---- zf 阴影 ---- */
+  --zf-shadow-card: var(--dc-shadow-card);
+  --zf-shadow-dialog: var(--dc-shadow-pop);
+  --zf-shadow-pop: var(--dc-shadow-pop);
+  --zf-shadow-seg: 0 1px 3px rgb(0 0 0 / 6%);
+
+  /* ---- ds 族（ds-tokens.scss 与 ds/tokens.css 两处旧定义统一接管）---- */
+  --ds-brand: var(--dc-brand);
+  --ds-brand-hover: var(--dc-brand-hover);
+  --ds-brand-active: var(--dc-brand-active);
+  --ds-brand-soft: var(--dc-brand-soft);
+  --ds-brand-softer: var(--dc-row-hover);
+  --ds-brand-soft-border: var(--dc-brand-border);
+  --ds-text: var(--dc-text-1);
+  --ds-text-secondary: var(--dc-text-2);
+  --ds-text-tertiary: var(--dc-text-3);
+  --ds-text-muted: var(--dc-text-3);
+  --ds-border: var(--dc-border);
+  --ds-border-light: var(--dc-divider);
+  --ds-border-subtle: var(--dc-divider);
+  --ds-page-bg: var(--dc-bg-page);
+  --ds-surface: var(--dc-surface);
+  --ds-fill-soft: var(--dc-bg-block);
+  --ds-table-header-bg: var(--dc-bg-header);
+  --ds-table-row-hover: var(--dc-row-hover);
+  --ds-row-highlight-bg: var(--dc-brand-soft);
+  --ds-skeleton-base: var(--dc-skeleton);
+  --ds-skeleton-highlight: var(--dc-skeleton-highlight);
+  --ds-danger: var(--dc-danger);
+  --ds-danger-hover: var(--dc-danger-hover);
+  --ds-danger-soft: var(--dc-danger-soft);
+  --ds-warning: var(--dc-warning);
+  --ds-warning-soft: var(--dc-warning-soft);
+  --ds-success: var(--dc-success);
+  --ds-success-soft: var(--dc-success-soft);
+  --ds-radius-xs: var(--dc-radius-sm);
+  --ds-radius-sm: var(--dc-radius-md);
+  --ds-radius-md: var(--dc-radius-lg);
+  --ds-radius-lg: var(--dc-radius-xl);
+  --ds-shadow-sm: var(--dc-shadow-card);
+  --ds-shadow-card: var(--dc-shadow-card);
+  --ds-shadow-header: var(--dc-shadow-card);
+  --ds-shadow-brand: 0 8px 18px rgb(60 110 240 / 18%);
+  --ds-shadow-dialog: var(--dc-shadow-pop);
+}

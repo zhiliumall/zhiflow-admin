@@ -1,0 +1,94 @@
+/* 订单域专属样式 — 复用 goods-dc.scss 语义类，补订单结构。全部用 --dc-* token。 */
+.order-dc-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.order-dc-cell__no {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dc-text-1);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.order-dc-cell__meta {
+  font-size: 14px;
+  color: var(--dc-text-3);
+}
+
+.order-dc-expand {
+  padding: 12px 16px;
+  background: var(--dc-bg-block);
+  border: 1px solid var(--dc-divider);
+  border-radius: var(--dc-radius-md);
+}
+
+.order-dc-expand__row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.order-dc-expand__row + .order-dc-expand__row {
+  border-top: 1px solid var(--dc-divider);
+}
+
+.order-dc-expand__thumb {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border: 1px solid var(--dc-divider);
+  border-radius: var(--dc-radius-sm);
+}
+
+.order-dc-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.order-dc-timeline__item {
+  position: relative;
+  padding-left: 20px;
+  color: var(--dc-text-2);
+}
+
+.order-dc-timeline__item::before {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  content: "";
+  background: var(--dc-divider);
+  border-radius: 50%;
+}
+
+.order-dc-timeline__item.is-active::before {
+  background: var(--dc-brand);
+}
+
+.order-dc-timeline__time {
+  font-size: 14px;
+  color: var(--dc-text-3);
+}
+
+.order-dc-amount {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-1);
+}
+
+.order-dc-amount--brand {
+  color: var(--dc-brand);
+}
+
+.order-dc-amount--danger {
+  color: var(--dc-danger);
+}

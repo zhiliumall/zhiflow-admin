@@ -1,0 +1,725 @@
+/* ============================================================
+   登录日志（sys-loglogin）自绘样式
+   （art=shield / tint=cyan / grp=log）
+   通用块复用 goods-list-dc.scss（.vue 内已 import），本文件只放页面特有类
+   ============================================================ */
+
+/* ── 横幅动效（shield keyframes，加 llg- 前缀防跨页冲突） ── */
+@keyframes llg-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes llg-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes llg-blink {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* ── 页头横幅：原 cyan tint，已统一改为蓝色系渐变 + 网格纹 + 双光晕 + shield 动效插画 + 指标 ── */
+.loglogin-dc__banner {
+  position: relative;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  padding: 16px 24px;
+  margin-bottom: 12px;
+  background: linear-gradient(100deg, #e0eaff 0%, #edf3ff 45%, #f8faff 100%);
+  border: 1px solid #d4e1fb;
+  border-radius: 8px;
+}
+
+.loglogin-dc__banner-tex {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: 8px;
+
+  &::before {
+    position: absolute;
+    inset: 0;
+    content: "";
+    background:
+      repeating-linear-gradient(
+        0deg,
+        rgb(31 39 51 / 4%) 0 1px,
+        transparent 1px 22px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        rgb(31 39 51 / 4%) 0 1px,
+        transparent 1px 22px
+      );
+  }
+}
+
+.loglogin-dc__banner-glow--1 {
+  position: absolute;
+  top: -70px;
+  right: -40px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(
+    circle,
+    rgb(60 110 240 / 12%),
+    rgb(60 110 240 / 0%) 65%
+  );
+  border-radius: 50%;
+}
+
+.loglogin-dc__banner-glow--2 {
+  position: absolute;
+  right: 210px;
+  bottom: -90px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(
+    circle,
+    rgb(60 110 240 / 12%),
+    rgb(60 110 240 / 0%) 65%
+  );
+  border-radius: 50%;
+}
+
+.loglogin-dc__banner-title {
+  position: relative;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dc-text-1);
+}
+
+/* 动效插画（shield） */
+.loglogin-dc__banner-art {
+  position: relative;
+  flex: none;
+  width: 210px;
+  height: 64px;
+  pointer-events: none;
+}
+
+.loglogin-dc__art-shield {
+  position: absolute;
+  top: 0;
+  left: 26px;
+  animation: llg-float 3.4s ease-in-out infinite;
+}
+
+.loglogin-dc__art-radar {
+  position: absolute;
+  top: 4px;
+  left: 110px;
+  width: 56px;
+  height: 56px;
+}
+
+.loglogin-dc__art-sweep {
+  position: absolute;
+  top: 28px;
+  left: 28px;
+  width: 26px;
+  height: 2px;
+  background: linear-gradient(90deg, #3c6ef0, transparent);
+  transform-origin: 0 50%;
+  animation: llg-spin 3.2s linear infinite;
+}
+
+.loglogin-dc__art-dot {
+  position: absolute;
+  top: 12px;
+  left: 40px;
+  width: 5px;
+  height: 5px;
+  background: #f5222d;
+  border-radius: 50%;
+  animation: llg-blink 1.8s ease infinite;
+}
+
+.loglogin-dc__banner-metric {
+  position: relative;
+  flex: none;
+  text-align: right;
+}
+
+.loglogin-dc__metric-label {
+  font-size: 14px;
+  color: var(--dc-text-2-strong);
+}
+
+.loglogin-dc__metric-num {
+  margin-top: 2px;
+  font-size: 24px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-1);
+}
+
+/* ── 搜索筛选卡 ── */
+.loglogin-dc__search {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 4%);
+}
+
+.loglogin-dc__search-box {
+  position: relative;
+  flex: none;
+
+  > svg {
+    position: absolute;
+    top: 10px;
+    left: 9px;
+  }
+}
+
+.loglogin-dc__search-input {
+  width: 260px;
+  height: 32px;
+  padding: 0 26px 0 28px;
+  font-size: 14px;
+  color: var(--dc-text-1);
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.12s ease;
+
+  &:focus {
+    border-color: var(--dc-brand);
+    box-shadow: var(--dc-focus-ring);
+  }
+}
+
+.loglogin-dc__search-clear {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 12px;
+  color: #fff;
+  cursor: pointer;
+  background: var(--dc-text-disabled);
+  border-radius: 50%;
+}
+
+.loglogin-dc__filter-select {
+  flex: none;
+  max-width: 180px;
+  height: 32px;
+  padding: 0 6px;
+  font-size: 14px;
+  color: var(--dc-text-2);
+  cursor: pointer;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: 4px;
+  outline: none;
+}
+
+.loglogin-dc__btn-search {
+  flex: none;
+  width: 68px;
+  height: 32px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+  background: var(--dc-brand);
+  border: none;
+  border-radius: 4px;
+  transition: background 0.12s ease;
+
+  &:hover {
+    background: var(--dc-brand-hover);
+  }
+}
+
+.loglogin-dc__btn-reset {
+  flex: none;
+  height: 32px;
+  padding: 0 6px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--dc-text-3);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+
+  &:hover {
+    color: var(--dc-text-1);
+  }
+}
+
+.loglogin-dc__search-total {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-2-strong);
+}
+
+/* ── 工具栏（tools=[]，只保留密度/刷新/导出） ── */
+.loglogin-dc__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  min-height: 48px;
+  padding: 8px 16px;
+  margin-top: 12px;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 4%);
+}
+
+.loglogin-dc__tool-density {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  height: 28px;
+  padding: 0 8px;
+  font-size: 14px;
+  color: var(--dc-text-2);
+  cursor: pointer;
+  user-select: none;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: 4px;
+
+  &:hover {
+    color: var(--dc-brand);
+    border-color: var(--dc-brand);
+  }
+}
+
+.loglogin-dc__tool-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--dc-text-2);
+  cursor: pointer;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: 4px;
+
+  &:hover {
+    color: var(--dc-brand);
+    border-color: var(--dc-brand);
+  }
+
+  &.is-spinning > span {
+    animation: llg-spin 0.6s linear;
+  }
+
+  > span {
+    display: flex;
+  }
+}
+
+.loglogin-dc__tool-export {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--dc-text-2);
+  cursor: pointer;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: 4px;
+
+  &:hover {
+    color: var(--dc-brand);
+    border-color: var(--dc-brand);
+  }
+}
+
+/* ── 说明条（审计日志只读） ── */
+.loglogin-dc__note {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 12px;
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--dc-brand); /* 设计 --info */
+  background: #e8f1ff; /* 设计 --info-bg */
+  border-radius: 4px;
+
+  > svg {
+    flex: none;
+  }
+}
+
+/* ── 自绘表格（共 9 列，含「请求 URI」） ── */
+.loglogin-dc__thead,
+.loglogin-dc__tr {
+  display: grid;
+  grid-template-columns: 1.1fr 0.65fr 0.9fr 1fr 0.9fr 1.4fr 1.2fr 1.1fr 1.4fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.loglogin-dc__thead {
+  height: 40px;
+  padding: 0 16px;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--dc-text-2-strong);
+  background: var(--dc-bg-header);
+  border: 1px solid var(--dc-border);
+  border-radius: 4px 4px 0 0;
+}
+
+.loglogin-dc__th--sort {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    color: var(--dc-text-1);
+  }
+}
+
+.loglogin-dc__caret {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1px;
+
+  svg {
+    display: block;
+  }
+}
+
+.loglogin-dc__tbody {
+  overflow: visible;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+}
+
+.loglogin-dc__tr {
+  min-height: 60px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--dc-divider);
+  transition: background 0.12s ease;
+
+  &:hover {
+    background: var(--dc-row-hover);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  /* 异常行左侧红条（设计 r.bar=var(--error)） */
+  &.has-error {
+    box-shadow: inset 3px 0 0 #f5222d;
+  }
+
+  /* 紧凑密度（设计 S.dense：6px 16px / 44px） */
+  .loglogin-dc__table.is-dense & {
+    min-height: 44px;
+    padding: 6px 16px;
+  }
+}
+
+/* 登录者 U 单元格：头像 + 用户名 */
+.loglogin-dc__user {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+}
+
+.loglogin-dc__avatar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  border-radius: 50%;
+}
+
+.loglogin-dc__user-main {
+  min-width: 0;
+}
+
+.loglogin-dc__user-name {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dc-text-1);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 状态章（TC 色板） */
+.loglogin-dc__tag {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  height: 22px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  border-radius: 4px;
+
+  &.is-g {
+    color: var(--dc-success);
+    background: #e9f7ef;
+  }
+
+  &.is-r {
+    color: var(--dc-danger);
+    background: #feecec;
+  }
+
+  &.is-b {
+    color: var(--dc-brand);
+    background: #e8f1ff;
+  }
+
+  &.is-o {
+    color: var(--dc-warning);
+    background: #fff4e6;
+  }
+
+  &.is-c {
+    color: #13c2c2;
+    background: #e6fbfb;
+  }
+
+  &.is-gy {
+    color: var(--dc-text-3);
+    background: #f5f5f5;
+  }
+}
+
+.loglogin-dc__tag-dot {
+  width: 5px;
+  height: 5px;
+  background: currentcolor;
+  border-radius: 50%;
+}
+
+/* mono 单元格（IP / 请求 URI）+ 行 hover 浮现复制按钮 */
+.loglogin-dc__mono-cell {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.loglogin-dc__mono {
+  overflow: hidden;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 14px;
+  color: var(--dc-text-2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.loglogin-dc__cp {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: var(--dc-text-disabled);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+
+  &:hover {
+    color: var(--dc-brand);
+  }
+
+  &.is-copied {
+    opacity: 1;
+  }
+}
+
+/* 行容器已换成 DcTableShell 的 .dc-tbl__row，hover 显形选择器随之改写 */
+.dc-tbl__row:hover .loglogin-dc__cp {
+  opacity: 1;
+}
+
+/* 文本单元格（地址 / 用户代理，两行截断） */
+.loglogin-dc__text {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 14px;
+  color: var(--dc-text-1);
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  &.is-empty {
+    color: var(--dc-text-disabled);
+  }
+}
+
+/* 时间：相对时间正文 + title 悬停绝对值 */
+.loglogin-dc__time {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-1);
+}
+
+/* 异常信息：红色两行截断 */
+.loglogin-dc__exception {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 14px;
+  color: var(--dc-danger);
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  &.is-empty {
+    color: var(--dc-text-disabled);
+  }
+}
+
+/* 空态（设计空态 svg，log 组配色 #E6FBFB / #13C2C2） */
+.loglogin-dc__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 56px 0 60px;
+}
+
+.loglogin-dc__empty-title {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--dc-text-1);
+}
+
+.loglogin-dc__empty-btn {
+  height: 28px;
+  padding: 0 14px;
+  margin-top: 14px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--dc-text-2);
+  cursor: pointer;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: 4px;
+
+  &:hover {
+    opacity: 0.88;
+  }
+}
+
+/* ── 分页（设计右对齐样式，单页隐藏由模板控制） ── */
+.loglogin-dc__pager {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.loglogin-dc__pager-total {
+  margin-right: 4px;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-2-strong);
+}
+
+.loglogin-dc__pager-size {
+  height: 28px;
+  padding: 0 4px;
+  margin-right: 4px;
+  font-size: 14px;
+  color: var(--dc-text-2);
+  cursor: pointer;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: 4px;
+  outline: none;
+}
+
+.loglogin-dc__pager-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 6px;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-2);
+  cursor: pointer;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: 4px;
+
+  &:hover:not(.is-active, .is-disabled, .is-ellipsis) {
+    color: var(--dc-brand);
+    border-color: var(--dc-brand);
+  }
+
+  &.is-active {
+    color: #fff;
+    cursor: default;
+    background: var(--dc-brand);
+    border-color: var(--dc-brand);
+  }
+
+  &.is-disabled {
+    color: var(--dc-text-disabled);
+    cursor: not-allowed;
+  }
+
+  &.is-ellipsis {
+    cursor: default;
+    background: transparent;
+    border: none;
+  }
+}

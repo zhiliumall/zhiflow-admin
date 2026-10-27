@@ -1,0 +1,9 @@
+{
+  "roleDesc": "角色描述",
+  "update": "更 新",
+  "assignPermission": "分配权限",
+  "roleNameExists": "角色名称已经存在",
+  "roleCodeExists": "角色编码已经存在",
+  "roleName": "角色名称",
+  "roleCode": "角色编码"
+}

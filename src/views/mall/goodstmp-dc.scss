@@ -1,0 +1,632 @@
+/* ============================================================
+   商品参数模板列表页 样式
+   仅本页引用，勿全局注入。tokens 由全局 tokens.css 提供（--dc-*）
+   ============================================================ */
+.goodstmp-dc {
+  min-width: 1280px;
+  padding: 20px 24px 40px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+  background: var(--dc-bg-page);
+  animation: dc-fade-in 0.3s var(--dc-ease-in) both;
+}
+
+/* ---- Banner ---- */
+.goodstmp-dc__banner {
+  position: relative;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  min-height: 118px;
+  padding: 18px 28px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  background: linear-gradient(90deg, #eaf1fe 0%, #f5f8fe 55%, #fff 100%);
+  border: 1px solid var(--dc-banner-border);
+  border-radius: var(--dc-radius-lg);
+}
+
+.goodstmp-dc__banner-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgb(60 110 240 / 5%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(60 110 240 / 5%) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+.goodstmp-dc__banner-glow {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.goodstmp-dc__banner-glow--1 {
+  top: -46px;
+  right: 300px;
+  width: 150px;
+  height: 150px;
+  background: rgb(60 110 240 / 10%);
+  filter: blur(32px);
+}
+
+.goodstmp-dc__banner-glow--2 {
+  right: 60px;
+  bottom: -56px;
+  width: 130px;
+  height: 130px;
+  background: rgb(90 134 245 / 16%);
+  filter: blur(34px);
+}
+
+.goodstmp-dc__banner-head {
+  position: relative;
+  z-index: 1;
+}
+
+.goodstmp-dc__banner-title {
+  font-size: var(--dc-fs-20);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--dc-text-1);
+}
+
+.goodstmp-dc__banner-sub {
+  margin-top: 5px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3-alt);
+}
+
+.goodstmp-dc__banner-stats {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+}
+
+.goodstmp-dc__stat {
+  padding: 0 26px 0 0;
+}
+
+.goodstmp-dc__stat--divider {
+  padding: 0 26px;
+  border-left: 1px solid rgb(60 110 240 / 18%);
+}
+
+.goodstmp-dc__stat-label {
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3-alt);
+  white-space: nowrap;
+}
+
+.goodstmp-dc__stat-num {
+  margin-top: 3px;
+  font-size: var(--dc-fs-24);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  color: var(--dc-text-1);
+}
+
+.goodstmp-dc__stat-num--brand {
+  color: var(--dc-brand);
+}
+
+/* 装饰：右侧滑轨小球 */
+.goodstmp-dc__banner-deco {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  width: 118px;
+  height: 78px;
+  pointer-events: none;
+}
+
+.goodstmp-dc__deco-rail {
+  position: absolute;
+  left: 12px;
+  width: 94px;
+  height: 6px;
+  background: var(--dc-banner-border);
+  border-radius: var(--dc-radius-pill);
+}
+
+.goodstmp-dc__deco-rail--1 {
+  top: 14px;
+}
+
+.goodstmp-dc__deco-rail--2 {
+  top: 36px;
+}
+
+.goodstmp-dc__deco-rail--3 {
+  top: 58px;
+}
+
+.goodstmp-dc__deco-dot {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgb(60 110 240 / 35%);
+}
+
+.goodstmp-dc__deco-dot--1 {
+  top: 9px;
+  left: 16px;
+  background: #3c6ef0;
+  animation: goodstmp-deco-slide 3.2s ease-in-out infinite;
+}
+
+.goodstmp-dc__deco-dot--2 {
+  top: 31px;
+  left: 44px;
+  background: #5a86f5;
+  animation: goodstmp-deco-slide 3.6s ease-in-out 0.3s infinite;
+}
+
+.goodstmp-dc__deco-dot--3 {
+  top: 53px;
+  left: 26px;
+  background: #8fb0f8;
+  animation: goodstmp-deco-slide 2.8s ease-in-out 0.6s infinite;
+}
+
+/* 既有轨道装饰原本是纯静态线条，补一点轻微的"沿轨道滑动"点缀，
+   不新增插画容器/图标，维持"从简"处理 */
+@keyframes goodstmp-deco-slide {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(8px);
+  }
+}
+
+/* ---- 卡片 ---- */
+.goodstmp-dc__card {
+  background: var(--dc-surface);
+  border-radius: var(--dc-radius-lg);
+}
+
+/* ---- 工具栏 ---- */
+.goodstmp-dc__toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  height: 52px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--dc-divider);
+}
+
+.goodstmp-dc__btn {
+  height: 32px;
+  padding: 0 14px;
+  font-size: var(--dc-fs-14);
+  font-weight: 400;
+  cursor: pointer;
+  border-radius: var(--dc-radius-sm);
+  transition: all var(--dc-dur-micro);
+}
+
+.goodstmp-dc__btn--primary {
+  color: #fff;
+  background: var(--dc-brand);
+  border: none;
+
+  &:hover {
+    background: var(--dc-brand-hover);
+  }
+
+  &:active {
+    background: var(--dc-brand-active);
+    transform: scale(0.98);
+  }
+}
+
+.goodstmp-dc__btn--ghost {
+  color: var(--dc-brand);
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-brand);
+
+  &:hover {
+    background: var(--dc-brand-soft);
+  }
+}
+
+.goodstmp-dc__search {
+  width: 180px;
+  height: 32px;
+  padding: 0 10px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border-strong);
+  border-radius: var(--dc-radius-sm);
+  outline: none;
+  transition: border-color var(--dc-dur-micro);
+
+  &:focus {
+    border-color: var(--dc-brand);
+    box-shadow: var(--dc-focus-ring);
+  }
+}
+
+.goodstmp-dc__total {
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+
+  b {
+    font-variant-numeric: tabular-nums;
+    color: var(--dc-text-1);
+  }
+}
+
+.goodstmp-dc__icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: var(--dc-text-2);
+  cursor: pointer;
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-sm);
+  transition: all var(--dc-dur-micro);
+
+  &:hover {
+    color: var(--dc-brand);
+    border-color: var(--dc-brand);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.goodstmp-dc__icon-btn.is-spin svg {
+  animation: dc-spin 0.7s linear infinite;
+}
+
+/* ---- CSS grid 表格 ---- */
+$goodstmp-grid: minmax(280px, 1.6fr) 110px 130px 140px 150px;
+
+.goodstmp-dc__thead,
+.goodstmp-dc__tr {
+  display: grid;
+  grid-template-columns: $goodstmp-grid;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.goodstmp-dc__thead {
+  height: 44px;
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: var(--dc-text-1);
+  background: var(--dc-bg-header);
+  border-bottom: 1px solid var(--dc-divider);
+}
+
+.goodstmp-dc__th--right {
+  text-align: right;
+}
+
+.goodstmp-dc__tr {
+  min-height: 64px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--dc-divider);
+  transition: background var(--dc-dur-micro);
+
+  &:hover {
+    background: var(--dc-row-hover);
+  }
+}
+
+/* 模板名称 cell */
+.goodstmp-dc__name-cell {
+  min-width: 0;
+  padding-right: 12px;
+}
+
+.goodstmp-dc__name {
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: var(--dc-text-1);
+}
+
+.goodstmp-dc__preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 5px;
+}
+
+.goodstmp-dc__chip {
+  padding: 1px 8px;
+  font-size: var(--dc-fs-12);
+  color: var(--dc-text-2-strong);
+  white-space: nowrap;
+  background: var(--dc-tag-bg);
+  border-radius: var(--dc-radius-pill);
+}
+
+.goodstmp-dc__chip--more {
+  cursor: default;
+}
+
+.goodstmp-dc__chip--empty {
+  padding: 0;
+  font-size: var(--dc-fs-12);
+  color: var(--dc-text-2-strong);
+  background: transparent;
+}
+
+/* 数值列 */
+.goodstmp-dc__num {
+  font-size: var(--dc-fs-14);
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-text-1);
+}
+
+.goodstmp-dc__num--muted {
+  color: var(--dc-text-2-strong);
+}
+
+.goodstmp-dc__upd {
+  font-variant-numeric: tabular-nums;
+}
+
+.goodstmp-dc__upd-d {
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+}
+
+.goodstmp-dc__upd-t {
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+}
+
+.goodstmp-dc__upd--empty {
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-disabled);
+}
+
+/* 操作列 */
+.goodstmp-dc__action {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.goodstmp-dc__link {
+  padding: 4px 8px;
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: var(--text-link, #155eef);
+  white-space: nowrap;
+  cursor: pointer;
+  border-radius: var(--dc-radius-sm);
+
+  &:hover {
+    background: var(--dc-brand-soft);
+  }
+}
+
+.goodstmp-dc__more {
+  padding: 2px 8px;
+  font-size: var(--dc-fs-14);
+  font-weight: 700;
+  color: var(--dc-text-3);
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-radius: var(--dc-radius-sm);
+
+  &:hover {
+    color: var(--dc-brand);
+    background: var(--dc-bg-page);
+  }
+}
+
+/* 空态 */
+.goodstmp-dc__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 56px 0;
+  text-align: center;
+  animation: dc-fade-in 0.3s;
+}
+
+.goodstmp-dc__empty-title {
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: var(--dc-text-2);
+}
+
+.goodstmp-dc__empty-desc {
+  margin-top: 4px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+}
+
+.goodstmp-dc__empty-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.goodstmp-dc__empty-actions .goodstmp-dc__btn {
+  height: 34px;
+  padding: 0 18px;
+}
+
+/* 分页 */
+.goodstmp-dc__pager {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+  height: 52px;
+  padding: 0 16px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+}
+
+.goodstmp-dc__pager-size {
+  height: 28px;
+  padding: 0 6px;
+  cursor: pointer;
+  border: 1px solid var(--dc-border-strong);
+  border-radius: var(--dc-radius-sm);
+}
+
+.goodstmp-dc__pager-num,
+.goodstmp-dc__pager-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  border: 1px solid var(--dc-border-strong);
+  border-radius: var(--dc-radius-sm);
+
+  &:hover {
+    color: var(--dc-brand);
+    border-color: var(--dc-brand);
+  }
+}
+
+.goodstmp-dc__pager-num.is-active {
+  font-weight: 700;
+  color: #fff;
+  background: var(--dc-brand);
+  border-color: var(--dc-brand);
+}
+
+.goodstmp-dc__pager-num.is-ellipsis {
+  cursor: default;
+  border-color: transparent;
+
+  &:hover {
+    color: var(--dc-text-2);
+    border-color: transparent;
+  }
+}
+
+.goodstmp-dc__pager-btn.is-disabled {
+  color: var(--dc-text-disabled);
+  cursor: not-allowed;
+
+  &:hover {
+    color: var(--dc-text-disabled);
+    border-color: var(--dc-border);
+  }
+}
+
+/* 商品参数模板的辅助文字/分页禁用文字使用独立语义层。 */
+.goodstmp-dc__banner-sub,
+.goodstmp-dc__stat-label,
+.goodstmp-dc__total,
+.goodstmp-dc__thead,
+.goodstmp-dc__upd-t,
+.goodstmp-dc__more,
+.goodstmp-dc__empty-desc {
+  color: var(--text-tertiary, #667085);
+}
+
+.goodstmp-dc__upd--empty,
+.goodstmp-dc__pager-btn.is-disabled {
+  color: var(--text-disabled, #7c8797);
+}
+
+/* ---- 新增/编辑模板抽屉（自绘 640px 风格，套 el-drawer） ---- */
+.goodstmp-dc__drawer-body {
+  padding: 4px 2px;
+}
+
+.goodstmp-dc__sect-title {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: var(--dc-fs-14);
+  font-weight: 700;
+  color: var(--dc-text-1);
+
+  &::before {
+    display: inline-block;
+    width: 3px;
+    height: 14px;
+    content: "";
+    background: var(--dc-brand);
+    border-radius: 2px;
+  }
+}
+
+.goodstmp-dc__field {
+  max-width: 340px;
+  margin-bottom: 18px;
+}
+
+.goodstmp-dc__field-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+}
+
+.goodstmp-dc__req {
+  color: var(--dc-danger);
+}
+
+.goodstmp-dc__field-input {
+  width: 100%;
+  height: 32px;
+  padding: 0 10px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border-strong);
+  border-radius: var(--dc-radius-sm);
+  outline: none;
+
+  &:focus {
+    border-color: var(--dc-brand);
+    box-shadow: var(--dc-focus-ring);
+  }
+
+  &.is-error {
+    border-color: var(--dc-danger);
+  }
+}
+
+.goodstmp-dc__field-err {
+  margin-top: 3px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-danger);
+}
+
+.goodstmp-dc__hint {
+  margin-bottom: 10px;
+  font-size: var(--dc-fs-12);
+  color: var(--text-disabled, #7c8797);
+}
+
+/* 参数管理弹窗内自绘工具条 */
+.goodstmp-dc__manage-bar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}

@@ -1,0 +1,667 @@
+/* ============================================================
+   商品编辑向导 样式
+   降级方案：沿用 el-drawer(:with-header=false) 作为承载，
+   内部自绘 头部 / 步骤条 / 内容区(avue-form) / footer
+   ============================================================ */
+
+/* 抽屉内自绘外壳：纵向弹性，内容区滚动 */
+.goods-wizard__shell {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+/* 头部 */
+.goods-wizard__head {
+  display: flex;
+  flex: none;
+  gap: 12px;
+  align-items: center;
+  height: 56px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--dc-divider);
+}
+
+.goods-wizard__title {
+  font-size: var(--dc-fs-15);
+  font-weight: 600;
+  color: var(--dc-text-1);
+}
+
+.goods-wizard__step-badge {
+  flex: none;
+  padding: 2px 10px;
+  font-size: var(--dc-fs-12);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--dc-brand);
+  background: var(--dc-brand-soft);
+  border-radius: var(--dc-radius-pill);
+}
+
+.goods-wizard__sub {
+  max-width: 460px;
+  overflow: hidden;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.goods-wizard__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+  color: var(--dc-text-3);
+  cursor: pointer;
+  border-radius: var(--dc-radius-sm);
+
+  &:hover {
+    color: var(--dc-text-1);
+    background: var(--dc-bg-page);
+  }
+}
+
+/* 步骤条 */
+.goods-wizard__steps {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  max-width: 1000px;
+  padding: 10px 24px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #fbfdfc, #fff);
+  border-bottom: 1px solid var(--dc-divider);
+}
+
+.goods-wizard__step {
+  display: flex;
+  flex: none;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+  // 按标题自适应宽度
+  white-space: nowrap;
+}
+
+.goods-wizard__dot {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-size: var(--dc-fs-12);
+  font-weight: 800;
+  color: var(--dc-text-disabled);
+  background: var(--dc-surface);
+  border: 2px solid var(--dc-border);
+  border-radius: 50%;
+  transition: all var(--dc-dur-modal);
+
+  .goods-wizard__step.is-current & {
+    color: #fff;
+    background: var(--dc-brand);
+    border-color: var(--dc-brand);
+    box-shadow: 0 0 0 4px var(--dc-brand-soft);
+  }
+
+  .goods-wizard__step.is-done & {
+    color: #fff;
+    background: var(--dc-brand);
+    border-color: var(--dc-brand);
+  }
+}
+
+.goods-wizard__step-title {
+  font-size: var(--dc-fs-14);
+  font-weight: 400;
+  color: var(--dc-text-disabled);
+  letter-spacing: 0.3px;
+}
+
+.goods-wizard__step.is-current .goods-wizard__step-title {
+  font-weight: 700;
+  color: var(--dc-text-1);
+}
+
+.goods-wizard__step.is-done .goods-wizard__step-title {
+  color: var(--dc-text-2);
+}
+
+.goods-wizard__line {
+  flex: 1;
+  min-width: 40px;
+  height: 2px;
+  background: var(--dc-divider);
+
+  &.is-done {
+    background: var(--dc-brand);
+  }
+}
+
+/* 内容区：保留 avue-form，隐藏其内置 tab 头，仅用自绘步骤条导航 */
+.goods-wizard__body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: var(--dc-bg-header);
+
+  /* 隐藏 avue-form / Element Plus 自带的 tabs 头（含内置下一步/提交按钮所在的 __menu） */
+  .el-tabs__header {
+    display: none !important;
+  }
+
+  .avue-form__menu {
+    display: none !important;
+  }
+
+  .el-tabs__content {
+    padding: 18px 24px 40px;
+  }
+}
+
+/* footer */
+.goods-wizard__footer {
+  display: flex;
+  flex: none;
+  gap: 12px;
+  align-items: center;
+  height: 64px;
+  padding: 0 28px;
+  background: var(--dc-surface);
+  border-top: 1px solid var(--dc-divider);
+  box-shadow: 0 -4px 16px rgb(31 39 51 / 5%);
+}
+
+.goods-wizard__draft {
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+}
+
+.goods-wizard__fbtn {
+  height: 38px;
+  font-size: var(--dc-fs-14);
+  cursor: pointer;
+  border-radius: var(--dc-radius-sm);
+}
+
+.goods-wizard__fbtn--ghost {
+  padding: 0 22px;
+  color: var(--dc-text-2);
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+
+  &:hover {
+    color: var(--dc-brand);
+    border-color: var(--dc-brand);
+  }
+}
+
+.goods-wizard__fbtn--primary {
+  padding: 0 30px;
+  font-size: var(--dc-fs-14);
+  font-weight: 400;
+  color: #fff;
+  background: var(--dc-brand);
+  border: none;
+
+  &:hover {
+    background: var(--dc-brand-hover);
+  }
+
+  &:active {
+    background: var(--dc-brand-active);
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+/* ============================================================
+   Step1 基本信息：卡片 / 区块标题 / 表单项
+   ============================================================ */
+
+/* 通用卡片与区块标题（如需在自绘区块复用） */
+.goods-wizard__card {
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  background: var(--dc-surface);
+  border-radius: var(--dc-radius-lg);
+  box-shadow: var(--dc-shadow-card);
+}
+
+.goods-wizard__card-title {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: var(--dc-fs-14);
+  font-weight: 700;
+  color: var(--dc-text-1);
+
+  &::before {
+    width: 4px;
+    height: 15px;
+    content: "";
+    background: var(--dc-brand);
+    border-radius: var(--dc-radius-tag);
+  }
+}
+
+.goods-wizard__card-tip {
+  font-size: var(--dc-fs-14);
+  font-weight: 400;
+  color: var(--dc-text-3);
+}
+
+/* 把 avue-form 第 1 组（基本信息，[index="1"]）渲染成卡片外观 */
+.goods-wizard__body [index="1"] .avue-form__group {
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  background: var(--dc-surface);
+  border-radius: var(--dc-radius-lg);
+  box-shadow: var(--dc-shadow-card);
+}
+
+/* 表单项外观：标签 12px / 输入高 36 / 必填红星 dc-danger */
+.goods-wizard__body {
+  .el-form-item__label {
+    font-size: var(--dc-fs-14);
+    color: var(--dc-text-2);
+  }
+
+  .el-input__wrapper {
+    min-height: 36px;
+  }
+
+  .el-form-item.is-required .el-form-item__label::before {
+    color: var(--dc-danger);
+  }
+}
+
+/* ============================================================
+   Step2 规格信息：单/多规格 segmented + SKU 明细 grid + 批量设置条
+   说明：specType 切换控件位于 GoodsEditDrawer 的 specType slot（el-radio-group），
+        SKU 明细表 / 批量设置条位于子组件 SkuTable（el-table），此处给真实控件套 DC 外观。
+   ============================================================ */
+
+/* ---- 设计规范类（供 SkuTable 未来自绘重构直接套用） ---- */
+.sku-seg {
+  position: relative;
+  display: inline-flex;
+  padding: 3px;
+  background: var(--dc-divider);
+  border-radius: var(--dc-radius-md);
+}
+
+.sku-seg__item {
+  position: relative;
+  z-index: 1;
+  padding: 6px 18px;
+  font-weight: 600;
+  color: var(--dc-text-2);
+  cursor: pointer;
+}
+
+.sku-seg__item.is-on {
+  color: var(--dc-text-1);
+}
+
+.sku-seg__ink {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  width: 66px;
+  background: var(--dc-surface);
+  border-radius: var(--dc-radius-sm);
+  box-shadow: var(--dc-shadow-card);
+  transition: left var(--dc-dur-modal);
+}
+
+.sku-grid__head,
+.sku-grid__row {
+  display: grid;
+  grid-template-columns: 110px 64px 110px 100px 100px 84px 84px 90px 110px 64px;
+  align-items: center;
+}
+
+.sku-grid__head {
+  height: 42px;
+  padding: 0 14px;
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: var(--dc-text-1);
+  background: var(--dc-bg-block);
+}
+
+.sku-grid__row {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--dc-bg-page);
+}
+
+.sku-grid__row .el-input__wrapper,
+.sku-grid__input {
+  height: 30px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  background: var(--dc-bg-block);
+  border-radius: var(--dc-radius-sm);
+}
+
+.sku-summary {
+  padding: 10px 14px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+  background: var(--dc-bg-header);
+
+  b {
+    color: var(--dc-brand);
+  }
+}
+
+/* ---- 应用到真实控件（仅向导内生效，其它 SkuForm 复用方不受影响） ---- */
+.goods-wizard__body {
+  /* 单/多规格 segmented：把现有 el-radio-group 换外观，v-model/切换逻辑保留 */
+  .el-form-item--specType .el-radio-group {
+    display: inline-flex;
+    padding: 3px;
+    background: var(--dc-divider);
+    border-radius: var(--dc-radius-md);
+  }
+
+  .el-form-item--specType .el-radio-button__inner {
+    padding: 6px 18px;
+    font-weight: 400;
+    color: var(--dc-text-2);
+    background: transparent;
+    border: none;
+    border-radius: var(--dc-radius-sm) !important;
+    box-shadow: none;
+    transition: all var(--dc-dur-modal);
+  }
+
+  .el-form-item--specType .el-radio-button.is-active .el-radio-button__inner,
+  .el-form-item--specType
+    .el-radio-button__original-radio:checked
+    + .el-radio-button__inner {
+    color: var(--dc-text-1);
+    background: var(--dc-surface);
+    box-shadow: var(--dc-shadow-card);
+  }
+
+  /* SKU 明细表（SkuTable 内的 el-table）套 sku-grid 外观，保留数据绑定 */
+  .sku-table {
+    padding: 0;
+    background: var(--dc-surface);
+    box-shadow: none;
+
+    .el-table__header th.el-table__cell {
+      font-size: var(--dc-fs-14);
+      font-weight: 600;
+      color: var(--dc-text-1);
+      background: var(--dc-bg-block);
+    }
+
+    .el-table td.el-table__cell {
+      border-bottom: 1px solid var(--dc-bg-page);
+    }
+
+    .el-table .el-input__wrapper {
+      background: var(--dc-bg-block);
+      border-radius: var(--dc-radius-sm);
+      box-shadow: none;
+    }
+
+    .el-input__inner {
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  /* 批量设置条 → sku-summary 外观（保留 SkuTable 现有 batchAdd 逻辑，仅套皮肤） */
+  .sku-table .batch-setting {
+    padding: 10px 14px;
+    background: var(--dc-bg-header);
+    border-radius: var(--dc-radius-md);
+
+    .el-button.is-link {
+      color: var(--dc-brand);
+    }
+  }
+}
+
+/* ============================================================
+   Step3 模版参数
+   保留 specTemplateId / tmpTableData 遍历 / parameterJson 序列化逻辑，仅换外观
+   ============================================================ */
+.goods-param {
+  max-width: 1040px;
+  padding: 4px 0 8px;
+  margin: 0 auto;
+}
+
+.goods-param__card {
+  padding: 16px 18px;
+  background: var(--dc-surface);
+  border-radius: var(--dc-radius-lg);
+  box-shadow: var(--dc-shadow-card);
+}
+
+.goods-param__title {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.goods-param__title-bar {
+  flex: none;
+  width: 4px;
+  height: 15px;
+  background: var(--dc-brand);
+  border-radius: 2px;
+}
+
+.goods-param__title-text {
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: var(--dc-text-1);
+}
+
+.goods-param__title-hint {
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+}
+
+.goods-param__pick {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.goods-param__pick-label {
+  flex: none;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-2);
+}
+
+.goods-param__select {
+  width: 280px;
+}
+
+/* 空态 */
+.goods-param__empty {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  padding: 36px 0;
+  text-align: center;
+}
+
+.goods-param__empty-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 110px;
+  height: 78px;
+  margin-bottom: 8px;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--dc-bg-block) 0 8px,
+    var(--dc-bg-header) 8px 16px
+  );
+  border: 1px dashed var(--dc-border);
+  border-radius: var(--dc-radius-lg);
+}
+
+.goods-param__empty-title {
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: var(--dc-text-2);
+}
+
+.goods-param__empty-desc {
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+}
+
+/* 参数表 grid：空/名称/类型/内容（可编辑） */
+.goods-param__head,
+.goods-param__row {
+  display: grid;
+  grid-template-columns: 32px 160px 90px 1fr;
+  align-items: center;
+}
+
+.goods-param__head {
+  height: 38px;
+  padding: 0 12px;
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: var(--dc-text-1);
+  background: var(--dc-bg-block);
+  border-bottom: 1px solid var(--dc-divider);
+}
+
+.goods-param__row {
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--dc-bg-page);
+}
+
+.goods-param__drag {
+  font-size: 14px;
+  color: var(--dc-text-disabled);
+  cursor: grab;
+}
+
+.goods-param__name {
+  font-size: var(--dc-fs-14);
+  font-weight: 600;
+  color: var(--dc-text-1);
+}
+
+.goods-param__type {
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+}
+
+.goods-param__content .el-input__wrapper {
+  height: 30px;
+}
+
+/* ============================================================
+   Step4 图文详情：左富文本卡片(1fr) + 右 iPhone 预览(300px sticky)
+   ============================================================ */
+.goods-detail-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 16px;
+  align-items: start;
+}
+
+.goods-detail-editor {
+  position: relative;
+  overflow: hidden;
+  background: var(--dc-surface);
+  border-radius: var(--dc-radius-lg);
+  box-shadow: var(--dc-shadow-card);
+}
+
+.goods-detail-preview {
+  position: sticky;
+  top: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ============================================================
+   提交成功态
+   ============================================================ */
+
+/* 蓝勾动画（勾用主色蓝非绿） */
+@keyframes dc-draw-check {
+  from {
+    stroke-dashoffset: 48;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.goods-wizard__done {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+  text-align: center;
+  background: var(--dc-bg-header);
+  animation: dc-fade-in 0.4s;
+}
+
+.goods-wizard__done svg {
+  display: block;
+}
+
+.goods-wizard__done-title {
+  margin-top: 16px;
+  font-size: var(--dc-fs-16);
+  font-weight: 700;
+  color: var(--dc-text-1);
+}
+
+.goods-wizard__done-sub {
+  margin-top: 6px;
+  font-size: var(--dc-fs-14);
+  color: var(--dc-text-3);
+}
+
+.goods-wizard__done-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.goods-wizard__done-again {
+  color: var(--dc-brand);
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-brand);
+
+  &:hover {
+    background: var(--dc-brand-soft);
+  }
+}

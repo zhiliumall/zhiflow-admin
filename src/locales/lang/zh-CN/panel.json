@@ -1,0 +1,20 @@
+{
+  "pureSystemSet": "系统配置",
+  "pureCloseSystemSet": "关闭配置",
+  "pureClearCacheAndToLogin": "清空缓存并返回登录页",
+  "pureClearCache": "清空缓存",
+  "pureThemeColor": "主题色",
+  "pureStretch": "页宽",
+  "pureStretchFixed": "固定",
+  "pureStretchFixedTip": "紧凑页面，轻松找到所需信息",
+  "pureStretchCustom": "自定义",
+  "pureStretchCustomTip": "最小1280、最大1600",
+  "pureTagsStyle": "页签风格",
+  "pureTagsStyleSingle": "单标签",
+  "pureTagsStyleSingleTip": "仅显示当前标签，简洁模式",
+  "pureInterfaceDisplay": "界面显示",
+  "pureGreyModel": "灰色模式",
+  "pureWeakModel": "色弱模式",
+  "pureHiddenTags": "隐藏标签页",
+  "pureMultiTagsCache": "页签持久化"
+}

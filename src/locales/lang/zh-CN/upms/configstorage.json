@@ -1,0 +1,10 @@
+{
+  "config": "文件存储配置",
+  "selectStorageType": "请选择存储方式",
+  "endpointRequired": "Endpoint 不能为空",
+  "accessKeyIdRequired": "AccessKeyId 不能为空",
+  "accessKeySecretRequired": "AccessKeySecret 不能为空",
+  "bucketRequired": "Bucket 不能为空",
+  "imageConfiguration": "图片配置",
+  "imageWatermark": "图片水印"
+}

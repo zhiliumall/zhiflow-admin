@@ -1,0 +1,15 @@
+{
+  "addSpecValue": "添加规格值",
+  "addSpec": "添加规格",
+  "sellingPrice": "销售价",
+  "marketPrice": "市场价",
+  "costPrice": "成本价",
+  "stock": "库存",
+  "weight": "重量",
+  "volume": "体积",
+  "itemSpec": "商品规格",
+  "enterSpecValue": "请输入规格值",
+  "pieces": "条",
+  "skuCode": "sku编码",
+  "enable": "是否启用"
+}

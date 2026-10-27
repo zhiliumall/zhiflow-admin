@@ -1,0 +1,16 @@
+{
+  "allOrders": "全部订单",
+  "cancelSuccess": "取消成功",
+  "canceledOrders": "已取消",
+  "completedOrders": "已完成",
+  "endDate": "结束日期",
+  "exportOrders": "导出订单",
+  "paid": "已支付",
+  "paymentType1": "微信支付",
+  "paymentType2": "支付宝",
+  "pendingPayment": "待付款",
+  "pieces": "件",
+  "startDate": "开始日期",
+  "toBeReceived": "待收货",
+  "toBeShipped": "待发货"
+}

@@ -1,0 +1,178 @@
+/*
+* 重写 Element Plus 标签页组件样式，实现双层背景效果
+* 如果需要使用默认样式，可以添加 default-el-tabs 类名
+*/
+.el-tabs:not(.default-el-tabs) {
+  .el-tabs__nav-wrap {
+    overflow: var(--el-tabs-nav-wrap-overflow, visible) !important;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  .el-tabs__nav-scroll {
+    overflow: var(--el-tabs-nav-scroll-overflow, visible) !important;
+  }
+
+  /* 标签页容器宽度自适应 */
+  .el-tabs--border-card {
+    width: fit-content !important;
+    margin: 0 0 20px !important;
+
+    /* 左对齐，底部间距20px */
+    border: none !important;
+  }
+
+  .el-tabs__header {
+    width: var(--el-tabs-header-width, 100%) !important;
+    border-bottom: none !important;
+  }
+
+  .el-tabs__nav-wrap {
+    width: fit-content !important;
+  }
+
+  .el-tabs__nav {
+    display: flex !important;
+    justify-content: space-around;
+    width: var(--el-tabs-header-width, 100%) !important;
+    border: none !important;
+  }
+
+  /* 标签页项目样式 - 实现双层背景效果 */
+  .el-tabs__item {
+    position: var(--el-tabs-item-position, relative) !important;
+    display: var(--el-tabs-item-display, flex) !important;
+    flex-shrink: var(--el-tabs-item-flex-shrink, 0) !important;
+    align-items: var(--el-tabs-item-align-items, center) !important;
+    justify-content: var(--el-tabs-item-justify-content, center) !important;
+    height: var(--el-tabs-item-height, auto) !important;
+    min-height: var(--el-tabs-item-min-height, 36px) !important;
+    padding: var(--el-tabs-item-padding, 8px 16px) !important;
+
+    // margin-right: var(--el-tabs-item-gap, 8px) !important;
+    line-height: var(--el-tabs-item-line-height, 1.4) !important;
+
+    // color: var(--el-tabs-item-color, #000) !important;
+    white-space: var(--el-tabs-item-white-space, nowrap) !important;
+
+    /* 未选中状态样式 - 简洁透明效果 */
+    background-color: var(--el-tabs-item-bg-color, transparent) !important;
+    border: var(--el-tabs-item-border, none) !important;
+    border-radius: var(--el-tabs-item-border-radius, 8px) !important;
+    box-shadow: var(--el-tabs-item-box-shadow, none) !important;
+    transition: var(--el-tabs-item-transition, all 0.3s ease) !important;
+
+    &:hover {
+      background-color: rgb(0 0 0 / 5%) !important;
+      box-shadow: none !important;
+    }
+
+    &:not(.is-disabled):hover {
+      color: var(--el-color-primary) !important;
+    }
+
+    &:not(.is-disabled)::before {
+      border-color: var(--el-color-primary) !important;
+    }
+
+    /* 选中状态样式 - 双层背景效果 */
+    &.is-active {
+      /* 使用伪元素创建内层黑色背景 */
+      &::before {
+        position: absolute !important;
+
+        // inset: 3px !important;
+        // z-index: -99 !important;
+        content: "" !important;
+        background-color: var(--el-color-primary) !important;
+        border-radius: 5px !important;
+      }
+
+      /* 确保文字在黑色背景之上 */
+      & > * {
+        position: relative !important;
+        z-index: 1 !important;
+      }
+    }
+  }
+
+  /* 确保最后一个标签页没有右边距 */
+  .el-tabs__item:last-child {
+    margin-right: 0 !important;
+  }
+
+  /* 移除默认的下划线指示器 */
+  .el-tabs__active-bar {
+    display: none !important;
+  }
+
+  /* 移除标签页内容区域的边框和内边距 */
+  .el-tabs__content {
+    padding: 0 !important;
+    border: none !important;
+  }
+
+  /* 针对 border-card 类型的特殊处理 */
+  .el-tabs--border-card > .el-tabs__header {
+    background: transparent !important;
+    border: none !important;
+  }
+
+  .el-tabs--border-card > .el-tabs__header .el-tabs__nav {
+    background: transparent !important;
+    border: none !important;
+  }
+
+  .el-tabs--border-card > .el-tabs__header .el-tabs__item {
+    border: none !important;
+  }
+
+  .el-tabs--border-card > .el-tabs__content {
+    padding: 0 !important;
+    border: none !important;
+  }
+}
+
+/*
+* 圆角胶囊式 Tabs 样式（绿色主题）
+* 使用方式：在 el-tabs 上添加 type="border-card" style="--el-tabs-header-width: fit-content" class="pill-tabs"
+*/
+.pill-tabs.el-tabs--border-card {
+  --el-tabs--border-card-width: auto;
+
+  gap: 15px;
+  border: none;
+
+  & > .el-tabs__header {
+    background: none;
+  }
+
+  & > .el-tabs__header .el-tabs__nav {
+    display: flex;
+    gap: 10px;
+    padding-top: 1px;
+    background: transparent;
+    border: none;
+  }
+
+  & > .el-tabs__content {
+    overflow: visible;
+  }
+
+  & > .el-tabs__header .el-tabs__item {
+    border: 1px solid #d8d8d8 !important;
+    border-bottom: none !important;
+    border-radius: 8px 8px 0 0 !important;
+    transition: all 0.2s ease;
+
+    &.is-active {
+      background: linear-gradient(
+        180deg,
+        var(--dc-brand-soft) 0%,
+        rgb(60 110 240 / 0%) 100%
+      );
+    }
+  }
+}

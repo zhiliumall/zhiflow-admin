@@ -1,0 +1,79 @@
+.ds-animate-lift {
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.ds-animate-lift:hover {
+  transform: translateY(-1px);
+}
+
+.ds-animate-press:active {
+  transform: scale(0.94);
+  transition-duration: 80ms;
+}
+
+.ds-breathing-dot {
+  position: relative;
+}
+
+.ds-breathing-dot::after {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--ds-brand);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--ds-brand) 36%, transparent);
+  animation: ds-breathe 1.8s ease-in-out infinite;
+}
+
+.ds-unread-pulse {
+  animation: ds-unread-pulse 2s ease-in-out infinite;
+}
+
+.ds-row-enter {
+  animation: ds-row-enter 240ms ease-out;
+}
+
+.ds-row-highlight {
+  animation: ds-row-highlight 2s ease-out;
+}
+
+.ds-drawer-enter {
+  animation: ds-drawer-enter 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ds-skeleton-shimmer {
+  background: linear-gradient(90deg, var(--ds-skeleton-base), var(--ds-skeleton-highlight), var(--ds-skeleton-base));
+  background-size: 200% 100%;
+  animation: ds-shimmer 1.4s linear infinite;
+}
+
+@keyframes ds-breathe {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ds-brand) 36%, transparent); }
+  50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--ds-brand) 0%, transparent); }
+}
+
+@keyframes ds-unread-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+@keyframes ds-row-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ds-row-highlight {
+  0% { background: var(--ds-row-highlight-bg); }
+  100% { background: transparent; }
+}
+
+@keyframes ds-drawer-enter {
+  from { transform: translateX(24px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes ds-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
